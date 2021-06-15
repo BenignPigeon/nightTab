@@ -1,0 +1,73 @@
+.is-bookmark-style-block {
+  --group-cell-width: 11em;
+  --group-cell-height: 10em;
+}
+
+.is-bookmark-style-list {
+  --group-cell-width: 20em;
+  --group-cell-height: 4em;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-space) * var(--layout-gutter));
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.group-header {
+  display: flex;
+  flex-direction: row;
+  gap: calc(var(--layout-space) * var(--layout-gutter));
+}
+
+.group-name {
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: var(--group-name-size);
+}
+
+.group-name-text {
+  margin-bottom: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.group-body {
+  position: relative;
+  min-height: var(--group-cell-height);
+  display: grid;
+  grid-auto-rows: var(--group-cell-height);
+  gap: calc(var(--layout-space) * var(--layout-gutter));
+  grid-template-columns: repeat(auto-fill, minmax(var(--group-cell-width), 1fr));
+  grid-auto-flow: dense;
+}
+
+.group-control-group {
+  width: 0;
+  overflow: hidden;
+  transition: width var(--layout-transition-extra-fast);
+}
+
+.is-group-edit .group-control-group {
+  width: 20em;
+}
+
+.group-sort-placeholder {
+  box-shadow: var(--edge);
+  border-radius: var(--theme-radius-base);
+}
+
+.group-sort-placeholder .group-header,
+.group-sort-placeholder .group-body {
+  visibility: hidden;
+}
+
+.is-theme-background-type-accent .group-sort-placeholder {
+  box-shadow: var(--edge-on-accent);
+}

@@ -1,0 +1,115 @@
+:root {
+  --modal-small: 30em;
+  --modal-medium: 50em;
+  --modal-large: 70em;
+  --modal-size: var(--modal-medium);
+  --modal-space: 2em;
+}
+
+.modal {
+  background-color: hsl(var(--theme-primary-010));
+  border-radius: var(--theme-radius-base);
+  box-shadow: var(--theme-shadow-bottom-large);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  font-size: 1em;
+  max-height: calc(100vh - 2em);
+  width: var(--modal-size);
+  max-width: calc(100% - 2em);
+  min-width: 10em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  opacity: 0;
+  transition: background-color var(--layout-transition-extra-fast), opacity var(--layout-transition-extra-fast);
+  z-index: var(--z-index-modal);
+}
+
+.modal.modal-max-height {
+  min-height: calc(100vh - 2em);
+}
+
+.modal-content-wrapper {
+  padding: calc(var(--modal-space) * 1.75);
+  position: relative;
+  overflow-y: auto;
+}
+
+.modal-overscroll .modal-content-wrapper {
+  padding-bottom: calc(var(--form-space) * 14);
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  justify-items: stretch;
+  align-items: stretch;
+  gap: var(--modal-space);
+}
+
+.modal-body {
+  border-radius: var(--theme-radius-base) var(--theme-radius-base) 0 0;
+  position: relative;
+}
+
+.modal-body-spacer {
+  margin: var(--modal-space);
+}
+
+.modal-heading-text {
+  margin-bottom: 0;
+}
+
+.modal-heading-text:focus {
+  outline: none;
+}
+
+.modal-container {
+  max-width: 100%;
+}
+
+.modal-container:focus {
+  outline: none;
+}
+
+.modal-controls {
+  background-color: hsl(var(--theme-primary-010));
+  border-radius: 0 0 var(--theme-radius-base) var(--theme-radius-base);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  transition: background-color var(--layout-transition-extra-fast);
+}
+
+.modal-button {
+  background-color: transparent;
+  margin: 0;
+  border-radius: 0;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  flex-basis: 50%;
+}
+
+.modal-controls .modal-button:first-child {
+  border-radius: 0 0 0 var(--theme-radius-base);
+}
+
+.modal-controls .modal-button:last-child {
+  border-radius: 0 0 var(--theme-radius-base) 0
+}
+
+.modal-shade {
+  background-color: rgba(var(--theme-accent), 0.5);
+  position: fixed;
+  top: -1em;
+  left: -1em;
+  width: calc(100vw + 2em);
+  height: calc(100vh + 2em);
+  opacity: 0;
+  z-index: var(--z-index-shade);
+  transition: background-color var(--layout-transition-extra-fast), opacity var(--layout-transition-extra-fast);
+}

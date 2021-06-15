@@ -1,0 +1,48 @@
+:root {
+  --layout-size: 1;
+}
+
+:root {
+  --layout-space: 0.05em;
+  --layout-line-width: 0.2em;
+}
+
+:root {
+  --layout-duration-01: 0.1s;
+  --layout-duration-02: 0.2s;
+  --layout-duration-03: 0.3s;
+  --layout-duration-04: 0.4s;
+  --layout-duration-05: 0.5s;
+  --layout-duration-06: 0.6s;
+  --layout-duration-07: 0.7s;
+  --layout-duration-08: 0.8s;
+  --layout-duration-09: 0.9s;
+  --layout-duration-10: 1s;
+  --layout-timing-ease: ease-in-out;
+  --layout-timing-bounce: cubic-bezier(0.8, 0.8, 0.4, 1.4);
+  --layout-transition-extra-fast: var(--layout-duration-02) var(--layout-timing-ease);
+  --layout-transition-fast: var(--layout-duration-04) var(--layout-timing-ease);
+  --layout-transition-medium: var(--layout-duration-06) var(--layout-timing-ease);
+  --layout-transition-slow: var(--layout-duration-08) var(--layout-timing-ease);
+  --layout-transition-extra-slow: var(--layout-duration-10) var(--layout-timing-ease);
+}
+
+:root {
+  --layout-horizontal-rule-small: 1px solid hsl(var(--theme-primary-020));
+  --layout-horizontal-rule-large: 2px solid hsl(var(--theme-primary-020));
+}
+
+.layout {
+  width: calc(var(--layout-width) * 1%);
+  font-size: calc(var(--layout-size) * 0.01rem);
+  padding: calc(var(--layout-padding) * 0.05em);
+  z-index: var(--z-index-layout);
+}
+
+.layout-bookmark {
+  display: grid;
+  gap: calc(var(--layout-padding) * 0.05em);
+  align-items: stretch;
+  justify-content: stretch;
+  width: 100%;
+}
