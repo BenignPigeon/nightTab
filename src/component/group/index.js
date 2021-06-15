@@ -235,6 +235,7 @@ group.bind.sort = function() {
 };
 
 group.init = function() {
+  group.render.class();
   group.bind.sort();
 };
 
