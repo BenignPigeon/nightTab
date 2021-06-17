@@ -73,7 +73,7 @@ menuContentLayout.size = function() {
 };
 
 menuContentLayout.area = function() {
-  const menuContentItem = node('div|id:menu-content-item-size,class:menu-content-item');
+  const menuContentItem = node('div|id:menu-content-item-area,class:menu-content-item');
 
   const layoutEdge = new Edge({ element: layout.element.layout });
 

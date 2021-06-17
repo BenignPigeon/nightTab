@@ -1,5 +1,7 @@
 import { bookmark } from '../bookmark';
 import { groupDefault } from '../groupDefault';
+import { isValidString } from '../../utility/isValidString';
+import { trimString } from '../../utility/trimString';
 
 export const StagedGroup = function(groupData) {
 

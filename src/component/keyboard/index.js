@@ -39,10 +39,13 @@ keyboard.esc = new KeyPress({
       autoSuggest.close();
     } else if (state.get.current().bookmark.add) {
       modal.close();
+    } else if (state.get.current().group.add) {
+      modal.close();
     } else if (state.get.current().modal) {
       modal.close();
-    } else if (state.get.current().bookmark.edit) {
+    } else if (state.get.current().bookmark.edit || state.get.current().group.edit) {
       bookmark.edit.close();
+      group.edit.close();
     };
   }
 });
@@ -55,8 +58,28 @@ keyboard.ctrAltA = new KeyPress({
     if (state.get.current().menu) {
       menu.close();
     };
+    if (state.get.current().group.add) {
+      group.add.close();
+    };
     if (!state.get.current().bookmark.add) {
       bookmark.add.open();
+    };
+  }
+});
+
+keyboard.ctrAltG = new KeyPress({
+  keycode: 71,
+  ctrl: true,
+  alt: true,
+  action: () => {
+    if (state.get.current().menu) {
+      menu.close();
+    };
+    if (state.get.current().bookmark.add) {
+      bookmark.add.close();
+    };
+    if (!state.get.current().group.add) {
+      group.add.open();
     };
   }
 });
@@ -91,6 +114,9 @@ keyboard.ctrAltM = new KeyPress({
   ctrl: true,
   alt: true,
   action: () => {
+    if (state.get.current().group.add) {
+      modal.close();
+    };
     if (state.get.current().bookmark.add) {
       modal.close();
     };
@@ -101,6 +127,7 @@ keyboard.ctrAltM = new KeyPress({
 keyboard.init = function() {
   keyboard.esc.bind();
   keyboard.ctrAltA.bind();
+  keyboard.ctrAltG.bind();
   keyboard.ctrAltE.bind();
   keyboard.ctrAltD.bind();
   keyboard.ctrAltM.bind();

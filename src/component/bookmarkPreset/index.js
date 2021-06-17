@@ -17,8 +17,9 @@
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'AS' }, icon: { name: 'dice-d20', prefix: 'fas', label: 'Dice D20' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }, {
        url: 'https://www.amazon.co.uk/',
@@ -33,8 +34,9 @@
          visual: { show: true, type: 'letter', size: 25, letter: { text: 'AZ' }, icon: { name: 'amazon', prefix: 'fab', label: 'Amazon' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }, {
        url: 'https://mail.google.com/',
@@ -49,8 +51,9 @@
          visual: { show: true, type: 'letter', size: 25, letter: { text: 'GM' }, icon: { name: 'envelope', prefix: 'fas', label: 'Envelope' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }, {
        url: 'https://www.reddit.com/',
@@ -65,8 +68,9 @@
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'R' }, icon: { name: 'reddit-alien', prefix: 'fab', label: 'reddit Alien' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }, {
        url: 'https://www.netflix.com/',
@@ -81,8 +85,9 @@
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'N' }, icon: { name: 'film', prefix: 'fas', label: 'Film' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }, {
        url: 'https://drive.google.com/drive/',
@@ -97,8 +102,9 @@
          visual: { show: true, type: 'letter', size: 25, letter: { text: 'DR' }, icon: { name: 'google-drive', prefix: 'fab', label: 'Drive' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }]
    }, {
@@ -117,8 +123,9 @@
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'DEV' }, icon: { name: 'code', prefix: 'fas', label: 'Code' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }, {
        url: 'https://github.com/',
@@ -133,8 +140,9 @@
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'GIT' }, icon: { name: 'github', prefix: 'fab', label: 'GitHub' }, image: { url: '' } }
        },
        accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+       color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
        background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+       border: 0,
        shape: { wide: false, tall: false }
      }]
    }];

@@ -180,8 +180,6 @@ const GroupArea = function({ groupData = {} } = {}) {
 
     this.element.name.name.appendChild(this.element.name.text);
 
-    this.element.header.appendChild(this.element.name.name);
-
     this.element.control.group.appendChild(this.control.button.up.button);
 
     this.element.control.group.appendChild(this.control.button.sort.button);
@@ -214,7 +212,7 @@ const GroupArea = function({ groupData = {} } = {}) {
 
     this.assembleElements();
 
-    if (state.get.current().bookmark.edit) {
+    if (state.get.current().group.edit) {
       this.control.enable();
     } else {
       this.control.disable();

@@ -20,5 +20,10 @@
   z-index: var(--z-index-edge);
   pointer-events: none;
   transition: opacity var(--layout-transition-extra-fast);
-  /* transition: opacity var(--layout-transition-extra-fast), top var(--layout-duration-02) var(--layout-timing-bounce), left var(--layout-duration-02) var(--layout-timing-bounce), width var(--layout-duration-02) var(--layout-timing-bounce), height var(--layout-duration-02) var(--layout-timing-bounce); */
+  transition:
+    opacity var(--layout-transition-extra-fast),
+    top var(--layout-duration-02),
+    left var(--layout-duration-02),
+    width var(--layout-duration-02),
+    height var(--layout-duration-02);
 }

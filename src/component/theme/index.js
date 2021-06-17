@@ -84,12 +84,6 @@ theme.render.color = function() {
 theme.render.class = function() {
   const html = document.querySelector('html');
 
-  if (state.get.current().bookmark.edit) {
-    html.classList.add('is-bookmark-edit');
-  } else {
-    html.classList.remove('is-bookmark-edit');
-  };
-
   const style = ['dark', 'light', 'system'];
 
   style.forEach((item, i) => {
@@ -136,14 +130,6 @@ theme.style = {
     };
   }
 }
-
-theme.render.bookmark = {};
-
-theme.render.bookmark.style = function() {
-  const html = document.querySelector('html');
-  html.style.setProperty('--theme-bookmark-shadow-color', state.get.current().theme.bookmark.shadow.color.rgb.r + ', ' + state.get.current().theme.bookmark.shadow.color.rgb.g + ', ' + state.get.current().theme.bookmark.shadow.color.rgb.b);
-  html.style.setProperty('--theme-bookmark-shadow-opacity', state.get.current().theme.bookmark.shadow.opacity);
-};
 
 theme.render.background = {};
 
@@ -255,7 +241,6 @@ theme.init = function() {
   theme.render.class();
   theme.render.radius();
   theme.render.shadow();
-  theme.render.bookmark.style();
   theme.render.background.area();
   theme.render.background.type();
   theme.render.background.color();

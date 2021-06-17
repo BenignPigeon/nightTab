@@ -116,7 +116,7 @@ menuContentTheme.color = function() {
     min: state.get.minMax().theme.color.lightness.contrast.min,
     max: state.get.minMax().theme.color.lightness.contrast.max,
     action: () => {
-      state.get.current().theme.color.lightness.offset = 40 - state.get.current().theme.color.lightness.contrast;
+      state.get.current().theme.color.lightness.offset = state.minMax.theme.color.lightness.contrast.max - state.get.current().theme.color.lightness.contrast;
       state.get.current().theme.color.lightness.start = state.get.current().theme.color.lightness.offset;
       state.get.current().theme.color.lightness.end = 100 - state.get.current().theme.color.lightness.offset;
       theme.render.color();
@@ -196,96 +196,6 @@ menuContentTheme.accent = function() {
       themeAccentMixer.wrap()
     ])
   );
-
-  return menuContentItem;
-};
-
-menuContentTheme.bookmark = function() {
-  const menuContentItem = node('div|id:menu-content-item-bookmark,class:menu-content-item');
-
-  menuContentItem.appendChild(menu.render.component.item.header('Bookmark'));
-
-  const themeBookmarkShadowColorBy = new Control_radio({
-    object: state.get.current(),
-    radioGroup: [
-      { id: 'theme-bookmark-shadow-color-type-theme', labelText: 'Theme Accent', description: 'Use the Accent defined by the Theme.', value: 'theme' },
-      { id: 'theme-bookmark-shadow-color-type-custom', labelText: 'Custom Accent', description: 'Override the Theme Accent.', value: 'custom' }
-    ],
-    groupName: 'theme-bookmark-shadow-color-type',
-    path: 'theme.bookmark.shadow.color.type',
-    action: () => {
-      theme.render.class();
-      themeBookmarkShadowColorByCollapse.update();
-      data.save();
-    }
-  });
-
-  const themeBookmarkShadowColor = new Control_colorMixer({
-    object: state.get.current(),
-    path: 'theme.bookmark.shadow.color',
-    id: 'theme-bookmark-shadow-color',
-    labelText: 'Bookmark shadow colour',
-    srOnly: true,
-    defaultValue: state.get.default().theme.bookmark.shadow.color.rgb,
-    minMaxObject: state.get.minMax(),
-    action: () => {
-      theme.render.bookmark.style();
-      data.save();
-    }
-  });
-
-  const themeBookmarkShadowOpacity = new Control_slider({
-    object: state.get.current(),
-    path: 'theme.bookmark.shadow.opacity',
-    id: 'theme-bookmark-shadow-opacity',
-    labelText: 'Bookmark shadow opacity',
-    value: state.get.current().theme.bookmark.shadow.opacity,
-    defaultValue: state.get.default().theme.bookmark.shadow.opacity,
-    min: state.get.minMax().theme.bookmark.shadow.opacity.min,
-    max: state.get.minMax().theme.bookmark.shadow.opacity.max,
-    action: () => {
-      theme.render.bookmark.style();
-      data.save();
-    }
-  });
-
-  const themeBookmarkShadowColorByCustonArea = node('div', [
-    node('hr'),
-    themeBookmarkShadowColor.wrap(),
-  ]);
-
-  const themeBookmarkShadowColorByCollapse = new Collapse({
-    type: 'radio',
-    radioGroup: themeBookmarkShadowColorBy,
-    target: [{
-      id: themeBookmarkShadowColorBy.radioSet[1].radio.value,
-      content: themeBookmarkShadowColorByCustonArea
-    }]
-  });
-
-  themeBookmarkShadowColorByCollapse.update();
-
-  menuContentItem.appendChild(menu.render.component.item.form([
-    form.wrap({
-      children: [
-        form.label({
-          text: 'Bookmark shadow colour'
-        })
-      ]
-    }),
-    themeBookmarkShadowColorBy.wrap(),
-    form.wrap({
-      children: [
-        form.indent({
-          children: [
-            themeBookmarkShadowColorByCollapse.collapse(),
-            node('hr'),
-            themeBookmarkShadowOpacity.wrap()
-          ]
-        })
-      ]
-    })
-  ]));
 
   return menuContentItem;
 };

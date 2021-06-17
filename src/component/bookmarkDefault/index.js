@@ -11,7 +11,8 @@ export const bookmarkDefault = {
     visual: { show: true, type: 'letter', size: 25, letter: { text: '' }, icon: { name: '', prefix: '', label: '' }, image: { url: '' } }
   },
   accent: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } },
-  color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 1 },
+  color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
   background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
+  border: 0,
   shape: { wide: false, tall: false }
 };

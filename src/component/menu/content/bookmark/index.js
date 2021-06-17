@@ -33,7 +33,7 @@ import { complexNode } from '../../../../utility/complexNode';
 const menuContentBookmark = {};
 
 menuContentBookmark.style = function() {
-  const menuContentItem = node('div|id:menu-content-item-hover,class:menu-content-item');
+  const menuContentItem = node('div|id:menu-content-item-style,class:menu-content-item');
 
   const bookmarkStyle = new Control_radio({
     object: state.get.current(),
@@ -79,8 +79,101 @@ menuContentBookmark.style = function() {
   return menuContentItem;
 };
 
+menuContentBookmark.general = function() {
+  const menuContentItem = node('div|id:menu-content-item-general,class:menu-content-item');
+
+  const bookmarkUrlShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-url-show',
+    path: 'bookmark.url.show',
+    labelText: 'Show URL on Bookmark hover',
+    action: () => {
+
+      bookmark.render.class();
+
+      data.save();
+
+    }
+  });
+
+  const bookmarkLineShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-line-show',
+    path: 'bookmark.line.show',
+    labelText: 'Show Bookmark line',
+    action: () => {
+
+      bookmark.render.class();
+
+      data.save();
+
+    }
+  });
+
+  const bookmarkShadowShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-shadow-show',
+    path: 'bookmark.shadow.show',
+    labelText: 'Show shadow on Bookmark hover',
+    description: 'Effects may not be visible if Theme Shadow is set to 0.',
+    action: () => {
+
+      bookmark.render.class();
+
+      data.save();
+
+    }
+  });
+
+  const bookmarkHoverScaleShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-hoverScale-show',
+    path: 'bookmark.hoverScale.show',
+    labelText: 'Grow on Bookmark hover',
+    action: () => {
+
+      bookmark.render.class();
+
+      data.save();
+
+    }
+  });
+
+  const bookmarkNewTab = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-newTab',
+    path: 'bookmark.newTab',
+    labelText: 'Open Bookmarks in a new tab',
+    action: () => {
+
+      bookmark.render.clear();
+
+      bookmark.render.item();
+
+      bookmark.bind.sort();
+
+      data.save();
+
+    }
+  });
+
+  menuContentItem.appendChild(menu.render.component.item.header('General'));
+
+  menuContentItem.appendChild(
+    menu.render.component.item.form([
+      bookmarkUrlShow.wrap(),
+      bookmarkLineShow.wrap(),
+      bookmarkShadowShow.wrap(),
+      bookmarkHoverScaleShow.wrap(),
+      bookmarkNewTab.wrap()
+    ])
+  );
+
+  return menuContentItem;
+};
+
 menuContentBookmark.orientation = function() {
-  const menuContentItem = node('div|id:menu-content-item-hover,class:menu-content-item');
+  const menuContentItem = node('div|id:menu-content-item-orientation,class:menu-content-item');
 
   const bookmarkOrientation = new Control_radio({
     object: state.get.current(),

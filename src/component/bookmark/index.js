@@ -135,8 +135,10 @@ bookmark.mod.propagate.state = {
           item.display.gutter = bookmarkData.link.display.gutter;
           item.display.rotate = bookmarkData.link.display.rotate;
           item.display.translate = bookmarkData.link.display.translate;
+          item.display.alignment = bookmarkData.link.display.alignment;
           item.display.direction = bookmarkData.link.display.direction;
           item.display.order = bookmarkData.link.display.order;
+          item.border = bookmarkData.link.border;
         };
 
         if (bookmark.mod.propagate.state.current.visual) {
@@ -157,6 +159,7 @@ bookmark.mod.propagate.state = {
     });
 
     bookmark.mod.propagate.state.reset();
+
   }
 };
 

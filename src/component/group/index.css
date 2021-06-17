@@ -35,6 +35,10 @@
   white-space: nowrap;
 }
 
+.is-theme-background-type-accent .group-name-text {
+  color: hsl(var(--theme-accent-text));
+}
+
 .group-body {
   position: relative;
   min-height: var(--group-cell-height);

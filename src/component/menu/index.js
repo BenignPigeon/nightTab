@@ -158,7 +158,7 @@ menu.mod.area = {
     name: 'Bookmarks',
     active: false,
     overscroll: true,
-    subNav: [{ id: 'style', name: 'Style' }, { id: 'orientation', name: 'Orientation' }]
+    subNav: [{ id: 'style', name: 'Style' }, { id: 'general', name: 'General' }, { id: 'orientation', name: 'Orientation' }]
   }, {
     id: 'toolbar',
     name: 'Toolbar',
@@ -170,7 +170,7 @@ menu.mod.area = {
     name: 'Theme',
     active: false,
     overscroll: true,
-    subNav: [{ id: 'style', name: 'Style' }, { id: 'color', name: 'Color' }, { id: 'accent', name: 'Accent' }, { id: 'bookmark', name: 'Bookmarks' }, { id: 'background', name: 'Background' }]
+    subNav: [{ id: 'style', name: 'Style' }, { id: 'color', name: 'Color' }, { id: 'accent', name: 'Accent' }, { id: 'background', name: 'Background' }]
   }, {
     id: 'data',
     name: 'Data',
@@ -346,6 +346,7 @@ menu.render.component = {
     },
     bookmark: function(currentContentArea) {
       currentContentArea.appendChild(menuContentBookmark.style());
+      currentContentArea.appendChild(menuContentBookmark.general());
       currentContentArea.appendChild(menuContentBookmark.orientation());
     },
     toolbar: function(currentContentArea) {
@@ -356,7 +357,6 @@ menu.render.component = {
       currentContentArea.appendChild(menuContentTheme.style());
       currentContentArea.appendChild(menuContentTheme.color());
       currentContentArea.appendChild(menuContentTheme.accent());
-      currentContentArea.appendChild(menuContentTheme.bookmark());
       currentContentArea.appendChild(menuContentTheme.background());
     },
     data: function(currentContentArea) {

@@ -5,15 +5,14 @@ state.current = {};
 state.default = {
   layout: { size: 100, width: 80, padding: 40, gutter: 20, breakpoint: 'xs' },
   bookmark: {
-    size: 100,
     hover: { size: 0, distance: 15 },
-    shadow: { blur: 15, distance: 30 },
     url: { show: true },
     line: { show: true },
     shadow: { show: true },
     hoverScale: { show: false },
     orientation: 'bottom',
     style: 'block',
+    newTab: true,
     edit: false,
     add: false
   },
@@ -29,10 +28,6 @@ state.default = {
       display: { name: '', weight: 400, style: 'normal' },
       ui: { name: '', weight: 400, style: 'normal' }
     },
-    style: 'dark',
-    bookmark: {
-      shadow: { opacity: 25, color: { type: 'custom', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 } } }
-    },
     background: {
       type: 'theme',
       color: { hsl: { h: 213, s: 40, l: 65 }, rgb: { r: 130, g: 162, b: 201 } },
@@ -44,6 +39,7 @@ state.default = {
       image: { url: '', blur: 0, scale: 100, opacity: 100 },
       video: { url: '', blur: 0, scale: 100, opacity: 100 }
     },
+    style: 'dark',
     radius: 25,
     shadow: 75
   },

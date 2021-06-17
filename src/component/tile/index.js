@@ -14,7 +14,7 @@ import { complexNode } from '../../utility/complexNode';
 import { isValidString } from '../../utility/isValidString';
 import { trimString } from '../../utility/trimString';
 
-const Tile = function({ bookmarkData = {}, position = false, preview = false } = {}) {
+const Tile = function({ bookmarkData = {}, preview = false } = {}) {
 
   this.element = {
     bookmark: node('div|class:bookmark'),
@@ -64,82 +64,43 @@ const Tile = function({ bookmarkData = {}, position = false, preview = false } =
       this.element.content.link.setAttribute('href', '#');
     };
 
+    if (state.get.current().bookmark.newTab && !preview) {
+      this.element.content.link.setAttribute('target', '_blank');
+    };
+
     this.element.bookmark.style.setProperty('--bookmark-transition-delay', bookmarkData.position.origin.item);
 
     this.element.bookmark.style.setProperty('--bookmark-color-opacity', bookmarkData.link.color.opacity);
 
-    switch (bookmarkData.link.display.direction) {
-      case 'vertical':
-        switch (bookmarkData.link.display.order) {
-          case 'visual-name':
-            this.element.bookmark.style.setProperty('--bookmark-display-direction', 'column');
-            break;
+    this.element.bookmark.style.setProperty('--bookmark-color-opacity', bookmarkData.link.color.opacity);
 
-          case 'name-visual':
-            this.element.bookmark.style.setProperty('--bookmark-display-direction', 'column-reverse');
-            break;
-        };
-        break;
-
-      case 'horizontal':
-        switch (bookmarkData.link.display.order) {
-          case 'visual-name':
-            this.element.bookmark.style.setProperty('--bookmark-display-direction', 'row');
-            break;
-
-          case 'name-visual':
-            this.element.bookmark.style.setProperty('--bookmark-display-direction', 'row-reverse');
-            break;
-        };
-        break;
+    if (bookmarkData.link.color.opacity < 100) {
+      this.element.bookmark.style.setProperty('--bookmark-clip-padding', 0);
     };
 
-    switch (bookmarkData.link.display.alignment) {
-      case 'top-left':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'flex-start');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-start');
-        break;
+    if (preview) {
+      const alignment = ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'];
 
-      case 'top-center':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'flex-start');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'center');
-        break;
+      alignment.forEach((item, i) => {
+        this.element.bookmark.classList.remove("is-bookmark-alignment-" + item);
+      });
+      const order = ['visual-name', 'name-visual'];
 
-      case 'top-right':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'flex-start');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-end');
-        break;
+      order.forEach((item, i) => {
+        this.element.bookmark.classList.remove("is-bookmark-order-" + item);
+      });
+      const direction = ['vertical', 'horizontal'];
 
-      case 'center-left':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'center');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-start');
-        break;
-
-      case 'center-center':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'center');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'center');
-        break;
-
-      case 'center-right':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'center');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-end');
-        break;
-
-      case 'bottom-left':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'flex-start');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-end');
-        break;
-
-      case 'bottom-center':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'center');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-end');
-        break;
-
-      case 'bottom-right':
-        this.element.bookmark.style.setProperty('--bookmark-display-align', 'flex-end');
-        this.element.bookmark.style.setProperty('--bookmark-display-justify', 'flex-end');
-        break;
+      direction.forEach((item, i) => {
+        this.element.bookmark.classList.remove("is-bookmark-direction-" + item);
+      });
     };
+
+    this.element.bookmark.classList.add("is-bookmark-alignment-" + bookmarkData.link.display.alignment);
+
+    this.element.bookmark.classList.add("is-bookmark-order-" + bookmarkData.link.display.order);
+
+    this.element.bookmark.classList.add("is-bookmark-direction-" + bookmarkData.link.display.direction);
 
     this.element.bookmark.style.setProperty('--bookmark-display-translate-x', bookmarkData.link.display.translate.x);
 
@@ -154,6 +115,8 @@ const Tile = function({ bookmarkData = {}, position = false, preview = false } =
     this.element.bookmark.style.setProperty('--bookmark-display-visual-image-url', 'url(' + trimString(bookmarkData.link.display.visual.image.url) + ')');
 
     this.element.bookmark.style.setProperty('--bookmark-display-name-size', bookmarkData.link.display.name.size);
+
+    this.element.bookmark.style.setProperty('--bookmark-border', bookmarkData.link.border);
 
     if (bookmarkData.link.accent.by == 'custom') {
       this.element.bookmark.style.setProperty('--theme-accent-r', bookmarkData.link.accent.rgb.r);

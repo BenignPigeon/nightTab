@@ -1,5 +1,8 @@
 :root {
   --menu-background: var(--theme-primary-010);
+  --menu-nav-background: var(--theme-primary-020);
+  --menu-button-background-focus-hover: var(--theme-primary-030);
+  --menu-button-background-active: var(--theme-primary-040);
   --menu-text: var(--theme-primary-text-010);
   --menu-space: 0.75em;
   --menu-edge-opacity: 0.75;
@@ -67,11 +70,11 @@
 
 .menu-nav-tab:focus,
 .menu-nav-tab:hover {
-  background-color: hsl(var(--theme-primary-020));
+  background-color: hsl(var(--menu-button-background-focus-hover));
 }
 
 .menu-nav-tab:active {
-  background-color: hsl(var(--theme-primary-030));
+  background-color: hsl(var(--menu-button-background-active));
 }
 
 .menu-nav-tab.active {
@@ -80,11 +83,11 @@
 }
 
 .menu-nav-tab.active:hover {
-  background-color: hsl(var(--theme-primary-020));
+  background-color: hsl(var(--menu-button-background-focus-hover));
 }
 
 .menu-nav-tab.active:active {
-  background-color: hsl(var(--theme-primary-030));
+  background-color: hsl(var(--menu-button-background-active));
 }
 
 .menu-nav-tab:after {
@@ -181,7 +184,7 @@
   }
 
   .menu-nav {
-    background-color: hsl(var(--theme-primary-020));
+    background-color: hsl(var(--menu-nav-background));
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
@@ -284,11 +287,11 @@
 
   .menu-nav-sub:focus,
   .menu-nav-sub:hover {
-    background-color: hsl(var(--theme-primary-020));
+    background-color: hsl(var(--menu-button-background-focus-hover));
   }
 
   .menu-nav-sub:active {
-    background-color: hsl(var(--theme-primary-030));
+    background-color: hsl(var(--menu-button-background-active));
   }
 
   .menu-nav-sub:after,

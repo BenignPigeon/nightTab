@@ -363,6 +363,20 @@ bookmarkForm.form = function(bookmarkData) {
     }
   });
 
+  const colorOpacity = new Control_slimSlider({
+    object: bookmarkData.link,
+    path: 'color.opacity',
+    id: 'color-opacity',
+    labelText: 'Opacity',
+    value: bookmarkData.link.color.opacity,
+    defaultValue: bookmarkDefault.color.opacity,
+    min: bookmarkMinMax.color.opacity.min,
+    max: bookmarkMinMax.color.opacity.max,
+    action: () => {
+      tilePreview.update.style(bookmarkData);
+    }
+  });
+
   const accentBy = new Control_radio({
     object: bookmarkData.link,
     radioGroup: [
@@ -474,6 +488,28 @@ bookmarkForm.form = function(bookmarkData) {
     }
   });
 
+  const displayAlignment = new Control_radioGrid({
+    object: bookmarkData.link,
+    radioGroup: [
+      { id: 'toolbar-position-top-left', labelText: 'Top Left', value: 'top-left', position: 1 },
+      { id: 'toolbar-position-top-center', labelText: 'Top Center', value: 'top-center', position: 2 },
+      { id: 'toolbar-position-top-right', labelText: 'Top Right', value: 'top-right', position: 3 },
+      { id: 'toolbar-position-center-left', labelText: 'Center Left', value: 'center-left', position: 4 },
+      { id: 'toolbar-position-center-center', labelText: 'Center Center', value: 'center-center', position: 5 },
+      { id: 'toolbar-position-center-right', labelText: 'Center Right', value: 'center-right', position: 6 },
+      { id: 'toolbar-position-bottom-left', labelText: 'Bottom Left', value: 'bottom-left', position: 7 },
+      { id: 'toolbar-position-bottom-center', labelText: 'Bottom Center', value: 'bottom-center', position: 8 },
+      { id: 'toolbar-position-bottom-right', labelText: 'Bottom Right', value: 'bottom-right', position: 9 }
+    ],
+    label: 'Visual Element and Name alignment',
+    groupName: 'display-alignment',
+    path: 'display.alignment',
+    gridSize: '3x3',
+    action: () => {
+      tilePreview.update.assemble(bookmarkData);
+    }
+  });
+
   const shapeWide = new Control_checkbox({
     object: bookmarkData.link,
     path: 'shape.wide',
@@ -496,6 +532,20 @@ bookmarkForm.form = function(bookmarkData) {
     }
   });
 
+  const border = new Control_slimSlider({
+    object: bookmarkData.link,
+    path: 'border',
+    id: 'border',
+    labelText: 'Border',
+    value: bookmarkData.link.border,
+    defaultValue: bookmarkDefault.border,
+    min: bookmarkMinMax.border.min,
+    max: bookmarkMinMax.border.max,
+    action: () => {
+      tilePreview.update.style(bookmarkData);
+    }
+  });
+
   const displayLayoutPropagate = new Control_checkbox({
     object: bookmark.mod.propagate.state.current,
     path: 'layout',
@@ -503,7 +553,7 @@ bookmarkForm.form = function(bookmarkData) {
     labelText: 'Apply this Layout to other Bookmarks',
     description: [
       'When saved, apply the above Layout to all other Bookmarks.',
-      'Only the Visual and Name settings will be applied to all.'
+      'Only the Visual, Name and Border settings will be applied to all.'
     ]
   });
 
@@ -792,6 +842,8 @@ bookmarkForm.form = function(bookmarkData) {
               displayVisualSize.wrap(),
               displayNameSize.wrap(),
               node('hr'),
+              displayAlignment.grid(),
+              node('hr'),
               displayTranslateX.wrap(),
               displayTranslateY.wrap(),
               displayRotate.wrap(),
@@ -805,11 +857,24 @@ bookmarkForm.form = function(bookmarkData) {
               shapeWide.wrap(),
               shapeTall.wrap(),
               node('hr'),
+              border.wrap(),
+              node('hr'),
               displayLayoutPropagate.wrap()
             ]
           })
         ]
       })
+    ]
+  });
+
+  const themePropagate = new Control_checkbox({
+    object: bookmark.mod.propagate.state.current,
+    path: 'theme',
+    id: 'apply-to-all-theme',
+    labelText: 'Apply this Theme to other Bookmarks',
+    description: [
+      'When saved, apply the above Theme to all other Bookmarks.',
+      'Only the Colour, Accent and Opacity settings will be applied to all.'
     ]
   });
 
@@ -830,7 +895,9 @@ bookmarkForm.form = function(bookmarkData) {
                 children: [
                   form.indent({
                     children: [
-                      colorMixerCollapse.collapse()
+                      colorMixerCollapse.collapse(),
+                      node('hr'),
+                      colorOpacity.wrap()
                     ]
                   })
                 ]
@@ -878,6 +945,12 @@ bookmarkForm.form = function(bookmarkData) {
                       backgroundOpacity.wrap()
                     ]
                   })
+                ]
+              }),
+              node('hr'),
+              form.wrap({
+                children: [
+                  themePropagate.wrap()
                 ]
               })
             ]

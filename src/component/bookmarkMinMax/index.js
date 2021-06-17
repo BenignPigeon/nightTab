@@ -15,6 +15,7 @@ export const bookmarkMinMax = {
     rgb: { r: { min: 0, max: 255 }, g: { min: 0, max: 255 }, b: { min: 0, max: 255 } },
     opacity: { min: 0, max: 100 }
   },
+  border: { min: 0, max: 60 },
   background: {
     opacity: { min: 0, max: 100 }
   }
