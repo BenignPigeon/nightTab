@@ -41,13 +41,12 @@ state.default = {
     },
     style: 'dark',
     radius: 25,
-    shadow: 75
+    shadow: 75,
+    shade: {
+      opacity: 40
+    }
   },
-  toolbar: { style: 'transparent', position: 'bottom-right' },
-  edit: false,
-  modal: false,
-  menu: false,
-  autoSuggest: false
+  toolbar: { style: 'transparent', position: 'bottom-right' }
 };
 
 state.minMax = {
@@ -103,6 +102,11 @@ state.minMax = {
       },
       image: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, opacity: { min: 0, max: 100 } },
       video: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, opacity: { min: 0, max: 100 } }
+    },
+    radius: { min: 0, max: 500 },
+    shadow: { min: 0, max: 300 },
+    shade: {
+      opacity: { min: 0, max: 100 }
     }
   }
 };

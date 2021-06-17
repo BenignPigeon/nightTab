@@ -1,6 +1,5 @@
 import { state } from '../state';
 import { data } from '../data';
-import { modal } from '../modal';
 import { theme } from '../theme';
 import { group } from '../group';
 import { layout } from '../layout';
@@ -8,6 +7,7 @@ import { bookmark } from '../bookmark';
 import { groupForm } from '../groupForm';
 
 import { Button } from '../button';
+import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
 import { complexNode } from '../../utility/complexNode';
@@ -107,11 +107,11 @@ const GroupArea = function({ groupData = {} } = {}) {
 
         groupData.type.existing = true;
 
-        modal.open({
+        const editModal = new Modal({
           heading: isValidString(groupData.group.name.text) ? 'Edit ' + groupData.group.name.text : 'Edit unnamed group',
-          actionText: 'Save',
           content: groupForm.form(groupData),
-          size: 'small',
+          successText: 'Save',
+          width: 'small',
           successAction: () => {
 
             group.mod.item.edit(groupData);
@@ -127,6 +127,8 @@ const GroupArea = function({ groupData = {} } = {}) {
           }
         });
 
+        editModal.open();
+
       }
     }),
     remove: new Button({
@@ -138,11 +140,11 @@ const GroupArea = function({ groupData = {} } = {}) {
       classList: ['group-control-button', 'group-control-remove'],
       func: () => {
 
-        modal.open({
+        const removeModal = new Modal({
           heading: isValidString(groupData.group.name.text) ? 'Remove ' + groupData.group.name.text : 'Remove unnamed bookmark',
-          size: 'small',
-          actionText: 'Remove',
           content: 'Are you sure you want to remove this Group and all the Bookmarks within? This can not be undone.',
+          successText: 'Remove',
+          width: 'small',
           successAction: () => {
 
             group.mod.item.remove(groupData);
@@ -157,6 +159,8 @@ const GroupArea = function({ groupData = {} } = {}) {
 
           }
         });
+
+        removeModal.open();
 
       }
     })
@@ -174,7 +178,7 @@ const GroupArea = function({ groupData = {} } = {}) {
     };
   };
 
-  this.assembleElements = () => {
+  this.assemble = () => {
 
     this.element.name.text.innerHTML = groupData.group.name.text;
 
@@ -191,6 +195,10 @@ const GroupArea = function({ groupData = {} } = {}) {
     this.element.control.group.appendChild(this.control.button.remove.button);
 
     this.element.control.control.appendChild(this.element.control.group);
+
+    if (groupData.group.name.show) {
+      this.element.header.appendChild(this.element.name.name);
+    };
 
     this.element.header.appendChild(this.element.control.control);
 
@@ -210,7 +218,7 @@ const GroupArea = function({ groupData = {} } = {}) {
 
   this.group = () => {
 
-    this.assembleElements();
+    this.assemble();
 
     if (state.get.current().group.edit) {
       this.control.enable();

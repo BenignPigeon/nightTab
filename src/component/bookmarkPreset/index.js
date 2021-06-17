@@ -12,7 +12,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'awesomeSheet', size: 7 },
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'AS' }, icon: { name: 'dice-d20', prefix: 'fas', label: 'Dice D20' }, image: { url: '' } }
        },
@@ -29,7 +29,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Amazon', size: 7 },
          visual: { show: true, type: 'letter', size: 25, letter: { text: 'AZ' }, icon: { name: 'amazon', prefix: 'fab', label: 'Amazon' }, image: { url: '' } }
        },
@@ -46,7 +46,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Gmail', size: 7 },
          visual: { show: true, type: 'letter', size: 25, letter: { text: 'GM' }, icon: { name: 'envelope', prefix: 'fas', label: 'Envelope' }, image: { url: '' } }
        },
@@ -63,7 +63,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Reddit', size: 7 },
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'R' }, icon: { name: 'reddit-alien', prefix: 'fab', label: 'reddit Alien' }, image: { url: '' } }
        },
@@ -80,7 +80,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Netflix', size: 7 },
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'N' }, icon: { name: 'film', prefix: 'fas', label: 'Film' }, image: { url: '' } }
        },
@@ -97,7 +97,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Drive', size: 7 },
          visual: { show: true, type: 'letter', size: 25, letter: { text: 'DR' }, icon: { name: 'google-drive', prefix: 'fab', label: 'Drive' }, image: { url: '' } }
        },
@@ -118,7 +118,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Devdocs', size: 7 },
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'DEV' }, icon: { name: 'code', prefix: 'fas', label: 'Code' }, image: { url: '' } }
        },
@@ -135,7 +135,7 @@
          order: 'visual-name',
          rotate: 0,
          translate: { x: 0, y: 0 },
-         gutter: 75,
+         gutter: 25,
          name: { show: true, text: 'Github', size: 7 },
          visual: { show: true, type: 'icon', size: 25, letter: { text: 'GIT' }, icon: { name: 'github', prefix: 'fab', label: 'GitHub' }, image: { url: '' } }
        },

@@ -1,6 +1,5 @@
 import { state } from '../state';
 import { data } from '../data';
-import { modal } from '../modal';
 import { theme } from '../theme';
 import { bookmark } from '../bookmark';
 import { bookmarkDefault } from '../bookmarkDefault';
@@ -9,7 +8,7 @@ import { bookmarkMinMax } from '../bookmarkMinMax';
 import * as form from '../form';
 
 import { Button } from '../button';
-import { Suggest } from '../autoSuggest';
+import { Suggest } from '../suggest';
 import { Collapse } from '../collapse';
 import { Tab } from '../tab';
 import { BookmarkPreview } from '../bookmarkPreview';

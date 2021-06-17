@@ -1,13 +1,13 @@
 import { state } from '../state';
 import { data } from '../data';
 import { layout } from '../layout';
-import { modal } from '../modal';
 import { bookmark } from '../bookmark';
 import { groupForm } from '../groupForm';
 import { groupDefault } from '../groupDefault';
 
 import { GroupArea } from '../groupArea';
 import { StagedGroup } from '../stagedGroup';
+import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
 import { isValidString } from '../../utility/isValidString';
@@ -135,15 +135,16 @@ group.render.item = function() {
 };
 
 group.render.add = function() {
+
   const newGroupData = new StagedGroup();
 
   newGroupData.newGroup();
 
-  modal.open({
+  const addModal = new Modal({
     heading: 'Add a new Group',
-    size: 'small',
-    actionText: 'Add',
     content: groupForm.form(newGroupData),
+    successText: 'Add',
+    width: 'small',
     successAction: () => {
 
       group.mod.item.add(newGroupData);
@@ -157,6 +158,7 @@ group.render.add = function() {
       group.add.close();
 
       data.save();
+
     },
     dismissAction: () => {
 
@@ -166,6 +168,9 @@ group.render.add = function() {
 
     }
   });
+
+  addModal.open();
+
 };
 
 group.add = {

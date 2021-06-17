@@ -6,7 +6,7 @@
   .bookmark-form {
     display: grid;
     grid-template-columns: 6fr 2fr;
-    grid-gap: var(--modal-space);
+    grid-gap: calc(var(--modal-space) * 1em);
     align-items: stretch;
     min-height: 60vh;
   }

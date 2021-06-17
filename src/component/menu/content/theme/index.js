@@ -26,6 +26,7 @@ import { Control_slimSlider } from '../../../control/slimSlider';
 import { Control_colorMixer } from '../../../control/colorMixer';
 import { Control_color } from '../../../control/color';
 import { Control_text } from '../../../control/text';
+import { Control_textReset } from '../../../control/textReset';
 
 import { node } from '../../../../utility/node';
 import { complexNode } from '../../../../utility/complexNode';
@@ -194,6 +195,155 @@ menuContentTheme.accent = function() {
   menuContentItem.appendChild(
     menu.render.component.item.form([
       themeAccentMixer.wrap()
+    ])
+  );
+
+  return menuContentItem;
+};
+
+menuContentTheme.font = function() {
+  const menuContentItem = node('div|id:menu-content-item-font,class:menu-content-item');
+
+  const themeFontDisplayName = new Control_textReset({
+    object: state.get.current(),
+    path: 'theme.font.display.name',
+    id: 'theme-font-display-name',
+    value: state.get.current().theme.font.display.name,
+    defaultValue: state.get.default().theme.font.display.name,
+    placeholder: 'Google font name',
+    labelText: 'Display font',
+    action: () => {
+      theme.render.font.delay.display();
+      data.save();
+    }
+  });
+
+  const themeFontDisplayNameHelper = new Control_helperText({
+    text: [
+      'Use a <a href="https://fonts.google.com/" target="_blank">Google Font</a> to customise the Clock, Date, Group names and Bookmark Letters.',
+      'Add a font name as it appears on Google Fonts, including capital letters and spaces, eg: enter "Fredoka One" or "Kanit"',
+      'Clear the field to use the default font "Fjalla One".'
+    ]
+  });
+
+  const themeFontUiName = new Control_textReset({
+    object: state.get.current(),
+    path: 'theme.font.ui.name',
+    id: 'theme-font-ui-name',
+    value: state.get.current().theme.font.ui.name,
+    defaultValue: state.get.default().theme.font.ui.name,
+    placeholder: 'Google font name',
+    labelText: 'User interface font',
+    action: () => {
+      theme.render.font.delay.ui();
+      data.save();
+    }
+  });
+
+  const themeFontUiNameHelper = new Control_helperText({
+    text: [
+      'Use a <a href="https://fonts.google.com/" target="_blank">Google Font</a> to customise the Bookmark name, URL and form elements.',
+      'Add a font name as it appears on Google Fonts, including capital letters and spaces, eg: enter "Roboto", "Source Sans Pro" or "Noto Sans"',
+      'Clear the field to use the default font "Open Sans".'
+    ]
+  });
+
+  menuContentItem.appendChild(menu.render.component.item.header('Font'));
+
+  menuContentItem.appendChild(
+    menu.render.component.item.form([
+      themeFontDisplayName.wrap(),
+      themeFontDisplayNameHelper.wrap(),
+      node('hr'),
+      themeFontUiName.wrap(),
+      themeFontUiNameHelper.wrap()
+    ])
+  );
+
+  return menuContentItem;
+};
+
+menuContentTheme.radius = function() {
+  const menuContentItem = node('div|id:menu-content-item-radius,class:menu-content-item');
+
+  const themeRadius = new Control_slider({
+    object: state.get.current(),
+    path: 'theme.radius',
+    id: 'theme-radius',
+    labelText: 'Corners radius',
+    value: state.get.current().theme.radius,
+    defaultValue: state.get.default().theme.radius,
+    min: state.get.minMax().theme.radius.min,
+    max: state.get.minMax().theme.radius.max,
+    action: () => {
+      theme.render.radius();
+      data.save();
+    }
+  });
+
+  menuContentItem.appendChild(menu.render.component.item.header('Radius'));
+
+  menuContentItem.appendChild(
+    menu.render.component.item.form([
+      themeRadius.wrap()
+    ])
+  );
+
+  return menuContentItem;
+};
+
+menuContentTheme.shadow = function() {
+  const menuContentItem = node('div|id:menu-content-item-shadow,class:menu-content-item');
+
+  const themeShadow = new Control_slider({
+    object: state.get.current(),
+    path: 'theme.shadow',
+    id: 'theme-shadow',
+    labelText: 'Shadow size',
+    value: state.get.current().theme.shadow,
+    defaultValue: state.get.default().theme.shadow,
+    min: state.get.minMax().theme.shadow.min,
+    max: state.get.minMax().theme.shadow.max,
+    action: () => {
+      theme.render.shadow();
+      data.save();
+    }
+  });
+
+  menuContentItem.appendChild(menu.render.component.item.header('Shadow'));
+
+  menuContentItem.appendChild(
+    menu.render.component.item.form([
+      themeShadow.wrap()
+    ])
+  );
+
+  return menuContentItem;
+};
+
+menuContentTheme.shade = function() {
+  const menuContentItem = node('div|id:menu-content-item-shade,class:menu-content-item');
+
+  const themeShadeOpacity = new Control_slider({
+    object: state.get.current(),
+    path: 'theme.shade.opacity',
+    id: 'theme.shade.opacity',
+    labelText: 'Shade opacity',
+    value: state.get.current().theme.shade.opacity,
+    defaultValue: state.get.default().theme.shade.opacity,
+    min: state.get.minMax().theme.shade.opacity.min,
+    max: state.get.minMax().theme.shade.opacity.max,
+    action: () => {
+      theme.render.shade.opacity();
+      data.save();
+    }
+  });
+
+  menuContentItem.appendChild(menu.render.component.item.header('Shade'));
+
+  menuContentItem.appendChild(
+    menu.render.component.item.form([
+      themeShadeOpacity.wrap()
     ])
   );
 

@@ -1,6 +1,5 @@
 import { state } from '../state';
 import { data } from '../data';
-import { modal } from '../modal';
 import { bookmark } from '../bookmark';
 
 import { Button } from '../button';
@@ -31,7 +30,7 @@ const GroupEmpty = function({ groupData = {}, position = 0 } = {}) {
   };
 
 
-  this.assembleElements = () => {
+  this.assemble = () => {
 
     this.element.control.appendChild(this.control.button.remove.button);
 
@@ -43,7 +42,7 @@ const GroupEmpty = function({ groupData = {}, position = 0 } = {}) {
 
   this.empty = () => {
 
-    this.assembleElements();
+    this.assemble();
 
     return this.element.empty;
 

@@ -1,6 +1,5 @@
 import { state } from '../state';
 import { data } from '../data';
-import { modal } from '../modal';
 import { bookmark } from '../bookmark';
 import { group } from '../group';
 import { bookmarkForm } from '../bookmarkForm';
@@ -8,6 +7,7 @@ import { bookmarkForm } from '../bookmarkForm';
 import { Button } from '../button';
 import { Video } from '../video';
 import { StagedGroup } from '../stagedGroup';
+import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
 import { complexNode } from '../../utility/complexNode';
@@ -251,10 +251,10 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
 
         bookmarkData.type.existing = true;
 
-        modal.open({
+        const editModal = new Modal({
           heading: isValidString(bookmarkData.link.display.name.text) ? 'Edit ' + bookmarkData.link.display.name.text : 'Edit unnamed bookmark',
-          actionText: 'Save',
           content: bookmarkForm.form(bookmarkData),
+          successText: 'Save',
           width: 60,
           maxHeight: true,
           successAction: () => {
@@ -290,6 +290,8 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
           }
         });
 
+        editModal.open();
+
       }
     }),
     remove: new Button({
@@ -301,11 +303,11 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
       classList: ['bookmark-control-button', 'bookmark-control-remove'],
       func: () => {
 
-        modal.open({
+        const removeModal = new Modal({
           heading: isValidString(bookmarkData.link.display.name.text) ? 'Remove ' + bookmarkData.link.display.name.text : 'Remove unnamed bookmark',
-          size: 'small',
-          actionText: 'Remove',
           content: 'Are you sure you want to remove this Bookmark? This can not be undone.',
+          successText: 'Remove',
+          width: 'small',
           successAction: () => {
 
             bookmark.mod.item.remove(bookmarkData);
@@ -320,6 +322,8 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
 
           }
         });
+
+        removeModal.open();
 
       }
     })
@@ -337,7 +341,7 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
     };
   };
 
-  this.assembleElements = () => {
+  this.assemble = () => {
 
     if (bookmarkData.link.display.visual.show || bookmarkData.link.display.name.show) {
       if (bookmarkData.link.display.visual.show) {
@@ -432,7 +436,7 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
 
   this.tile = () => {
 
-    this.assembleElements();
+    this.assemble();
 
     this.makeStyle();
 

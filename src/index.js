@@ -10,6 +10,4 @@ component.bookmark.init();
 component.theme.init();
 component.toolbar.init();
 component.menu.init();
-component.modal.init();
-component.autoSuggest.init();
 component.keyboard.init();

@@ -1,7 +1,6 @@
 import { state } from '../state';
 import { data } from '../data';
 import { layout } from '../layout';
-import { modal } from '../modal';
 import { group } from '../group';
 import { bookmarkForm } from '../bookmarkForm';
 import { bookmarkDefault } from '../bookmarkDefault';
@@ -11,6 +10,7 @@ import { Tile } from '../tile';
 import { GroupEmpty } from '../groupEmpty';
 import { StagedBookmark } from '../stagedBookmark';
 import { StagedGroup } from '../stagedGroup';
+import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
 
@@ -313,11 +313,10 @@ bookmark.render.add = function() {
 
   newBookmarkData.position.destination.item = bookmark.all[0].items.length;
 
-  modal.open({
+  const addModal = new Modal({
     heading: 'Add a new Bookmark',
-    size: 'small',
-    actionText: 'Add',
     content: bookmarkForm.form(newBookmarkData),
+    successText: 'Add',
     width: 60,
     maxHeight: true,
     successAction: () => {
@@ -336,6 +335,7 @@ bookmark.render.add = function() {
           newBookmarkData.position.destination.group = bookmark.all.length - 1;
 
           break;
+
       };
 
       bookmark.mod.item.add(newBookmarkData);
@@ -351,6 +351,7 @@ bookmark.render.add = function() {
       bookmark.add.close();
 
       data.save();
+
     },
     dismissAction: () => {
 
@@ -360,6 +361,9 @@ bookmark.render.add = function() {
 
     }
   });
+
+  addModal.open();
+
 };
 
 bookmark.restore = function(dataToRestore) {

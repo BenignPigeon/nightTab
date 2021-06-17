@@ -318,7 +318,7 @@
   color: hsl(var(--theme-primary-text-140));
 }
 
-.theme-background {
+.background {
   position: fixed;
   top: 0;
   left: 0;

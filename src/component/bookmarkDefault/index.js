@@ -6,7 +6,7 @@ export const bookmarkDefault = {
     order: 'visual-name',
     rotate: 0,
     translate: { x: 0, y: 0 },
-    gutter: 75,
+    gutter: 25,
     name: { show: true, text: '', size: 7 },
     visual: { show: true, type: 'letter', size: 25, letter: { text: '' }, icon: { name: '', prefix: '', label: '' }, image: { url: '' } }
   },

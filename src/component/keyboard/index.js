@@ -1,31 +1,37 @@
 import { state } from '../state';
 import { data } from '../data';
-
 import { menu } from '../menu';
-import { modal } from '../modal';
 import { bookmark } from '../bookmark';
 import { group } from '../group';
 import { theme } from '../theme';
-import { autoSuggest } from '../autoSuggest';
 import { toolbar } from '../toolbar';
 
 import { menuContentTheme } from '../menu/content/theme';
 
-const KeyPress = function({ keycode = false, ctrl = false, alt = false, action = false } = {}) {
+const KeyPress = function({
+  keycode = false,
+  ctrl = false,
+  alt = false,
+  action = false
+} = {}) {
+
   this.bind = () => {
     if (keycode) {
 
-      window.addEventListener('keydown', function(event) {
+      window.addEventListener('keydown', (event) => {
+
         if ((event.keyCode == keycode) && (ctrl == event.ctrlKey) && (alt == event.altKey)) {
           event.preventDefault();
           if (action) {
             action();
           };
         };
+
       });
 
     };
   };
+
 };
 
 const keyboard = {};
@@ -35,14 +41,6 @@ keyboard.esc = new KeyPress({
   action: () => {
     if (state.get.current().menu) {
       menu.close();
-    } else if (state.get.current().autoSuggest) {
-      autoSuggest.close();
-    } else if (state.get.current().bookmark.add) {
-      modal.close();
-    } else if (state.get.current().group.add) {
-      modal.close();
-    } else if (state.get.current().modal) {
-      modal.close();
     } else if (state.get.current().bookmark.edit || state.get.current().group.edit) {
       bookmark.edit.close();
       group.edit.close();
@@ -114,12 +112,6 @@ keyboard.ctrAltM = new KeyPress({
   ctrl: true,
   alt: true,
   action: () => {
-    if (state.get.current().group.add) {
-      modal.close();
-    };
-    if (state.get.current().bookmark.add) {
-      modal.close();
-    };
     menu.toggle();
   }
 });

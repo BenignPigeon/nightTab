@@ -170,7 +170,7 @@ menu.mod.area = {
     name: 'Theme',
     active: false,
     overscroll: true,
-    subNav: [{ id: 'style', name: 'Style' }, { id: 'color', name: 'Color' }, { id: 'accent', name: 'Accent' }, { id: 'background', name: 'Background' }]
+    subNav: [{ id: 'style', name: 'Style' }, { id: 'color', name: 'Color' }, { id: 'accent', name: 'Accent' }, { id: 'font', name: 'Font' }, { id: 'radius', name: 'Radius' }, { id: 'shadow', name: 'Shadow' }, { id: 'shade', name: 'Shade' }, { id: 'background', name: 'Background' }]
   }, {
     id: 'data',
     name: 'Data',
@@ -218,15 +218,15 @@ menu.bind.close = {
 
 menu.render = {};
 
-menu.render.class = () => {
-  const html = document.querySelector('html');
-
-  if (state.get.current().menu) {
-    html.classList.add('is-menu-open');
-  } else {
-    html.classList.remove('is-menu-open');
-  };
-};
+// menu.render.class = () => {
+//   const html = document.querySelector('html');
+//
+//   if (state.get.current().menu) {
+//     html.classList.add('is-menu-open');
+//   } else {
+//     html.classList.remove('is-menu-open');
+//   };
+// };
 
 menu.render.frame = {
   open: function() {
@@ -357,6 +357,10 @@ menu.render.component = {
       currentContentArea.appendChild(menuContentTheme.style());
       currentContentArea.appendChild(menuContentTheme.color());
       currentContentArea.appendChild(menuContentTheme.accent());
+      currentContentArea.appendChild(menuContentTheme.font());
+      currentContentArea.appendChild(menuContentTheme.radius());
+      currentContentArea.appendChild(menuContentTheme.shadow());
+      currentContentArea.appendChild(menuContentTheme.shade());
       currentContentArea.appendChild(menuContentTheme.background());
     },
     data: function(currentContentArea) {
@@ -376,7 +380,7 @@ menu.render.component = {
 menu.open = function() {
   menu.mod.open();
   menu.render.frame.open();
-  menu.render.class();
+  // menu.render.class();
   menu.bind.close.add();
   pageLock.render();
 };
@@ -384,7 +388,7 @@ menu.open = function() {
 menu.close = function() {
   menu.mod.close();
   menu.render.frame.close();
-  menu.render.class();
+  // menu.render.class();
   menu.bind.close.remove();
   pageLock.render();
 };

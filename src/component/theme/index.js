@@ -9,7 +9,13 @@ import { trimString } from '../../utility/trimString';
 import { isValidString } from '../../utility/isValidString';
 import { clearChildNode } from '../../utility/clearChildNode';
 
+import WebFont from 'webfontloader';
+
 import './index.css';
+
+let timerFontDisplay = null;
+
+let timerFontUi = null;
 
 const theme = {};
 
@@ -51,6 +57,134 @@ theme.mod.style = {
 };
 
 theme.render = {};
+
+theme.render.font = {};
+
+theme.render.font.load = {
+  display: function() {
+
+    const displayFont = trimString(state.get.current().theme.font.display.name);
+
+    if (isValidString(displayFont)) {
+
+      WebFont.load({
+        // fontloading: function(familyName, fvd) {
+        //   console.log('fontloading:', familyName);
+        // },
+        google: {
+          families: [trimString(displayFont) + ':100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i'],
+        }
+      });
+
+    };
+
+    theme.render.font.display.name();
+
+  },
+  ui: function() {
+
+    const uiFont = trimString(state.get.current().theme.font.ui.name);
+
+    if (isValidString(uiFont)) {
+
+      WebFont.load({
+        // fontloading: function(familyName, fvd) {
+        //   console.log('fontloading:', familyName);
+        // },
+        google: {
+          families: [trimString(uiFont) + ':100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i'],
+        }
+      });
+
+    };
+
+    theme.render.font.ui.name();
+
+  }
+};
+
+theme.render.font.delay = {
+  display: function() {
+
+    clearTimeout(timerFontDisplay);
+
+    timerFontDisplay = setTimeout(theme.render.font.load.display, 600);
+
+  },
+  ui: function() {
+
+    clearTimeout(timerFontUi);
+
+    timerFontUi = setTimeout(theme.render.font.load.ui, 600);
+
+  }
+};
+
+theme.render.font.display = {
+  name: function() {
+    const html = document.querySelector('html');
+
+    if (isValidString(state.get.current().theme.font.display.name)) {
+
+      html.style.setProperty('--theme-font-display-name', '"' + trimString(state.get.current().theme.font.display.name) + '", "Fjalla One", sans-serif');
+
+    } else {
+
+      html.style.removeProperty('--theme-font-display-name');
+
+    };
+
+  },
+  weight: function() {
+
+    const html = document.querySelector('html');
+
+    html.style.setProperty('--theme-font-display-weight', state.get.current().theme.font.display.weight);
+
+  },
+  style: function() {
+
+    const html = document.querySelector('html');
+
+    html.style.removeProperty('--theme-font-display-style');
+
+    html.style.setProperty('--theme-font-display-style', state.get.current().theme.font.display.style);
+
+  }
+};
+
+theme.render.font.ui = {
+  name: function() {
+    const html = document.querySelector('html');
+
+    if (isValidString(state.get.current().theme.font.ui.name)) {
+
+      html.style.setProperty('--theme-font-ui-name', '"' + trimString(state.get.current().theme.font.ui.name) + '", "Open Sans", sans-serif');
+
+    } else {
+
+      html.style.removeProperty('--theme-font-ui-name');
+
+    };
+
+  },
+  weight: function() {
+
+    const html = document.querySelector('html');
+
+    html.style.setProperty('--theme-font-ui-weight', state.get.current().theme.font.ui.weight);
+
+  },
+  style: function() {
+
+    const html = document.querySelector('html');
+
+    html.style.removeProperty('--theme-font-ui-style');
+
+    html.style.setProperty('--theme-font-ui-style', state.get.current().theme.font.ui.style);
+
+  }
+};
 
 theme.render.color = function() {
   const html = document.querySelector('html');
@@ -111,6 +245,13 @@ theme.render.shadow = function() {
   html.style.setProperty('--theme-shadow', state.get.current().theme.shadow);
 };
 
+theme.render.shade = {
+  opacity: function() {
+    const html = document.querySelector('html');
+    html.style.setProperty("--theme-shade-opacity", state.get.current().theme.shade.opacity);
+  }
+};
+
 theme.style = {
   dark: function() {
     theme.mod.style.dark();
@@ -136,7 +277,7 @@ theme.render.background = {};
 theme.render.background.choices = ['theme', 'accent', 'color', 'gradient', 'image', 'video'];
 
 theme.render.background.area = function() {
-  const backgroundElement = node('div|class:theme-background');
+  const backgroundElement = node('div|class:background');
 
   theme.render.background.choices.forEach((item, i) => {
     backgroundElement.appendChild(node('div|class:theme-background-type theme-background-type-' + item));
@@ -241,6 +382,15 @@ theme.init = function() {
   theme.render.class();
   theme.render.radius();
   theme.render.shadow();
+  theme.render.shade.opacity();
+  theme.render.font.load.display();
+  theme.render.font.load.ui();
+  theme.render.font.display.name();
+  theme.render.font.display.weight();
+  theme.render.font.display.style();
+  theme.render.font.ui.name();
+  theme.render.font.ui.weight();
+  theme.render.font.ui.style();
   theme.render.background.area();
   theme.render.background.type();
   theme.render.background.color();

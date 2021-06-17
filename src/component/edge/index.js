@@ -28,7 +28,7 @@ const Edge = function({ element } = {}) {
     }
   };
 
-  this.assembleElements = () => {
+  this.assemble = () => {
 
     this.edge = node('div|class:edge is-transparent');
 
@@ -104,7 +104,7 @@ const Edge = function({ element } = {}) {
     };
   };
 
-  this.assembleElements();
+  this.assemble();
 
 };
 
