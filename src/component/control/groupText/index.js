@@ -14,7 +14,10 @@ import { convertColor } from '../../../utility/convertColor';
 import { isValidString } from '../../../utility/isValidString';
 import { clearChildNode } from '../../../utility/clearChildNode';
 
-export const Control_groupText = function({ text = false, classList = [] } = {}) {
+export const Control_groupText = function({
+  text = false,
+  classList = []
+} = {}) {
 
   this.groupText = form.groupText({
     text: text,

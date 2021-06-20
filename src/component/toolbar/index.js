@@ -218,7 +218,7 @@ toolbar.bar.render = function() {
 
     case 'transparent':
       addDropdownOptions.buttonStyle = ['link'];
-      editOptions.style = ['link'];
+      editOptions.style = ['link', 'line'];
       settingsMenuOptions.style = ['link'];
       accentOptions.inputButtonStyle.push('link');
       break;

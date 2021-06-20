@@ -15,7 +15,9 @@ import { isValidString } from '../../utility/isValidString';
 import { trimString } from '../../utility/trimString';
 import { clearChildNode } from '../../utility/clearChildNode';
 
-const GroupArea = function({ groupData = {} } = {}) {
+const GroupArea = function({
+  groupData = {}
+} = {}) {
 
   this.element = {
     group: node('div|class:group'),
@@ -166,6 +168,28 @@ const GroupArea = function({ groupData = {} } = {}) {
     })
   };
 
+  this.openAll = new Button({
+    text: 'Open all',
+    style: ['line'],
+    title: 'Open all Bookmarks in this Group',
+    classList: ['group-control-button', 'group-control-up'],
+    func: () => {
+      console.log('hit');
+    }
+  });
+
+  this.style = () => {
+
+    if (groupData.group.name.show) {
+      this.element.group.classList.add('is-group-header');
+    };
+
+    if (groupData.group.openAll.show) {
+      this.element.group.classList.add('is-group-open-all');
+    };
+
+  };
+
   this.control.disable = () => {
     for (var key in this.control.button) {
       this.control.button[key].disable();
@@ -196,8 +220,12 @@ const GroupArea = function({ groupData = {} } = {}) {
 
     this.element.control.control.appendChild(this.element.control.group);
 
-    if (groupData.group.name.show) {
+    if (groupData.group.name.show && isValidString(groupData.group.name.text)) {
       this.element.header.appendChild(this.element.name.name);
+    };
+
+    if (groupData.group.openAll.show) {
+      this.element.header.appendChild(this.openAll.button);
     };
 
     this.element.header.appendChild(this.element.control.control);
@@ -217,6 +245,8 @@ const GroupArea = function({ groupData = {} } = {}) {
   };
 
   this.group = () => {
+
+    this.style();
 
     this.assemble();
 

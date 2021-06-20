@@ -8,7 +8,14 @@ import { node } from '../../utility/node';
 
 import './index.css';
 
-const Dropdown = function({ text = 'Dropdown', menuItem = [], buttonStyle = [], buttonClassList = [], srOnly = false, iconName = false } = {}) {
+const Dropdown = function({
+  text = 'Dropdown',
+  menuItem = [],
+  buttonStyle = [],
+  buttonClassList = [],
+  srOnly = false,
+  iconName = false
+} = {}) {
 
   this.state = {
     open: false

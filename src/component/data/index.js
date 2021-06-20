@@ -38,7 +38,7 @@ data.validateJsonFile = function(fileList, input, feedback) {
     // is this a JSON file
     if (isJson(event.target.result)) {
       // is this JSON from this app
-      if (JSON.parse(event.target.result)[data.saveName]) {
+      if (JSON.parse(event.target.result)[data.saveName.toLowerCase()]) {
         data.render.feedback.clear(feedback);
         data.render.feedback.success(feedback, fileList[0].name, function() {
           data.restore(JSON.parse(event.target.result));

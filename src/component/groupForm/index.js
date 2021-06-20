@@ -48,7 +48,10 @@ groupForm.form = function(groupData) {
     object: groupData.group,
     path: 'name.show',
     id: 'name-show',
-    labelText: 'Show Group name'
+    labelText: 'Show Group name',
+    action: () => {
+      groupFormElement.disable();
+    }
   });
 
   const groupNameText = new Control_text({
@@ -183,6 +186,18 @@ groupForm.form = function(groupData) {
       ]
     })
   ]));
+
+  groupFormElement.disable = () => {
+
+    if (groupData.group.name.show) {
+      groupNameText.enable();
+      groupNameRandom.enable();
+    } else {
+      groupNameText.disable();
+      groupNameRandom.disable();
+    };
+
+  };
 
   return groupFormElement;
 

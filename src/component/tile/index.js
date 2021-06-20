@@ -14,7 +14,10 @@ import { complexNode } from '../../utility/complexNode';
 import { isValidString } from '../../utility/isValidString';
 import { trimString } from '../../utility/trimString';
 
-const Tile = function({ bookmarkData = {}, preview = false } = {}) {
+const Tile = function({
+  bookmarkData = {},
+  preview = false
+} = {}) {
 
   this.element = {
     bookmark: node('div|class:bookmark'),
@@ -27,7 +30,7 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
         display: node('div|class:bookmark-display'),
         visual: {
           visual: node('div|class:bookmark-display-visual'),
-          letter: node('div:' + bookmarkData.link.display.visual.letter.text + '|class:bookmark-display-visual-letter'),
+          letter: complexNode({ tag: 'div', text: bookmarkData.link.display.visual.letter.text, attr: [{ key: 'class', value: 'bookmark-display-visual-letter' }] }),
           icon: node('div|class:bookmark-display-visual-icon'),
           faIcon: node('div|class:' + bookmarkData.link.display.visual.icon.prefix + ' fa-' + bookmarkData.link.display.visual.icon.name),
           image: node('div|class:bookmark-display-visual-image')
@@ -51,129 +54,6 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
   };
 
   if (preview) { this.element.bookmark.classList.add('bookmark-preview'); };
-
-  this.makeStyle = (newBookmarkData) => {
-
-    if (newBookmarkData) {
-      bookmarkData = newBookmarkData;
-    };
-
-    if (isValidString(bookmarkData.link.url) && !preview) {
-      this.element.content.link.setAttribute('href', trimString(bookmarkData.link.url));
-    } else {
-      this.element.content.link.setAttribute('href', '#');
-    };
-
-    if (state.get.current().bookmark.newTab && !preview) {
-      this.element.content.link.setAttribute('target', '_blank');
-    };
-
-    this.element.bookmark.style.setProperty('--bookmark-transition-delay', bookmarkData.position.origin.item);
-
-    this.element.bookmark.style.setProperty('--bookmark-color-opacity', bookmarkData.link.color.opacity);
-
-    this.element.bookmark.style.setProperty('--bookmark-color-opacity', bookmarkData.link.color.opacity);
-
-    if (bookmarkData.link.color.opacity < 100) {
-      this.element.bookmark.style.setProperty('--bookmark-clip-padding', 0);
-    };
-
-    if (preview) {
-      const alignment = ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'];
-
-      alignment.forEach((item, i) => {
-        this.element.bookmark.classList.remove("is-bookmark-alignment-" + item);
-      });
-      const order = ['visual-name', 'name-visual'];
-
-      order.forEach((item, i) => {
-        this.element.bookmark.classList.remove("is-bookmark-order-" + item);
-      });
-      const direction = ['vertical', 'horizontal'];
-
-      direction.forEach((item, i) => {
-        this.element.bookmark.classList.remove("is-bookmark-direction-" + item);
-      });
-    };
-
-    this.element.bookmark.classList.add("is-bookmark-alignment-" + bookmarkData.link.display.alignment);
-
-    this.element.bookmark.classList.add("is-bookmark-order-" + bookmarkData.link.display.order);
-
-    this.element.bookmark.classList.add("is-bookmark-direction-" + bookmarkData.link.display.direction);
-
-    this.element.bookmark.style.setProperty('--bookmark-display-translate-x', bookmarkData.link.display.translate.x);
-
-    this.element.bookmark.style.setProperty('--bookmark-display-translate-y', bookmarkData.link.display.translate.y);
-
-    this.element.bookmark.style.setProperty('--bookmark-display-rotate', bookmarkData.link.display.rotate);
-
-    this.element.bookmark.style.setProperty('--bookmark-display-gutter', bookmarkData.link.display.gutter);
-
-    this.element.bookmark.style.setProperty('--bookmark-display-visual-size', bookmarkData.link.display.visual.size);
-
-    this.element.bookmark.style.setProperty('--bookmark-display-visual-image-url', 'url(' + trimString(bookmarkData.link.display.visual.image.url) + ')');
-
-    this.element.bookmark.style.setProperty('--bookmark-display-name-size', bookmarkData.link.display.name.size);
-
-    this.element.bookmark.style.setProperty('--bookmark-border', bookmarkData.link.border);
-
-    if (bookmarkData.link.accent.by == 'custom') {
-      this.element.bookmark.style.setProperty('--theme-accent-r', bookmarkData.link.accent.rgb.r);
-      this.element.bookmark.style.setProperty('--theme-accent-g', bookmarkData.link.accent.rgb.g);
-      this.element.bookmark.style.setProperty('--theme-accent-b', bookmarkData.link.accent.rgb.b);
-      this.element.bookmark.style.setProperty('--theme-accent', 'var(--theme-accent-r), var(--theme-accent-g), var(--theme-accent-b)');
-
-      this.element.bookmark.style.setProperty('--theme-accent-text', '0, 0%, calc(((((var(--theme-accent-r) * var(--theme-t-r)) + (var(--theme-accent-g) * var(--theme-t-g)) + (var(--theme-accent-b) * var(--theme-t-b))) / 255) - var(--theme-t)) * -10000000%)');
-
-      this.element.bookmark.style.setProperty('--bookmark-display-visual-color', 'var(--theme-accent)');
-      this.element.bookmark.style.setProperty('--bookmark-display-visual-color-focus-hover', 'var(--theme-accent)');
-    };
-
-    if (bookmarkData.link.color.by == 'custom') {
-      this.element.bookmark.style.setProperty('--theme-color-r', bookmarkData.link.color.rgb.r);
-      this.element.bookmark.style.setProperty('--theme-color-g', bookmarkData.link.color.rgb.g);
-      this.element.bookmark.style.setProperty('--theme-color-b', bookmarkData.link.color.rgb.b);
-
-      this.element.bookmark.style.setProperty('--theme-color-h', bookmarkData.link.color.hsl.h);
-      this.element.bookmark.style.setProperty('--theme-color-s', bookmarkData.link.color.hsl.s);
-      this.element.bookmark.style.setProperty('--theme-color-l', bookmarkData.link.color.hsl.l);
-
-      this.element.bookmark.style.setProperty('--theme-color', bookmarkData.link.color.hsl.h + ', ' + bookmarkData.link.color.hsl.s + '%, ' + bookmarkData.link.color.hsl.l + '%');
-      this.element.bookmark.style.setProperty('--theme-color-text', '0, 0%, calc(((((var(--theme-color-r) * var(--theme-t-r)) + (var(--theme-color-g) * var(--theme-t-g)) + (var(--theme-color-b) * var(--theme-t-b))) / 255) - var(--theme-t)) * -10000000%)');
-
-      this.element.bookmark.style.setProperty('--bookmark-color', 'var(--theme-color)');
-      this.element.bookmark.style.setProperty('--bookmark-color-focus-hover', 'var(--theme-color)');
-
-      this.element.bookmark.style.setProperty('--bookmark-display-name-color', 'var(--theme-color-text)');
-      this.element.bookmark.style.setProperty('--bookmark-display-name-color-focus-hover', 'var(--theme-color-text)');
-
-      this.element.bookmark.style.setProperty('--button-link-text', 'var(--theme-color-text)');
-      this.element.bookmark.style.setProperty('--button-link-text-focus-hover', 'var(--theme-color-text)');
-      this.element.bookmark.style.setProperty('--button-link-text-active', 'var(--theme-color-text)');
-    };
-
-    if (bookmarkData.link.background.show) {
-      this.element.bookmark.style.setProperty('--bookmark-background-opacity', bookmarkData.link.background.opacity);
-
-      switch (bookmarkData.link.background.type) {
-        case 'image':
-          if (isValidString(bookmarkData.link.background.image.url)) {
-            this.element.bookmark.style.setProperty('--bookmark-background-image-url', 'url(' + trimString(bookmarkData.link.background.image.url) + ')');
-          };
-          break;
-      };
-    };
-
-    if (bookmarkData.link.shape.tall) {
-      this.element.bookmark.classList.add('bookmark-tall');
-    };
-
-    if (bookmarkData.link.shape.wide) {
-      this.element.bookmark.classList.add('bookmark-wide');
-    };
-
-  };
 
   this.control = {};
 
@@ -341,6 +221,131 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
     };
   };
 
+  this.style = (newBookmarkData) => {
+
+    if (newBookmarkData) {
+      bookmarkData = newBookmarkData;
+    };
+
+    if (isValidString(bookmarkData.link.url) && !preview) {
+      this.element.content.link.setAttribute('href', trimString(bookmarkData.link.url));
+    } else {
+      this.element.content.link.setAttribute('href', '#');
+    };
+
+    if (state.get.current().bookmark.newTab && !preview) {
+      this.element.content.link.setAttribute('target', '_blank');
+    };
+
+    if (!preview) {
+      this.element.bookmark.style.setProperty('--bookmark-transition-delay', bookmarkData.position.origin.item);
+    };
+
+    this.element.bookmark.style.setProperty('--bookmark-color-opacity', bookmarkData.link.color.opacity);
+
+    this.element.bookmark.style.setProperty('--bookmark-color-opacity', bookmarkData.link.color.opacity);
+
+    if (bookmarkData.link.color.opacity < 100) {
+      this.element.bookmark.style.setProperty('--bookmark-clip-padding', 0);
+    };
+
+    if (preview) {
+      const alignment = ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'];
+
+      alignment.forEach((item, i) => {
+        this.element.bookmark.classList.remove('is-bookmark-alignment-' + item);
+      });
+      const order = ['visual-name', 'name-visual'];
+
+      order.forEach((item, i) => {
+        this.element.bookmark.classList.remove('is-bookmark-order-' + item);
+      });
+      const direction = ['vertical', 'horizontal'];
+
+      direction.forEach((item, i) => {
+        this.element.bookmark.classList.remove('is-bookmark-direction-' + item);
+      });
+    };
+
+    this.element.bookmark.classList.add('is-bookmark-alignment-' + bookmarkData.link.display.alignment);
+
+    this.element.bookmark.classList.add('is-bookmark-order-' + bookmarkData.link.display.order);
+
+    this.element.bookmark.classList.add('is-bookmark-direction-' + bookmarkData.link.display.direction);
+
+    this.element.bookmark.style.setProperty('--bookmark-display-translate-x', bookmarkData.link.display.translate.x);
+
+    this.element.bookmark.style.setProperty('--bookmark-display-translate-y', bookmarkData.link.display.translate.y);
+
+    this.element.bookmark.style.setProperty('--bookmark-display-rotate', bookmarkData.link.display.rotate);
+
+    this.element.bookmark.style.setProperty('--bookmark-display-gutter', bookmarkData.link.display.gutter);
+
+    this.element.bookmark.style.setProperty('--bookmark-display-visual-size', bookmarkData.link.display.visual.size);
+
+    this.element.bookmark.style.setProperty('--bookmark-display-visual-image-url', 'url(' + trimString(bookmarkData.link.display.visual.image.url) + ')');
+
+    this.element.bookmark.style.setProperty('--bookmark-display-name-size', bookmarkData.link.display.name.size);
+
+    this.element.bookmark.style.setProperty('--bookmark-border', bookmarkData.link.border);
+
+    if (bookmarkData.link.accent.by == 'custom') {
+      this.element.bookmark.style.setProperty('--theme-accent-r', bookmarkData.link.accent.rgb.r);
+      this.element.bookmark.style.setProperty('--theme-accent-g', bookmarkData.link.accent.rgb.g);
+      this.element.bookmark.style.setProperty('--theme-accent-b', bookmarkData.link.accent.rgb.b);
+      this.element.bookmark.style.setProperty('--theme-accent', 'var(--theme-accent-r), var(--theme-accent-g), var(--theme-accent-b)');
+
+      this.element.bookmark.style.setProperty('--theme-accent-text', '0, 0%, calc(((((var(--theme-accent-r) * var(--theme-t-r)) + (var(--theme-accent-g) * var(--theme-t-g)) + (var(--theme-accent-b) * var(--theme-t-b))) / 255) - var(--theme-t)) * -10000000%)');
+
+      this.element.bookmark.style.setProperty('--bookmark-display-visual-color', 'var(--theme-accent)');
+      this.element.bookmark.style.setProperty('--bookmark-display-visual-color-focus-hover', 'var(--theme-accent)');
+    };
+
+    if (bookmarkData.link.color.by == 'custom') {
+      this.element.bookmark.style.setProperty('--theme-color-r', bookmarkData.link.color.rgb.r);
+      this.element.bookmark.style.setProperty('--theme-color-g', bookmarkData.link.color.rgb.g);
+      this.element.bookmark.style.setProperty('--theme-color-b', bookmarkData.link.color.rgb.b);
+
+      this.element.bookmark.style.setProperty('--theme-color-h', bookmarkData.link.color.hsl.h);
+      this.element.bookmark.style.setProperty('--theme-color-s', bookmarkData.link.color.hsl.s);
+      this.element.bookmark.style.setProperty('--theme-color-l', bookmarkData.link.color.hsl.l);
+
+      this.element.bookmark.style.setProperty('--theme-color', bookmarkData.link.color.hsl.h + ', ' + bookmarkData.link.color.hsl.s + '%, ' + bookmarkData.link.color.hsl.l + '%');
+      this.element.bookmark.style.setProperty('--theme-color-text', '0, 0%, calc(((((var(--theme-color-r) * var(--theme-t-r)) + (var(--theme-color-g) * var(--theme-t-g)) + (var(--theme-color-b) * var(--theme-t-b))) / 255) - var(--theme-t)) * -10000000%)');
+
+      this.element.bookmark.style.setProperty('--bookmark-color', 'var(--theme-color)');
+      this.element.bookmark.style.setProperty('--bookmark-color-focus-hover', 'var(--theme-color)');
+
+      this.element.bookmark.style.setProperty('--bookmark-display-name-color', 'var(--theme-color-text)');
+      this.element.bookmark.style.setProperty('--bookmark-display-name-color-focus-hover', 'var(--theme-color-text)');
+
+      this.element.bookmark.style.setProperty('--button-link-text', 'var(--theme-color-text)');
+      this.element.bookmark.style.setProperty('--button-link-text-focus-hover', 'var(--theme-color-text)');
+      this.element.bookmark.style.setProperty('--button-link-text-active', 'var(--theme-color-text)');
+    };
+
+    if (bookmarkData.link.background.show) {
+      this.element.bookmark.style.setProperty('--bookmark-background-opacity', bookmarkData.link.background.opacity);
+
+      switch (bookmarkData.link.background.type) {
+        case 'image':
+          if (isValidString(bookmarkData.link.background.image.url)) {
+            this.element.bookmark.style.setProperty('--bookmark-background-image-url', 'url(' + trimString(bookmarkData.link.background.image.url) + ')');
+          };
+          break;
+      };
+    };
+
+    if (bookmarkData.link.shape.tall) {
+      this.element.bookmark.classList.add('bookmark-tall');
+    };
+
+    if (bookmarkData.link.shape.wide) {
+      this.element.bookmark.classList.add('bookmark-wide');
+    };
+
+  };
+
   this.assemble = () => {
 
     if (bookmarkData.link.display.visual.show || bookmarkData.link.display.name.show) {
@@ -436,25 +441,26 @@ const Tile = function({ bookmarkData = {}, preview = false } = {}) {
 
   this.tile = () => {
 
-    this.assemble();
-
-    this.makeStyle();
-
-    if (state.get.current().bookmark.edit) {
-      this.control.enable();
-    } else {
-      this.control.disable();
-    };
-
     return this.element.bookmark;
 
   };
 
   this.update = (newBookmarkData) => {
 
-    this.makeStyle(newBookmarkData);
+    this.style(newBookmarkData);
 
   };
+
+  if (state.get.current().bookmark.edit) {
+    this.control.enable();
+  } else {
+    this.control.disable();
+  };
+
+  this.assemble();
+
+  this.style();
+
 };
 
 export { Tile };

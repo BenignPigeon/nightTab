@@ -10,3 +10,7 @@
   transition: background-color var(--layout-transition-extra-fast), opacity var(--layout-transition-extra-fast);
   pointer-events: none;
 }
+
+.is-edge .shade {
+  background-color: rgba(var(--theme-accent), calc(var(--theme-shade-opacity) / 500));
+}

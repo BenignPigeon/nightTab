@@ -196,12 +196,12 @@ bookmarkForm.form = function(bookmarkData) {
 
   const displayNameShowPropagate = new Control_checkbox({
     object: bookmark.mod.propagate.state.current,
-    path: 'name',
-    id: 'apply-to-all-name',
-    labelText: 'Apply Show Name to other Bookmarks',
+    path: 'display',
+    id: 'apply-to-all-display',
+    labelText: 'Apply Show Visual Element and Name to other Bookmarks',
     description: [
-      'When saved, apply the above Name visibility to all other Bookmarks.',
-      'Only the Show Name will be applied to all.'
+      'When saved, apply the above visibility to all other Bookmarks.',
+      'Only the Show Visual Element and Name will be applied to all.'
     ]
   });
 
@@ -666,8 +666,8 @@ bookmarkForm.form = function(bookmarkData) {
     children: [
       form.wrap({
         children: [
-          node('h2:Visual element|class:mb-2'),
-          node('p:Display Letters, Icon or an Image on this Bookmark tile.|class:mb-5')
+          node('h2:Visual & Name|class:mb-2'),
+          node('p:Display Letters, Icon, Image and a Name on this Bookmark tile.|class:mb-5')
         ]
       }),
       form.wrap({
@@ -726,26 +726,6 @@ bookmarkForm.form = function(bookmarkData) {
                 ]
               }),
               node('hr'),
-              displayVisualShowPropagate.wrap(),
-            ]
-          })
-        ]
-      })
-    ]
-  });
-
-  const displayNameArea = form.fieldset({
-    children: [
-      form.wrap({
-        children: [
-          node('h2:Name|class:mb-2'),
-          node('p:Display a Name on this Bookmark tile.|class:mb-5')
-        ]
-      }),
-      form.wrap({
-        children: [
-          form.indent({
-            children: [
               displayNameShow.wrap(),
               form.wrap({
                 children: [
@@ -753,7 +733,7 @@ bookmarkForm.form = function(bookmarkData) {
                     children: [
                       displayNameText.wrap()
                     ]
-                  }),
+                  })
                 ]
               }),
               node('hr'),
@@ -961,13 +941,9 @@ bookmarkForm.form = function(bookmarkData) {
 
   const formTab = new Tab({
     group: [{
-      tabText: 'Visual',
+      tabText: 'Visual & Name',
       area: displayVisualArea,
       active: true
-    }, {
-      tabText: 'Name',
-      area: displayNameArea,
-      active: false
     }, {
       tabText: 'Address',
       area: displayAddressArea,

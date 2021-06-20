@@ -13,7 +13,17 @@ import { set } from '../../../utility/set';
 import { convertColor } from '../../../utility/convertColor';
 import { isValidString } from '../../../utility/isValidString';
 
-export const Control_color = function({ object = {}, path = false, id = 'name', labelText = 'Name', srOnly = false, value = 0, defaultValue = false, action = false, extraButtons = [] } = {}) {
+export const Control_color = function({
+  object = {},
+  path = false,
+  id = 'name',
+  labelText = 'Name',
+  srOnly = false,
+  value = 0,
+  defaultValue = false,
+  action = false,
+  extraButtons = []
+} = {}) {
 
   this.label = form.label({
     forInput: id,
@@ -87,7 +97,11 @@ export const Control_color = function({ object = {}, path = false, id = 'name', 
     }
   });
 
-  this.update = ({ delay = false, all = false } = {}) => {
+  this.update = ({
+    delay = false,
+    all = false
+  } = {}) => {
+
     let delayedUpdate = null;
     const updateControl = () => {
       this.color.value = convertColor.rgb.hex(get({
@@ -108,6 +122,7 @@ export const Control_color = function({ object = {}, path = false, id = 'name', 
     } else {
       updateControl();
     };
+
   };
 
   this.wrap = () => {

@@ -12,6 +12,7 @@ import { link } from '../../../link';
 
 import * as form from '../../../form';
 
+import { Edge } from '../../../edge';
 import { Button } from '../../../button';
 import { Collapse } from '../../../collapse';
 
@@ -83,6 +84,30 @@ menuContentBookmark.style = function() {
 
 menuContentBookmark.general = function() {
   const menuContentItem = node('div|id:menu-content-item-general,class:menu-content-item');
+
+  const bookmarkEdge = new Edge({ element: document.querySelector('.bookmark') });
+
+  const bookmarkSize = new Control_slider({
+    object: state.get.current(),
+    path: 'bookmark.size',
+    id: 'bookmark-size',
+    labelText: 'Bookmark size',
+    value: state.get.current().bookmark.size,
+    defaultValue: state.get.default().bookmark.size,
+    min: state.get.minMax().bookmark.size.min,
+    max: state.get.minMax().bookmark.size.max,
+    action: () => {
+      bookmark.render.style();
+      bookmarkEdge.updatePosition();
+      data.save();
+    },
+    mouseDownAction: () => {
+      bookmarkEdge.open();
+    },
+    mouseUpAction: () => {
+      bookmarkEdge.close();
+    }
+  });
 
   const bookmarkUrlShow = new Control_checkbox({
     object: state.get.current(),
@@ -163,6 +188,8 @@ menuContentBookmark.general = function() {
 
   menuContentItem.appendChild(
     menu.render.component.item.form([
+      bookmarkSize.wrap(),
+      node('hr'),
       bookmarkUrlShow.wrap(),
       bookmarkLineShow.wrap(),
       bookmarkShadowShow.wrap(),

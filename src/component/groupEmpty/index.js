@@ -8,11 +8,13 @@ import { node } from '../../utility/node';
 
 import './index.css';
 
-const GroupEmpty = function({ groupData = {}, position = 0 } = {}) {
+const GroupEmpty = function({
+  groupIndex = false
+} = {}) {
 
   this.element = {
     empty: node('div|class:group-empty'),
-    control: node('div|class:group-control'),
+    control: node('div|class:group-empty-control'),
     headline: node('p:Empty Group|class:group-empty-headline small muted')
   };
 
@@ -21,14 +23,14 @@ const GroupEmpty = function({ groupData = {}, position = 0 } = {}) {
   this.control.button = {
     remove: new Button({
       text: 'Add a Bookmark',
-      style: ['line'],
       size: 'small',
       func: () => {
-        bookmark.add.open();
+        bookmark.add.open({
+          groupIndex: groupIndex
+        });
       }
     })
   };
-
 
   this.assemble = () => {
 

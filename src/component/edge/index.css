@@ -27,3 +27,7 @@
     width var(--layout-duration-02),
     height var(--layout-duration-02); */
 }
+
+.is-theme-background-type-accent .edge {
+  box-shadow: var(--edge-on-accent);
+}

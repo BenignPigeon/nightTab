@@ -23,6 +23,8 @@ import { Suggest } from './suggest';
 import { Collapse } from './collapse';
 import { Tab } from './tab';
 import { Modal } from './modal';
+import { Shade } from './shade';
+import { MenuNav } from './menuNav';
 
 export const component = {
   base,
@@ -30,7 +32,6 @@ export const component = {
   data,
   version,
   fontawesome,
-  form,
   icon,
   keyboard,
   layout,
@@ -43,9 +44,12 @@ export const component = {
   update,
   bookmark,
   group,
+  form,
   Button,
   Suggest,
   Collapse,
   Tab,
-  Modal
+  Modal,
+  Shade,
+  MenuNav
 };

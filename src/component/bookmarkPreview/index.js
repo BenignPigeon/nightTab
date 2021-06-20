@@ -4,7 +4,9 @@ import { node } from '../../utility/node';
 
 import './index.css';
 
-const BookmarkPreview = function({ bookmarkData = false } = {}) {
+const BookmarkPreview = function({
+  bookmarkData = false
+} = {}) {
 
   this.area = node('div|class:bookmark-preview-area');
 
@@ -34,7 +36,7 @@ const BookmarkPreview = function({ bookmarkData = false } = {}) {
 
   };
 
-  this.tile = new Tile({
+  this.bookmarkTile = new Tile({
     bookmarkData: bookmarkData,
     preview: true
   });
@@ -44,7 +46,7 @@ const BookmarkPreview = function({ bookmarkData = false } = {}) {
   this.update.style = (newBookmarkData) => {
     bookmarkData = newBookmarkData;
 
-    this.tile.update();
+    this.bookmarkTile.update();
 
     this.shape();
   };
@@ -54,9 +56,9 @@ const BookmarkPreview = function({ bookmarkData = false } = {}) {
 
     this.area.removeChild(this.title);
 
-    this.grid.removeChild(this.tile.tile());
+    this.grid.removeChild(this.bookmarkTile.tile());
 
-    this.tile = new Tile({
+    this.bookmarkTile = new Tile({
       bookmarkData: bookmarkData,
       preview: true
     });
@@ -69,7 +71,7 @@ const BookmarkPreview = function({ bookmarkData = false } = {}) {
   this.assemble = () => {
     this.area.appendChild(this.title);
 
-    this.grid.appendChild(this.tile.tile());
+    this.grid.appendChild(this.bookmarkTile.tile());
 
     this.area.appendChild(this.grid);
 

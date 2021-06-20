@@ -3,7 +3,13 @@ import { trimString } from '../../../../utility/trimString';
 
 import './index.css';
 
-export const select = function({ id = false, classList = [], option = [], selected = 0, func = false } = {}) {
+export const select = function({
+  id = false,
+  classList = [],
+  option = [],
+  selected = 0,
+  func = false
+} = {}) {
 
   const select = node('select|tabindex:1');
 
@@ -36,7 +42,7 @@ export const select = function({ id = false, classList = [], option = [], select
           'option:' +
           item +
           '|value:' +
-          trimString(item).replace(/ /g, '-').toLowerCase()
+          trimString(item).replace(/\s+/g, '-').toLowerCase()
         )
       );
 

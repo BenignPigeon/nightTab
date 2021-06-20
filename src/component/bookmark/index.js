@@ -113,8 +113,7 @@ bookmark.mod.propagate = {};
 
 bookmark.mod.propagate.state = {
   current: {
-    visual: false,
-    name: false,
+    display: false,
     layout: false,
     theme: false
   },
@@ -129,6 +128,11 @@ bookmark.mod.propagate.state = {
 
       item.items.forEach((item, i) => {
 
+        if (bookmark.mod.propagate.state.current.display) {
+          item.display.visual.show = bookmarkData.link.display.visual.show;
+          item.display.name.show = bookmarkData.link.display.name.show;
+        };
+
         if (bookmark.mod.propagate.state.current.layout) {
           item.display.visual.size = bookmarkData.link.display.visual.size;
           item.display.name.size = bookmarkData.link.display.name.size;
@@ -139,14 +143,6 @@ bookmark.mod.propagate.state = {
           item.display.direction = bookmarkData.link.display.direction;
           item.display.order = bookmarkData.link.display.order;
           item.border = bookmarkData.link.border;
-        };
-
-        if (bookmark.mod.propagate.state.current.visual) {
-          item.display.visual.show = bookmarkData.link.display.visual.show;
-        };
-
-        if (bookmark.mod.propagate.state.current.name) {
-          item.display.name.show = bookmarkData.link.display.name.show;
         };
 
         if (bookmark.mod.propagate.state.current.theme) {
@@ -226,25 +222,25 @@ bookmark.render.item = function() {
 
         currentBookmarkData.position.destination.item = itemIndex;
 
-        const tile = new Tile({ bookmarkData: currentBookmarkData });
+        const bookmarkTile = new Tile({ bookmarkData: currentBookmarkData });
 
-        tile.tile().groupIndex = groupIndex;
+        bookmarkTile.tile().groupIndex = groupIndex;
 
-        tile.tile().index = i;
+        bookmarkTile.tile().index = i;
 
-        targetGroupArea.appendChild(tile.tile());
+        targetGroupArea.appendChild(bookmarkTile.tile());
 
-        bookmark.tile.current.push(tile);
+        bookmark.tile.current.push(bookmarkTile);
 
       });
 
     } else {
 
-      const emptyGroup = new GroupEmpty({
-        position: groupIndex
+      const emptyGroupItem = new GroupEmpty({
+        groupIndex: groupIndex
       });
 
-      targetGroupArea.appendChild(emptyGroup.empty());
+      targetGroupArea.appendChild(emptyGroupItem.empty());
 
     };
 
@@ -254,6 +250,8 @@ bookmark.render.item = function() {
 
 bookmark.render.style = function() {
   const html = document.querySelector('html');
+
+  html.style.setProperty('--bookmark-size', state.get.current().bookmark.size);
 };
 
 bookmark.render.class = function() {
@@ -306,12 +304,21 @@ bookmark.render.class = function() {
   };
 };
 
-bookmark.render.add = function() {
+bookmark.render.add = function({
+  groupIndex = false
+} = {}) {
+
   const newBookmarkData = new StagedBookmark();
 
   newBookmarkData.type.new = true;
 
   newBookmarkData.position.destination.item = bookmark.all[0].items.length;
+
+  if (groupIndex || groupIndex === 0) {
+    newBookmarkData.position.destination.group = groupIndex;
+
+    newBookmarkData.position.destination.item = bookmark.all[groupIndex].items.length;
+  };
 
   const addModal = new Modal({
     heading: 'Add a new Bookmark',
@@ -372,9 +379,15 @@ bookmark.restore = function(dataToRestore) {
 };
 
 bookmark.add = {
-  open: function() {
+  open: function({
+    groupIndex = false
+  } = {}) {
+
     bookmark.mod.add.open();
-    bookmark.render.add();
+    bookmark.render.add({
+      groupIndex: groupIndex
+    });
+
   },
   close: function() {
     bookmark.mod.add.close();

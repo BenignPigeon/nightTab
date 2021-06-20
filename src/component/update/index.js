@@ -1385,6 +1385,7 @@ update.all = {
     return data;
   },
   '7.0.0': function(data) {
+
     data.state.layout.padding = data.state.layout.padding * 10;
 
     data.state.layout.gutter = data.state.layout.gutter * 10;
@@ -1395,13 +1396,13 @@ update.all = {
 
     data.state.theme.background = data.state.background;
 
+    delete data.state.background;
+
     data.state.theme.background.gradient = {
       angle: 160,
       start: { hsl: { h: 191, s: 66, l: 62 }, rgb: { r: 94, g: 199, b: 222 } },
       end: { hsl: { h: 243, s: 59, l: 22 }, rgb: { r: 26, g: 23, b: 89 } }
     };
-
-    delete data.state.background;
 
     if (data.state.theme.background.visual.show) {
 
@@ -1506,6 +1507,7 @@ update.all = {
     data.state.bookmark.line = data.state.link.item.line;
     data.state.bookmark.shadow = data.state.link.item.shadow;
     data.state.bookmark.hoverScale = data.state.link.item.hoverScale;
+    data.state.bookmark.size = data.state.link.item.size * 100;
 
     delete data.state.link;
 

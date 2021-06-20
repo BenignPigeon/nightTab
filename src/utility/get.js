@@ -1,6 +1,9 @@
 import { makePath } from './makePath.js';
 
-export const get = function({ object = null, path = null } = {}) {
+export const get = function({
+  object = null,
+  path = null
+} = {}) {
   const address = makePath(path);
 
   const getValue = function() {
@@ -32,4 +35,5 @@ export const get = function({ object = null, path = null } = {}) {
   } else {
     return false;
   };
+
 };

@@ -14,7 +14,23 @@ import { convertColor } from '../../../utility/convertColor';
 import { isValidString } from '../../../utility/isValidString';
 import { minMax } from '../../../utility/minMax';
 
-export const Control_slider = function({ object = {}, path = false, id = 'name', labelText = 'Name', hue = false, value = 0, defaultValue = false, min = 0, max = 100, step = 1, action = false, focusAction = false, blurAction = false, mouseDownAction = false, mouseUpAction = false } = {}) {
+export const Control_slider = function({
+  object = {},
+  path = false,
+  id = 'name',
+  labelText = 'Name',
+  hue = false,
+  value = 0,
+  defaultValue = false,
+  min = 0,
+  max = 100,
+  step = 1,
+  action = false,
+  focusAction = false,
+  blurAction = false,
+  mouseDownAction = false,
+  mouseUpAction = false
+} = {}) {
 
   this.label = form.label({
     forInput: id,
@@ -98,7 +114,10 @@ export const Control_slider = function({ object = {}, path = false, id = 'name',
     }
   });
 
-  this.update = ({ delay = false } = {}) => {
+  this.update = ({
+    delay = false
+  } = {}) => {
+
     let delayedUpdate = null;
     const updateControl = () => {
       this.range.value = get({

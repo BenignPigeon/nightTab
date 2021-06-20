@@ -11,7 +11,9 @@ export const StagedGroup = function(groupData) {
 
   this.type = { new: false, existing: false };
 
-  this.newGroup = function({ name = false } = {}) {
+  this.newGroup = function({
+    name = false
+  } = {}) {
 
     if (name && isValidString(name)) {
       this.group.name.text = trimString(name);

@@ -89,6 +89,14 @@ group.render.class = function() {
   } else {
     html.classList.remove('is-group-edit');
   };
+
+  const justify = ['left', 'center', 'right'];
+
+  justify.forEach((item, i) => {
+    html.classList.remove('is-group-justify-' + item);
+  });
+
+  html.classList.add('is-group-justify-' + state.get.current().group.area.justify);
 };
 
 group.render.edit = {

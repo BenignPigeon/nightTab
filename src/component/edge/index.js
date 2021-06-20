@@ -2,7 +2,9 @@ import { node } from '../../utility/node';
 
 import './index.css';
 
-const Edge = function({ element } = {}) {
+const Edge = function({
+  element
+} = {}) {
 
   this.tick = null;
 

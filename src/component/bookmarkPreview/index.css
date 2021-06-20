@@ -28,6 +28,14 @@
   font-size: 0.5em;
 }
 
+.bookmark.bookmark-preview.bookmark-wide {
+  grid-column: span 2;
+}
+
+.bookmark.bookmark-preview.bookmark-tall {
+  grid-row: span 2;
+}
+
 .is-bookmark-edit .bookmark.bookmark-preview .bookmark-front {
   height: 100%;
 }
@@ -48,7 +56,6 @@
 
 .is-bookmark-edit .bookmark.bookmark-preview .bookmark-display {
   font-size: 1em;
-  transition-delay: calc(var(--bookmark-transition-dely) * 0.03s);
 }
 
 .is-bookmark-shadow-show.is-bookmark-orientation-bottom.is-bookmark-edit .bookmark.bookmark-preview .bookmark-front,
@@ -156,4 +163,32 @@
 .is-bookmark-edit.is-bookmark-orientation-bottom.is-bookmark-url-show.is-bookmark-line-show .bookmark.bookmark-preview:focus-within .bookmark-back,
 .is-bookmark-edit.is-bookmark-orientation-bottom.is-bookmark-url-show.is-bookmark-line-show .bookmark.bookmark-preview:hover .bookmark-back {
   clip-path: polygon(0 calc(100% - calc(var(--bookmark-url-height) + var(--bookmark-clip-padding) * 1em)), 100% calc(100% - calc(var(--bookmark-url-height) + var(--bookmark-clip-padding) * 1em)), 100% 100%, 0 100%);
+}
+
+.is-bookmark-edit.is-bookmark-orientation-top .bookmark.bookmark-preview .bookmark-front,
+.is-bookmark-edit.is-bookmark-orientation-top .bookmark.bookmark-preview:hover .bookmark-front,
+.is-bookmark-edit.is-bookmark-orientation-top .bookmark.bookmark-preview:focus .bookmark-front {
+  border-top-left-radius: var(--theme-radius-base);
+  border-top-right-radius: var(--theme-radius-base);
+}
+
+.is-bookmark-edit.is-bookmark-orientation-bottom .bookmark.bookmark-preview .bookmark-front,
+.is-bookmark-edit.is-bookmark-orientation-bottom .bookmark.bookmark-preview:hover .bookmark-front,
+.is-bookmark-edit.is-bookmark-orientation-bottom .bookmark.bookmark-preview:focus .bookmark-front {
+  border-bottom-left-radius: var(--theme-radius-base);
+  border-bottom-right-radius: var(--theme-radius-base);
+}
+
+.is-bookmark-url-show.is-bookmark-orientation-top .bookmark.bookmark-preview:focus .bookmark-front,
+.is-bookmark-url-show.is-bookmark-orientation-top .bookmark.bookmark-preview:focus-within .bookmark-front,
+.is-bookmark-url-show.is-bookmark-orientation-top .bookmark.bookmark-preview:hover .bookmark-front {
+  border-top-left-radius: calc(var(--theme-radius-base) / 4);
+  border-top-right-radius: calc(var(--theme-radius-base) / 4);
+}
+
+.is-bookmark-url-show.is-bookmark-orientation-bottom .bookmark.bookmark-preview:focus .bookmark-front,
+.is-bookmark-url-show.is-bookmark-orientation-bottom .bookmark.bookmark-preview:focus-within .bookmark-front,
+.is-bookmark-url-show.is-bookmark-orientation-bottom .bookmark.bookmark-preview:hover .bookmark-front {
+  border-bottom-left-radius: calc(var(--theme-radius-base) / 4);
+  border-bottom-right-radius: calc(var(--theme-radius-base) / 4);
 }

@@ -299,7 +299,12 @@ theme.render.background.type = function() {
 theme.render.background.color = function() {
   const html = document.querySelector('html');
 
-  html.style.setProperty('--theme-background-color', state.get.current().theme.background.color.rgb.r + ', ' + state.get.current().theme.background.color.rgb.g + ', ' + state.get.current().theme.background.color.rgb.b);
+  html.style.setProperty('--theme-background-color-r', state.get.current().theme.background.color.rgb.r);
+
+  html.style.setProperty('--theme-background-color-g', state.get.current().theme.background.color.rgb.g);
+
+  html.style.setProperty('--theme-background-color-b', state.get.current().theme.background.color.rgb.b);
+
 };
 
 theme.render.background.gradient = function() {
@@ -330,6 +335,7 @@ theme.render.background.image.filter = function() {
   html.style.setProperty('--theme-background-image-blur', state.get.current().theme.background.image.blur);
   html.style.setProperty('--theme-background-image-scale', state.get.current().theme.background.image.scale);
   html.style.setProperty('--theme-background-image-opacity', state.get.current().theme.background.image.opacity);
+  html.style.setProperty('--theme-background-image-accent', state.get.current().theme.background.image.accent);
 };
 
 theme.render.background.video = {};
@@ -372,6 +378,7 @@ theme.render.background.video.filter = function() {
   html.style.setProperty('--theme-background-video-blur', state.get.current().theme.background.video.blur);
   html.style.setProperty('--theme-background-video-scale', state.get.current().theme.background.video.scale);
   html.style.setProperty('--theme-background-video-opacity', state.get.current().theme.background.video.opacity);
+  html.style.setProperty('--theme-background-video-accent', state.get.current().theme.background.video.accent);
 };
 
 theme.init = function() {

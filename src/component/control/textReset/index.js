@@ -13,7 +13,20 @@ import { set } from '../../../utility/set';
 import { convertColor } from '../../../utility/convertColor';
 import { isValidString } from '../../../utility/isValidString';
 
-export const Control_textReset = function({ object = {}, path = false, id = 'name', value = false, defaultValue = false, min = false, max = false, placeholder = false, classList = [], labelText = 'Name', srOnly = false, action = false } = {}) {
+export const Control_textReset = function({
+  object = {},
+  path = false,
+  id = 'name',
+  value = false,
+  defaultValue = false,
+  min = false,
+  max = false,
+  placeholder = false,
+  classList = [],
+  labelText = 'Name',
+  srOnly = false,
+  action = false
+} = {}) {
 
   this.label = form.label({
     forInput: id,

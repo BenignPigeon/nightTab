@@ -15,7 +15,17 @@ import { isValidString } from '../../../utility/isValidString';
 import { trimString } from '../../../utility/trimString';
 import { clearChildNode } from '../../../utility/clearChildNode';
 
-export const Control_select = function({ option = [], selected = 0, object = {}, id = 'name', path = false, labelText = 'name', srOnly = false, description = false, action = false } = {}) {
+export const Control_select = function({
+  option = [],
+  selected = 0,
+  object = {},
+  id = 'name',
+  path = false,
+  labelText = 'name',
+  srOnly = false,
+  description = false,
+  action = false
+} = {}) {
 
   this.select = form.input.select({
     id: id,
@@ -63,7 +73,7 @@ export const Control_select = function({ option = [], selected = 0, object = {},
             'option:' +
             item +
             '|value:' +
-            trimString(item).replace(/ /g, '-').toLowerCase()
+            trimString(item).replace(/\s+/g, '-').toLowerCase()
           )
         );
 

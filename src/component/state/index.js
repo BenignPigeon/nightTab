@@ -5,7 +5,7 @@ state.current = {};
 state.default = {
   layout: { size: 100, width: 80, padding: 40, gutter: 20, breakpoint: 'xs' },
   bookmark: {
-    hover: { size: 0, distance: 15 },
+    size: 100,
     url: { show: true },
     line: { show: true },
     shadow: { show: true },
@@ -16,7 +16,7 @@ state.default = {
     edit: false,
     add: false
   },
-  group: { edit: false, add: false },
+  group: { area: { justify: 'left' }, edit: false, add: false },
   theme: {
     color: {
       range: { primary: { h: 222, s: 14 } },
@@ -36,8 +36,8 @@ state.default = {
         start: { hsl: { h: 191, s: 66, l: 62 }, rgb: { r: 94, g: 199, b: 222 } },
         end: { hsl: { h: 243, s: 59, l: 22 }, rgb: { r: 26, g: 23, b: 89 } }
       },
-      image: { url: '', blur: 0, scale: 100, opacity: 100 },
-      video: { url: '', blur: 0, scale: 100, opacity: 100 }
+      image: { url: '', blur: 0, scale: 100, opacity: 100, accent: 0 },
+      video: { url: '', blur: 0, scale: 100, opacity: 100, accent: 0 }
     },
     style: 'dark',
     radius: 25,
@@ -51,14 +51,7 @@ state.default = {
 
 state.minMax = {
   bookmark: {
-    hover: {
-      size: { min: 0, max: 100 },
-      distance: { min: 0, max: 300 }
-    },
-    shadow: {
-      blur: { min: 0, max: 200 },
-      distance: { min: 0, max: 300 }
-    }
+    size: { min: 50, max: 500 }
   },
   layout: {
     size: { min: 10, max: 200 },
@@ -74,6 +67,10 @@ state.minMax = {
     accent: {
       hsl: { h: { min: 0, max: 359 }, s: { min: 0, max: 100 }, l: { min: 0, max: 100 } },
       rgb: { r: { min: 0, max: 255 }, g: { min: 0, max: 255 }, b: { min: 0, max: 255 } },
+    },
+    font: {
+      display: { weight: { min: 100, max: 900 } },
+      ui: { weight: { min: 100, max: 900 } }
     },
     bookmark: {
       shadow: {
@@ -100,13 +97,22 @@ state.minMax = {
           rgb: { r: { min: 0, max: 255 }, g: { min: 0, max: 255 }, b: { min: 0, max: 255 } }
         },
       },
-      image: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, opacity: { min: 0, max: 100 } },
-      video: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, opacity: { min: 0, max: 100 } }
+      image: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, opacity: { min: 0, max: 100 }, accent: { min: 0, max: 100 } },
+      video: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, opacity: { min: 0, max: 100 }, accent: { min: 0, max: 100 } }
     },
     radius: { min: 0, max: 500 },
     shadow: { min: 0, max: 300 },
     shade: {
       opacity: { min: 0, max: 100 }
+    }
+  }
+};
+
+state.step = {
+  theme: {
+    font: {
+      display: { weight: 100 },
+      ui: { weight: 100 }
     }
   }
 };
@@ -120,7 +126,8 @@ state.default.theme.color.lightness.end = 100 - state.default.theme.color.lightn
 state.get = {
   current: () => { return state.current },
   default: () => { return JSON.parse(JSON.stringify(state.default)) },
-  minMax: () => { return JSON.parse(JSON.stringify(state.minMax)) }
+  minMax: () => { return JSON.parse(JSON.stringify(state.minMax)) },
+  step: () => { return JSON.parse(JSON.stringify(state.step)) }
 };
 
 state.set = {

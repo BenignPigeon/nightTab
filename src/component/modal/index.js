@@ -95,12 +95,16 @@ export const Modal = function({
   this.bind = {
     add: () => {
 
+      window.addEventListener('drag', this.clickOut);
+
       window.addEventListener('mouseup', this.clickOut);
 
       window.addEventListener('keydown', this.esc);
 
     },
     remove: () => {
+
+      window.removeEventListener('drag', this.clickOut);
 
       window.removeEventListener('mouseup', this.clickOut);
 
