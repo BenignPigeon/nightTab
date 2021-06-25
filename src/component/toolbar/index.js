@@ -159,7 +159,7 @@ toolbar.bar.render = function() {
 
   const accentOptions = {
     object: state.get.current(),
-    path: 'theme.accent.rgb',
+    path: 'theme.accent',
     id: 'theme-accent-quick',
     type: 'color',
     labelText: 'Accent colour',
@@ -180,8 +180,8 @@ toolbar.bar.render = function() {
     srOnly: true,
     iconName: 'add',
     menuItem: [
-      { text: 'New Group', action: () => { group.add.open(); } },
-      { text: 'New Bookmark', action: () => { bookmark.add.open(); } }
+      { text: 'New Group', action: () => { group.add(); } },
+      { text: 'New Bookmark', action: () => { bookmark.add(); } }
     ]
   };
 
@@ -191,9 +191,9 @@ toolbar.bar.render = function() {
     iconName: 'edit',
     classList: ['toolbar-item'],
     func: function() {
-      group.edit.toggle();
       bookmark.edit.toggle();
-      toolbar.bar.active();
+      group.edit.toggle();
+      toolbar.bar.edit();
       data.save();
     }
   };
@@ -278,7 +278,7 @@ toolbar.bar.clear = function() {
 
 };
 
-toolbar.bar.active = function() {
+toolbar.bar.edit = function() {
   if (state.get.current().bookmark.edit) {
     toolbar.edit.active();
   } else {
@@ -290,7 +290,7 @@ toolbar.init = function() {
   toolbar.render.class();
   toolbar.render.style.update();
   toolbar.bar.render();
-  toolbar.bar.active();
+  toolbar.bar.edit();
 };
 
 export { toolbar }

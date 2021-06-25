@@ -25,35 +25,13 @@ bookmark.all = bookmarkPreset.get();
 bookmark.mod = {};
 
 bookmark.mod.add = {
-  open: function() {
-    state.get.current().bookmark.add = true;
-  },
-  close: function() {
-    state.get.current().bookmark.add = false;
-  },
-  toggle: function() {
-    if (state.get.current().bookmark.add) {
-      bookmark.mod.add.close();
-    } else {
-      bookmark.mod.add.open();
-    };
-  }
+  open: () => { state.get.current().bookmark.add = true; },
+  close: () => { state.get.current().bookmark.add = false; }
 };
 
 bookmark.mod.edit = {
-  open: function() {
-    state.get.current().bookmark.edit = true;
-  },
-  close: function() {
-    state.get.current().bookmark.edit = false;
-  },
-  toggle: function() {
-    if (state.get.current().bookmark.edit) {
-      bookmark.mod.edit.close();
-    } else {
-      bookmark.mod.edit.open();
-    };
-  }
+  open: () => { state.get.current().bookmark.edit = true; },
+  close: () => { state.get.current().bookmark.edit = false; }
 };
 
 bookmark.mod.item = {};
@@ -308,6 +286,17 @@ bookmark.render.add = function({
   groupIndex = false
 } = {}) {
 
+};
+
+bookmark.restore = function(dataToRestore) {
+  bookmark.all = dataToRestore.bookmark;
+  console.log('bookmark restored');
+};
+
+bookmark.add = function({
+  groupIndex = false
+} = {}) {
+
   const newBookmarkData = new StagedBookmark();
 
   newBookmarkData.type.new = true;
@@ -326,6 +315,20 @@ bookmark.render.add = function({
     successText: 'Add',
     width: 60,
     maxHeight: true,
+    openAction: () => {
+
+      bookmark.mod.add.open();
+
+      data.save();
+
+    },
+    closeAction: () => {
+
+      bookmark.mod.add.close();
+
+      data.save();
+
+    },
     successAction: () => {
 
       switch (newBookmarkData.group.destination) {
@@ -355,14 +358,14 @@ bookmark.render.add = function({
 
       bookmark.bind.sort();
 
-      bookmark.add.close();
+      bookmark.mod.add.close();
 
       data.save();
 
     },
     dismissAction: () => {
 
-      bookmark.add.close();
+      bookmark.mod.add.close();
 
       data.save();
 
@@ -371,27 +374,6 @@ bookmark.render.add = function({
 
   addModal.open();
 
-};
-
-bookmark.restore = function(dataToRestore) {
-  bookmark.all = dataToRestore.bookmark;
-  console.log('bookmark restored');
-};
-
-bookmark.add = {
-  open: function({
-    groupIndex = false
-  } = {}) {
-
-    bookmark.mod.add.open();
-    bookmark.render.add({
-      groupIndex: groupIndex
-    });
-
-  },
-  close: function() {
-    bookmark.mod.add.close();
-  }
 };
 
 bookmark.edit = {
@@ -464,7 +446,6 @@ bookmark.bind.sort = function() {
 };
 
 bookmark.init = function() {
-  bookmark.add.close();
   bookmark.render.style();
   bookmark.render.class();
   bookmark.render.item();

@@ -1,8 +1,10 @@
 import { state } from '../state';
+import { data } from '../data';
 import { pageLock } from '../pageLock';
 
 import { Button } from '../button';
 import { Shade } from '../shade';
+import { KeyboardShortcut } from '../keyboardShortcut';
 
 import { node } from '../../utility/node';
 import { complexNode } from '../../utility/complexNode';
@@ -14,11 +16,12 @@ import './index.css';
 export const Modal = function({
   heading = false,
   content = false,
+  openAction = false,
   successText = 'OK',
   successAction = false,
   cancelText = 'Cancel',
   cancelAction = false,
-  dismissAction = false,
+  closeAction = false,
   size = 'medium',
   width = false,
   maxHeight = false,
@@ -28,7 +31,10 @@ export const Modal = function({
 
   this.element = {
     modal: node('div|class:modal'),
-    heading: node('div|class:modal-heading'),
+    heading: {
+      heading: node('div|class:modal-heading'),
+      text: node('h1|class:modal-heading-text,tabindex:1')
+    },
     content: {
       wrapper: node('div|class:modal-content-wrapper'),
       content: node('div|class:modal-content')
@@ -39,6 +45,8 @@ export const Modal = function({
   this.shade = new Shade();
 
   this.open = () => {
+
+    state.get.current().modal = true;
 
     const body = document.querySelector('body');
 
@@ -70,11 +78,17 @@ export const Modal = function({
 
     this.bind.add();
 
-    this.focus.add();
+    this.focus.set();
+
+    if (openAction) {
+      openAction();
+    };
 
   };
 
   this.close = () => {
+
+    state.get.current().modal = false;
 
     this.element.modal.classList.remove('is-opaque');
 
@@ -82,36 +96,68 @@ export const Modal = function({
 
     this.bind.remove();
 
-    this.focus.remove();
-
     this.shade.close();
 
-    if (dismissAction) {
-      dismissAction();
+    if (closeAction) {
+      closeAction();
     };
 
+    clearTimeout(this.delayedForceRemove);
+
+    this.delayedForceRemove = setTimeout(() => {
+
+      const body = document.querySelector('body');
+
+      if (body.contains(this.element.modal)) {
+        body.removeChild(this.element.modal)
+      };
+
+    }, 6000);
+
   };
+
+  this.delayedForceRemove = null;
 
   this.bind = {
     add: () => {
 
-      window.addEventListener('drag', this.clickOut);
-
       window.addEventListener('mouseup', this.clickOut);
 
-      window.addEventListener('keydown', this.esc);
+      window.addEventListener('keydown', this.focus.loop);
+
+      this.esc.add();
+
+      this.ctrlM.add();
 
     },
     remove: () => {
 
-      window.removeEventListener('drag', this.clickOut);
-
       window.removeEventListener('mouseup', this.clickOut);
 
-      window.removeEventListener('keydown', this.esc);
+      window.removeEventListener('keydown', this.focus.loop);
+
+      this.esc.remove();
+
+      this.ctrlM.remove();
 
     }
   };
+
+  this.esc = new KeyboardShortcut({
+    keycode: 27,
+    action: () => {
+      this.close();
+    }
+  });
+
+  this.ctrlM = new KeyboardShortcut({
+    keycode: 77,
+    ctrl: true,
+    alt: true,
+    action: () => {
+      this.close();
+    }
+  });
 
   this.clickOut = (event) => {
 
@@ -125,16 +171,42 @@ export const Modal = function({
 
   };
 
-  this.esc = (event) => {
+  this.focus = {
+    set: () => {
+      this.element.heading.text.focus();
+    },
+    loop: (event) => {
 
-    if ((event.keyCode == 27)) {
+      const allFocusElement = document.querySelector('.modal').querySelectorAll('[tabindex]');
 
-      event.preventDefault();
+      if (allFocusElement.length > 0) {
 
-      this.close();
+        const firstElement = allFocusElement[0];
 
-    };
+        const lastElement = allFocusElement[allFocusElement.length - 1];
 
+        if (event.keyCode == 9 && event.shiftKey) {
+
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+
+            event.preventDefault();
+          }
+
+        } else if (event.keyCode == 9) {
+
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+
+            event.preventDefault();
+          }
+
+        };
+
+      };
+
+
+    }
   };
 
   this.style = () => {
@@ -161,38 +233,6 @@ export const Modal = function({
       };
 
     };
-  };
-
-  this.focus = {
-    loop: (event) => {
-
-      const allFocusElement = document.querySelector('.modal').querySelectorAll('[tabindex]');
-
-      const firstElement = allFocusElement[0];
-
-      const lastElement = allFocusElement[allFocusElement.length - 1];
-
-      if (event.keyCode == 9 && event.shiftKey) {
-
-        if (document.activeElement === firstElement) {
-          lastElement.focus();
-
-          event.preventDefault();
-        }
-
-      } else if (event.keyCode == 9) {
-
-        if (document.activeElement === lastElement) {
-          firstElement.focus();
-
-          event.preventDefault();
-        }
-
-      };
-
-    },
-    add: () => { window.addEventListener('keydown', this.focus.loop); },
-    remove: () => { window.removeEventListener('keydown', this.focus.loop); }
   };
 
   this.successButton = new Button({
@@ -237,19 +277,11 @@ export const Modal = function({
         headingString = trimString(headingString.substring(0, maxHeadingLength)) + '...';
       };
 
-      this.element.heading.appendChild(complexNode({
-        tag: 'h1',
-        text: headingString,
-        attr: [{
-          key: 'tabindex',
-          value: 1
-        }, {
-          key: 'class',
-          value: 'modal-heading-text'
-        }]
-      }));
+      this.element.heading.text.innerHTML = headingString;
 
-      this.element.content.content.appendChild(this.element.heading);
+      this.element.heading.heading.appendChild(this.element.heading.text);
+
+      this.element.content.content.appendChild(this.element.heading.heading);
 
     };
 
@@ -285,6 +317,10 @@ export const Modal = function({
       this.element.modal.classList.add('modal-max-height');
     };
 
+  };
+
+  this.modal = () => {
+    return this.element.modal;
   };
 
 };

@@ -168,15 +168,38 @@ const GroupArea = function({
     })
   };
 
-  this.openAll = new Button({
-    text: 'Open all',
-    style: ['line'],
-    title: 'Open all Bookmarks in this Group',
-    classList: ['group-control-button', 'group-control-up'],
-    func: () => {
-      console.log('hit');
+  this.openAll = {
+    button: new Button({
+      text: 'Open all',
+      style: ['line'],
+      title: 'Open all Bookmarks in this Group',
+      classList: ['group-control-button', 'group-control-up'],
+      func: () => {
+        this.openAll.open();
+      }
+    }),
+    open: () => {
+
+      if (state.get.current().bookmark.newTab) {
+
+        groupData.group.items.forEach((item, i) => {
+          chrome.tabs.create({ url: item.url });
+        });
+
+      } else {
+
+        const first = groupData.group.items.shift();
+
+        groupData.group.items.forEach((item, i) => {
+          chrome.tabs.create({ url: item.url });
+        });
+
+        window.location.href = first.url;
+
+      };
+
     }
-  });
+  };
 
   this.style = () => {
 
@@ -225,7 +248,7 @@ const GroupArea = function({
     };
 
     if (groupData.group.openAll.show) {
-      this.element.header.appendChild(this.openAll.button);
+      this.element.header.appendChild(this.openAll.button.button);
     };
 
     this.element.header.appendChild(this.element.control.control);

@@ -270,7 +270,7 @@ theme.style = {
       theme.style.dark();
     };
   }
-}
+};
 
 theme.render.background = {};
 
@@ -284,6 +284,7 @@ theme.render.background.area = function() {
   });
 
   document.querySelector('body').appendChild(backgroundElement);
+  document.querySelector('.theme-background-type-image').appendChild(node('div|class:theme-background-type-image-accent'));
 };
 
 theme.render.background.type = function() {
@@ -334,8 +335,8 @@ theme.render.background.image.filter = function() {
 
   html.style.setProperty('--theme-background-image-blur', state.get.current().theme.background.image.blur);
   html.style.setProperty('--theme-background-image-scale', state.get.current().theme.background.image.scale);
-  html.style.setProperty('--theme-background-image-opacity', state.get.current().theme.background.image.opacity);
   html.style.setProperty('--theme-background-image-accent', state.get.current().theme.background.image.accent);
+  html.style.setProperty('--theme-background-image-opacity', state.get.current().theme.background.image.opacity);
 };
 
 theme.render.background.video = {};
@@ -377,8 +378,8 @@ theme.render.background.video.filter = function() {
 
   html.style.setProperty('--theme-background-video-blur', state.get.current().theme.background.video.blur);
   html.style.setProperty('--theme-background-video-scale', state.get.current().theme.background.video.scale);
-  html.style.setProperty('--theme-background-video-opacity', state.get.current().theme.background.video.opacity);
   html.style.setProperty('--theme-background-video-accent', state.get.current().theme.background.video.accent);
+  html.style.setProperty('--theme-background-video-opacity', state.get.current().theme.background.video.opacity);
 };
 
 theme.init = function() {

@@ -120,6 +120,7 @@ export const Control_slimSlider = function({
   } = {}) => {
 
     let delayedUpdate = null;
+
     const updateControl = () => {
       this.range.value = get({
         object: object,

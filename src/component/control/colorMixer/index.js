@@ -40,7 +40,7 @@ export const Control_colorMixer = function({
 
   this.color = new Control_color({
     object: object,
-    path: path + '.rgb',
+    path: path,
     id: id + '-rgb',
     labelText: labelText,
     srOnly: srOnly,
@@ -240,8 +240,6 @@ export const Control_colorMixer = function({
     }]
   });
 
-  this.moreControlsCollapse.update();
-
   this.wrap = () => {
     return form.wrap({
       children: [
@@ -294,6 +292,7 @@ export const Control_colorMixer = function({
   };
 
   this.moreControlsUpdate = () => {
+
     if (this.moreControlsCollapse.target()[0].state.collapsed) {
       this.colorSliderH.disable();
       this.colorSliderS.disable();
@@ -309,7 +308,10 @@ export const Control_colorMixer = function({
       this.colorSliderG.enable();
       this.colorSliderB.enable();
     };
+
   };
+
+  this.moreControlsCollapse.update();
 
   this.moreControlsUpdate();
 

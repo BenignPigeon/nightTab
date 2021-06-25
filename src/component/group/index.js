@@ -22,35 +22,13 @@ const group = {};
 group.mod = {};
 
 group.mod.add = {
-  open: function() {
-    state.get.current().group.add = true;
-  },
-  close: function() {
-    state.get.current().group.add = false;
-  },
-  toggle: function() {
-    if (state.get.current().group.add) {
-      group.mod.add.close();
-    } else {
-      group.mod.add.open();
-    };
-  }
+  open: () => { state.get.current().group.add = true; },
+  close: () => { state.get.current().group.add = false; }
 };
 
 group.mod.edit = {
-  open: function() {
-    state.get.current().group.edit = true;
-  },
-  close: function() {
-    state.get.current().group.edit = false;
-  },
-  toggle: function() {
-    if (state.get.current().group.edit) {
-      group.mod.edit.close();
-    } else {
-      group.mod.edit.open();
-    };
-  }
+  open: () => { state.get.current().group.edit = true; },
+  close: () => { state.get.current().group.edit = false; }
 };
 
 group.mod.item = {};
@@ -142,7 +120,7 @@ group.render.item = function() {
 
 };
 
-group.render.add = function() {
+group.add = function() {
 
   const newGroupData = new StagedGroup();
 
@@ -153,6 +131,20 @@ group.render.add = function() {
     content: groupForm.form(newGroupData),
     successText: 'Add',
     width: 'small',
+    openAction: () => {
+
+      group.mod.add.open();
+
+      data.save();
+
+    },
+    closeAction: () => {
+
+      group.mod.add.close();
+
+      data.save();
+
+    },
     successAction: () => {
 
       group.mod.item.add(newGroupData);
@@ -163,14 +155,14 @@ group.render.add = function() {
 
       bookmark.bind.sort();
 
-      group.add.close();
+      group.mod.add.close();
 
       data.save();
 
     },
     dismissAction: () => {
 
-      group.add.close();
+      group.mod.add.close();
 
       data.save();
 
@@ -179,16 +171,6 @@ group.render.add = function() {
 
   addModal.open();
 
-};
-
-group.add = {
-  open: function() {
-    group.mod.add.open();
-    group.render.add();
-  },
-  close: function() {
-    group.mod.add.close();
-  }
 };
 
 group.edit = {

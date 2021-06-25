@@ -1,42 +1,39 @@
-import { state } from '../../../state';
-import { data } from '../../../data';
-import { bookmark } from '../../../bookmark';
-import { theme } from '../../../theme';
-import { toolbar } from '../../../toolbar';
-import { modal } from '../../../modal';
-import { version } from '../../../version';
-import { menu } from '../../../menu';
-import { icon } from '../../../icon';
-import { logo } from '../../../logo';
-import { link } from '../../../link';
+import { state } from '../../state';
+import { data } from '../../data';
+import { bookmark } from '../../bookmark';
+import { theme } from '../../theme';
+import { toolbar } from '../../toolbar';
+import { version } from '../../version';
+import { menu } from '../../menu';
+import { icon } from '../../icon';
+import { logo } from '../../logo';
+import { link } from '../../link';
 
-import * as form from '../../../form';
+import * as form from '../../form';
 
-import { Edge } from '../../../edge';
-import { Button } from '../../../button';
-import { Collapse } from '../../../collapse';
+import { Button } from '../../button';
+import { Collapse } from '../../collapse';
+import { Edge } from '../../edge';
 
-import { Control_helperText } from '../../../control/helperText';
-import { Control_inputButton } from '../../../control/inputButton';
-import { Control_groupText } from '../../../control/groupText';
-import { Control_radio } from '../../../control/radio';
-import { Control_radioGrid } from '../../../control/radioGrid';
-import { Control_checkbox } from '../../../control/checkbox';
-import { Control_slider } from '../../../control/slider';
-import { Control_slimSlider } from '../../../control/slimSlider';
-import { Control_colorMixer } from '../../../control/colorMixer';
-import { Control_color } from '../../../control/color';
-import { Control_text } from '../../../control/text';
-import { Control_textReset } from '../../../control/textReset';
+import { Control_helperText } from '../../control/helperText';
+import { Control_inputButton } from '../../control/inputButton';
+import { Control_groupText } from '../../control/groupText';
+import { Control_radio } from '../../control/radio';
+import { Control_radioGrid } from '../../control/radioGrid';
+import { Control_checkbox } from '../../control/checkbox';
+import { Control_slider } from '../../control/slider';
+import { Control_slimSlider } from '../../control/slimSlider';
+import { Control_colorMixer } from '../../control/colorMixer';
+import { Control_color } from '../../control/color';
+import { Control_text } from '../../control/text';
+import { Control_textReset } from '../../control/textReset';
 
+import { node } from '../../../utility/node';
+import { complexNode } from '../../../utility/complexNode';
 
-import { node } from '../../../../utility/node';
-import { complexNode } from '../../../../utility/complexNode';
+const bookmarkSetting = {};
 
-const menuContentBookmark = {};
-
-menuContentBookmark.style = function() {
-  const menuContentItem = node('div|id:menu-content-item-style,class:menu-content-item');
+bookmarkSetting.style = (parent) => {
 
   const bookmarkStyle = new Control_radio({
     object: state.get.current(),
@@ -71,19 +68,15 @@ menuContentBookmark.style = function() {
     }
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('Style'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
-      bookmarkStyle.wrap()
+  parent.appendChild(
+    node('div', [
+      bookmarkStyle.wrap(),
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentBookmark.general = function() {
-  const menuContentItem = node('div|id:menu-content-item-general,class:menu-content-item');
+bookmarkSetting.general = (parent) => {
 
   const bookmarkEdge = new Edge({ element: document.querySelector('.bookmark') });
 
@@ -184,10 +177,8 @@ menuContentBookmark.general = function() {
     }
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('General'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       bookmarkSize.wrap(),
       node('hr'),
       bookmarkUrlShow.wrap(),
@@ -198,11 +189,9 @@ menuContentBookmark.general = function() {
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentBookmark.orientation = function() {
-  const menuContentItem = node('div|id:menu-content-item-orientation,class:menu-content-item');
+bookmarkSetting.orientation = (parent) => {
 
   const bookmarkOrientation = new Control_radio({
     object: state.get.current(),
@@ -222,16 +211,13 @@ menuContentBookmark.orientation = function() {
     text: ['Display the URL and Controls either at the top or bottom of a Bookmark Tile.']
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('Orientation'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       bookmarkOrientation.wrap(),
       bookmarkOrientationHelper.wrap()
     ])
   );
 
-  return menuContentItem;
 };
 
-export { menuContentBookmark }
+export { bookmarkSetting }

@@ -437,6 +437,12 @@ const Tile = function({
 
     };
 
+    if (state.get.current().bookmark.edit) {
+      this.control.enable();
+    } else {
+      this.control.disable();
+    };
+
   };
 
   this.tile = () => {
@@ -449,12 +455,6 @@ const Tile = function({
 
     this.style(newBookmarkData);
 
-  };
-
-  if (state.get.current().bookmark.edit) {
-    this.control.enable();
-  } else {
-    this.control.disable();
   };
 
   this.assemble();

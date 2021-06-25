@@ -145,17 +145,6 @@ bookmarkForm.form = function(bookmarkData) {
     }
   });
 
-  const displayVisualShowPropagate = new Control_checkbox({
-    object: bookmark.mod.propagate.state.current,
-    path: 'visual',
-    id: 'apply-to-all-visual',
-    labelText: 'Apply Show Visual Element to other Bookmarks',
-    description: [
-      'When saved, apply the above Visual Element visibility to all other Bookmarks.',
-      'Only the Show Visual Element will be applied to all.'
-    ]
-  });
-
   const displayNameShow = new Control_checkbox({
     object: bookmarkData.link,
     path: 'display.name.show',
@@ -194,14 +183,14 @@ bookmarkForm.form = function(bookmarkData) {
     }
   });
 
-  const displayNameShowPropagate = new Control_checkbox({
+  const displayVisualNameShowPropagate = new Control_checkbox({
     object: bookmark.mod.propagate.state.current,
     path: 'display',
     id: 'apply-to-all-display',
-    labelText: 'Apply Show Visual Element and Name to other Bookmarks',
+    labelText: 'Apply Show Visual Element and Show Name to other Bookmarks',
     description: [
       'When saved, apply the above visibility to all other Bookmarks.',
-      'Only the Show Visual Element and Name will be applied to all.'
+      'Only the Show Visual Element and Show Name settings will be applied to all.'
     ]
   });
 
@@ -737,7 +726,7 @@ bookmarkForm.form = function(bookmarkData) {
                 ]
               }),
               node('hr'),
-              displayNameShowPropagate.wrap()
+              displayVisualNameShowPropagate.wrap()
             ]
           })
         ]

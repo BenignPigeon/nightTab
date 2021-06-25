@@ -1,46 +1,42 @@
-import { state } from '../../../state';
-import { data } from '../../../data';
-import { bookmark } from '../../../bookmark';
-import { theme } from '../../../theme';
-import { toolbar } from '../../../toolbar';
-import { modal } from '../../../modal';
-import { version } from '../../../version';
-import { menu } from '../../../menu';
-import { icon } from '../../../icon';
-import { logo } from '../../../logo';
-import { link } from '../../../link';
+import { state } from '../../state';
+import { data } from '../../data';
+import { bookmark } from '../../bookmark';
+import { theme } from '../../theme';
+import { toolbar } from '../../toolbar';
+import { version } from '../../version';
+import { menu } from '../../menu';
+import { icon } from '../../icon';
+import { logo } from '../../logo';
+import { link } from '../../link';
 
-import * as form from '../../../form';
+import * as form from '../../form';
 
-import { Button } from '../../../button';
-import { Collapse } from '../../../collapse';
+import { Button } from '../../button';
+import { Collapse } from '../../collapse';
 
-import { Control_helperText } from '../../../control/helperText';
-import { Control_inputButton } from '../../../control/inputButton';
-import { Control_groupText } from '../../../control/groupText';
-import { Control_radio } from '../../../control/radio';
-import { Control_radioGrid } from '../../../control/radioGrid';
-import { Control_checkbox } from '../../../control/checkbox';
-import { Control_slider } from '../../../control/slider';
-import { Control_slimSlider } from '../../../control/slimSlider';
-import { Control_colorMixer } from '../../../control/colorMixer';
-import { Control_color } from '../../../control/color';
-import { Control_text } from '../../../control/text';
-import { Control_textReset } from '../../../control/textReset';
+import { Control_helperText } from '../../control/helperText';
+import { Control_inputButton } from '../../control/inputButton';
+import { Control_groupText } from '../../control/groupText';
+import { Control_radio } from '../../control/radio';
+import { Control_radioGrid } from '../../control/radioGrid';
+import { Control_checkbox } from '../../control/checkbox';
+import { Control_slider } from '../../control/slider';
+import { Control_slimSlider } from '../../control/slimSlider';
+import { Control_colorMixer } from '../../control/colorMixer';
+import { Control_color } from '../../control/color';
+import { Control_text } from '../../control/text';
+import { Control_textReset } from '../../control/textReset';
 
-import { node } from '../../../../utility/node';
-import { complexNode } from '../../../../utility/complexNode';
+import { node } from '../../../utility/node';
+import { complexNode } from '../../../utility/complexNode';
 
-const menuContentTheme = {};
+const themeSetting = {};
 
-menuContentTheme.exposeControl = {
+themeSetting.exposeControl = {
   style: false
 };
 
-menuContentTheme.style = function() {
-  const menuContentItem = node('div|id:menu-content-item-style,class:menu-content-item');
-
-  menuContentItem.appendChild(menu.render.component.item.header('Style'));
+themeSetting.style = (parent) => {
 
   const themeStyle = new Control_radio({
     object: state.get.current(),
@@ -58,19 +54,17 @@ menuContentTheme.style = function() {
     }
   });
 
-  menuContentTheme.exposeControl.style = themeStyle;
+  themeSetting.exposeControl.style = themeStyle;
 
-  menuContentItem.appendChild(menu.render.component.item.form([
-    themeStyle.wrap()
-  ]));
+  parent.appendChild(
+    node('div', [
+      themeStyle.wrap()
+    ])
+  );
 
-  return menuContentItem;
 };
 
-menuContentTheme.colour = function() {
-  const menuContentItem = node('div|id:menu-content-item-colour,class:menu-content-item');
-
-  menuContentItem.appendChild(menu.render.component.item.header('Colour'));
+themeSetting.colour = (parent) => {
 
   const shadesHelper = new Control_helperText({
     text: ['Backgrounds, Bookmarks and Modals use shades from the left.', 'Text and form elements use shades from the right.', 'For a light look switch to the Light Style and then select a Primary colour. And vice versa for a dark look.']
@@ -117,7 +111,7 @@ menuContentTheme.colour = function() {
     min: state.get.minMax().theme.color.lightness.contrast.min,
     max: state.get.minMax().theme.color.lightness.contrast.max,
     action: () => {
-      state.get.current().theme.color.lightness.offset = state.minMax.theme.color.lightness.contrast.max - state.get.current().theme.color.lightness.contrast;
+      state.get.current().theme.color.lightness.offset = 40 - state.get.current().theme.color.lightness.contrast;
       state.get.current().theme.color.lightness.start = state.get.current().theme.color.lightness.offset;
       state.get.current().theme.color.lightness.end = 100 - state.get.current().theme.color.lightness.offset;
       theme.render.color();
@@ -125,13 +119,13 @@ menuContentTheme.colour = function() {
     }
   });
 
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       form.sticky({
         children: [
           form.wrap({
             children: [
-              menuContentTheme.shades()
+              themeSetting.shades()
             ]
           })
         ]
@@ -144,10 +138,9 @@ menuContentTheme.colour = function() {
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentTheme.shades = function() {
+themeSetting.shades = (parent) => {
   const formGroup = form.group({
     block: true,
     border: true
@@ -164,7 +157,7 @@ menuContentTheme.shades = function() {
 
     formGroup.appendChild(
       node('div|class:form-group-text form-group-text-borderless', [
-        node('div|class:theme-color-box theme-color-shade-' + count)
+        node('div|class:theme-color-box theme-color-shade-' + count + '')
       ])
     );
   };
@@ -172,10 +165,7 @@ menuContentTheme.shades = function() {
   return formGroup;
 };
 
-menuContentTheme.accent = function() {
-  const menuContentItem = node('div|id:menu-content-item-accent,class:menu-content-item');
-
-  menuContentItem.appendChild(menu.render.component.item.header('Accent'));
+themeSetting.accent = (parent) => {
 
   const themeAccentMixer = new Control_colorMixer({
     object: state.get.current(),
@@ -192,20 +182,17 @@ menuContentTheme.accent = function() {
     }
   });
 
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       themeAccentMixer.wrap()
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentTheme.font = function() {
+themeSetting.font = (parent) => {
 
   const fontWeight = { light: 300, regular: 400, bold: 700 };
-
-  const menuContentItem = node('div|id:menu-content-item-font,class:menu-content-item');
 
   const themeFontDisplayName = new Control_textReset({
     object: state.get.current(),
@@ -391,10 +378,8 @@ menuContentTheme.font = function() {
     }
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('Font'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       themeFontDisplayName.wrap(),
       themeFontDisplayNameHelper.wrap(),
       form.wrap({
@@ -455,11 +440,9 @@ menuContentTheme.font = function() {
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentTheme.radius = function() {
-  const menuContentItem = node('div|id:menu-content-item-radius,class:menu-content-item');
+themeSetting.radius = (parent) => {
 
   const themeRadius = new Control_slider({
     object: state.get.current(),
@@ -476,19 +459,15 @@ menuContentTheme.radius = function() {
     }
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('Radius'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       themeRadius.wrap()
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentTheme.shadow = function() {
-  const menuContentItem = node('div|id:menu-content-item-shadow,class:menu-content-item');
+themeSetting.shadow = (parent) => {
 
   const themeShadow = new Control_slider({
     object: state.get.current(),
@@ -505,19 +484,15 @@ menuContentTheme.shadow = function() {
     }
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('Shadow'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       themeShadow.wrap()
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentTheme.shade = function() {
-  const menuContentItem = node('div|id:menu-content-item-shade,class:menu-content-item');
+themeSetting.shade = (parent) => {
 
   const themeShadeOpacity = new Control_slider({
     object: state.get.current(),
@@ -534,21 +509,15 @@ menuContentTheme.shade = function() {
     }
   });
 
-  menuContentItem.appendChild(menu.render.component.item.header('Shade'));
-
-  menuContentItem.appendChild(
-    menu.render.component.item.form([
+  parent.appendChild(
+    node('div', [
       themeShadeOpacity.wrap()
     ])
   );
 
-  return menuContentItem;
 };
 
-menuContentTheme.background = function() {
-  const menuContentItem = node('div|id:menu-content-item-background,class:menu-content-item');
-
-  menuContentItem.appendChild(menu.render.component.item.header('Background'));
+themeSetting.background = (parent) => {
 
   const themeBackgroundType = new Control_radio({
     object: state.get.current(),
@@ -677,21 +646,6 @@ menuContentTheme.background = function() {
     }
   });
 
-  const themeBackgroundImageOpacity = new Control_slider({
-    object: state.get.current(),
-    path: 'theme.background.image.opacity',
-    id: 'theme-background-image-opacity',
-    labelText: 'Background image opacity',
-    value: state.get.current().theme.background.image.opacity,
-    defaultValue: state.get.default().theme.background.image.opacity,
-    min: state.get.minMax().theme.background.image.opacity.min,
-    max: state.get.minMax().theme.background.image.opacity.max,
-    action: () => {
-      theme.render.background.image.filter();
-      data.save();
-    }
-  });
-
   const themeBackgroundImageAccent = new Control_slider({
     object: state.get.current(),
     path: 'theme.background.image.accent',
@@ -701,6 +655,21 @@ menuContentTheme.background = function() {
     defaultValue: state.get.default().theme.background.image.accent,
     min: state.get.minMax().theme.background.image.accent.min,
     max: state.get.minMax().theme.background.image.accent.max,
+    action: () => {
+      theme.render.background.image.filter();
+      data.save();
+    }
+  });
+
+  const themeBackgroundImageOpacity = new Control_slider({
+    object: state.get.current(),
+    path: 'theme.background.image.opacity',
+    id: 'theme-background-image-opacity',
+    labelText: 'Background image opacity',
+    value: state.get.current().theme.background.image.opacity,
+    defaultValue: state.get.default().theme.background.image.opacity,
+    min: state.get.minMax().theme.background.image.opacity.min,
+    max: state.get.minMax().theme.background.image.opacity.max,
     action: () => {
       theme.render.background.image.filter();
       data.save();
@@ -756,21 +725,6 @@ menuContentTheme.background = function() {
     }
   });
 
-  const themeBackgroundVideoOpacity = new Control_slider({
-    object: state.get.current(),
-    path: 'theme.background.video.opacity',
-    id: 'theme-background-video-opacity',
-    labelText: 'Background video opacity',
-    value: state.get.current().theme.background.video.opacity,
-    defaultValue: state.get.default().theme.background.video.opacity,
-    min: state.get.minMax().theme.background.video.opacity.min,
-    max: state.get.minMax().theme.background.video.opacity.max,
-    action: () => {
-      theme.render.background.video.filter();
-      data.save();
-    }
-  });
-
   const themeBackgroundVideoAccent = new Control_slider({
     object: state.get.current(),
     path: 'theme.background.video.accent',
@@ -780,6 +734,21 @@ menuContentTheme.background = function() {
     defaultValue: state.get.default().theme.background.video.accent,
     min: state.get.minMax().theme.background.video.accent.min,
     max: state.get.minMax().theme.background.video.accent.max,
+    action: () => {
+      theme.render.background.video.filter();
+      data.save();
+    }
+  });
+
+  const themeBackgroundVideoOpacity = new Control_slider({
+    object: state.get.current(),
+    path: 'theme.background.video.opacity',
+    id: 'theme-background-video-opacity',
+    labelText: 'Background video opacity',
+    value: state.get.current().theme.background.video.opacity,
+    defaultValue: state.get.default().theme.background.video.opacity,
+    min: state.get.minMax().theme.background.video.opacity.min,
+    max: state.get.minMax().theme.background.video.opacity.max,
     action: () => {
       theme.render.background.video.filter();
       data.save();
@@ -807,8 +776,8 @@ menuContentTheme.background = function() {
     node('hr'),
     themeBackgroundImageBlur.wrap(),
     themeBackgroundImageScale.wrap(),
-    themeBackgroundImageOpacity.wrap(),
-    themeBackgroundImageAccent.wrap()
+    themeBackgroundImageAccent.wrap(),
+    themeBackgroundImageOpacity.wrap()
   ]);
 
   const themeBackgroundVideoArea = node('div', [
@@ -818,8 +787,8 @@ menuContentTheme.background = function() {
     node('hr'),
     themeBackgroundVideoBlur.wrap(),
     themeBackgroundVideoScale.wrap(),
-    themeBackgroundVideoOpacity.wrap(),
-    themeBackgroundVideoAccent.wrap()
+    themeBackgroundVideoAccent.wrap(),
+    themeBackgroundVideoOpacity.wrap()
   ]);
 
   const themeBackgroundCollapse = new Collapse({
@@ -842,18 +811,20 @@ menuContentTheme.background = function() {
 
   themeBackgroundCollapse.update();
 
-  menuContentItem.appendChild(menu.render.component.item.form([
-    themeBackgroundType.wrap(),
-    form.wrap({
-      children: [
-        form.indent({
-          children: [
-            themeBackgroundCollapse.collapse()
-          ]
-        })
-      ]
-    })
-  ]));
+  parent.appendChild(
+    node('div', [
+      themeBackgroundType.wrap(),
+      form.wrap({
+        children: [
+          form.indent({
+            children: [
+              themeBackgroundCollapse.collapse()
+            ]
+          })
+        ]
+      })
+    ])
+  );
 
   const updateVideoPlayState = () => {
     if (themeBackgroundType.value() === 'video') {
@@ -955,7 +926,6 @@ menuContentTheme.background = function() {
 
   updateDisabled();
 
-  return menuContentItem;
 };
 
-export { menuContentTheme }
+export { themeSetting }
