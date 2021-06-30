@@ -230,6 +230,7 @@ group.bind.sort = function() {
 };
 
 group.init = function() {
+  group.mod.add.close();
   group.render.class();
   group.bind.sort();
 };

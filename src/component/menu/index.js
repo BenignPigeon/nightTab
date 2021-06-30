@@ -17,6 +17,7 @@ const menu = {};
 
 menu.navData = [
   { name: 'Layout', active: true, overscroll: true, sub: ['Scaling', 'Area'] },
+  { name: 'Header', active: false, overscroll: true, sub: ['Greeting', 'Transitional words', 'Clock', 'Date', 'Search', ] },
   { name: 'Bookmark', active: false, overscroll: true, sub: ['Style', 'General', 'Orientation'] },
   { name: 'Toolbar', active: false, overscroll: true, sub: ['Style', 'Position'] },
   { name: 'Theme', active: false, overscroll: true, sub: ['Style', 'Colour', 'Accent', 'Font', 'Radius', 'Shadow', 'Shade', 'Background'] },

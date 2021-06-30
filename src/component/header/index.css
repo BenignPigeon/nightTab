@@ -1,0 +1,29 @@
+:root {
+  --header-item-opacity: 100;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  gap: calc(var(--layout-space) * var(--layout-gutter));
+}
+
+.header-item {
+  min-height: 2.5em;
+}
+
+.header-sort-placeholder {
+  box-shadow: var(--edge);
+  border-radius: var(--theme-radius-base);
+}
+
+.header-sort-placeholder.header-item>* {
+  visibility: hidden;
+}
+
+.is-theme-background-type-accent .header-sort-placeholder {
+  box-shadow: var(--edge-on-accent);
+}

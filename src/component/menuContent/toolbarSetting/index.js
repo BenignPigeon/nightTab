@@ -1,18 +1,21 @@
 import { state } from '../../state';
 import { data } from '../../data';
+import { header } from '../../header';
 import { bookmark } from '../../bookmark';
 import { theme } from '../../theme';
-import { toolbar } from '../../toolbar';
 import { version } from '../../version';
 import { menu } from '../../menu';
 import { icon } from '../../icon';
 import { logo } from '../../logo';
 import { link } from '../../link';
+import { layout } from '../../layout';
+import { toolbar } from '../../toolbar';
 
 import * as form from '../../form';
 
 import { Button } from '../../button';
 import { Collapse } from '../../collapse';
+import { Edge } from '../../edge';
 
 import { Control_helperText } from '../../control/helperText';
 import { Control_inputButton } from '../../control/inputButton';
@@ -43,11 +46,7 @@ toolbarSetting.style = (parent) => {
     groupName: 'toolbar-style',
     path: 'toolbar.style',
     action: () => {
-      toolbar.render.class();
-      toolbar.bar.clear();
-      toolbar.bar.render();
-      toolbar.bar.edit();
-      toolbar.render.style.update();
+      toolbar.current.update.style();
       data.save();
     }
   });
@@ -80,11 +79,8 @@ toolbarSetting.position = (parent) => {
     path: 'toolbar.position',
     gridSize: '2x2',
     action: () => {
-      toolbar.render.class();
-      toolbar.bar.clear();
-      toolbar.bar.render();
-      toolbar.bar.edit();
-      toolbar.render.style.update();
+      toolbar.current.update.position();
+      toolbar.current.update.style();
       data.save();
     }
   });

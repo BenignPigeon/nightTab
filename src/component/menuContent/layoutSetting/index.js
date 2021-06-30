@@ -1,14 +1,15 @@
 import { state } from '../../state';
 import { data } from '../../data';
+import { header } from '../../header';
 import { bookmark } from '../../bookmark';
 import { theme } from '../../theme';
-import { toolbar } from '../../toolbar';
 import { version } from '../../version';
 import { menu } from '../../menu';
 import { icon } from '../../icon';
 import { logo } from '../../logo';
 import { link } from '../../link';
 import { layout } from '../../layout';
+import { toolbar } from '../../toolbar';
 
 import * as form from '../../form';
 

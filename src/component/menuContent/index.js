@@ -1,6 +1,7 @@
 import { data } from '../data';
 import { layoutSetting } from './layoutSetting';
 import { bookmarkSetting } from './bookmarkSetting';
+import { headerSetting } from './headerSetting';
 import { toolbarSetting } from './toolbarSetting';
 import { themeSetting } from './themeSetting';
 import { dataSetting } from './dataSetting';
@@ -50,6 +51,10 @@ const MenuContent = function({
 
           case 'bookmark':
             bookmarkSetting[this.makeId(item)](formElement);
+            break;
+
+          case 'header':
+            headerSetting[this.makeId(item)](formElement);
             break;
 
           case 'toolbar':

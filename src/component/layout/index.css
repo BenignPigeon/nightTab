@@ -35,13 +35,25 @@
 .layout {
   width: calc(var(--layout-width) * 1%);
   font-size: calc(var(--layout-size) * 0.01rem);
-  padding: calc(var(--layout-padding) * 0.05em);
+  padding: calc(var(--layout-space) * var(--layout-padding));
   z-index: var(--z-index-layout);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-space) * var(--layout-padding));
 }
 
 .layout-bookmark {
-  display: grid;
-  gap: calc(var(--layout-padding) * 0.05em);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-space) * var(--layout-padding));
+  align-items: stretch;
+  justify-content: stretch;
+  width: 100%;
+}
+
+.layout-header {
+  display: flex;
+  gap: calc(var(--layout-space) * var(--layout-padding));
   align-items: stretch;
   justify-content: stretch;
   width: 100%;

@@ -7,6 +7,7 @@ component.data.init();
 component.layout.init();
 component.group.init();
 component.bookmark.init();
+component.header.init();
 component.theme.init();
 component.toolbar.init();
 component.menu.init();

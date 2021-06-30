@@ -281,6 +281,7 @@
 
 .form-input-button-sr-only.input-color-dot input[type="color"]+label {
   padding: 0.25em 1.75em;
+  min-width: 4em;
 }
 
 .form-input-button-sr-only.input-color-dot input[type="color"] {

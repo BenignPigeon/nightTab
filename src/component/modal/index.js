@@ -127,7 +127,9 @@ export const Modal = function({
 
       this.esc.add();
 
-      this.ctrlM.add();
+      this.ctrAltM.add();
+
+      this.ctrAltG.add();
 
     },
     remove: () => {
@@ -138,7 +140,9 @@ export const Modal = function({
 
       this.esc.remove();
 
-      this.ctrlM.remove();
+      this.ctrAltM.remove();
+
+      this.ctrAltG.remove();
 
     }
   };
@@ -150,8 +154,17 @@ export const Modal = function({
     }
   });
 
-  this.ctrlM = new KeyboardShortcut({
+  this.ctrAltM = new KeyboardShortcut({
     keycode: 77,
+    ctrl: true,
+    alt: true,
+    action: () => {
+      this.close();
+    }
+  });
+
+  this.ctrAltG = new KeyboardShortcut({
+    keycode: 71,
     ctrl: true,
     alt: true,
     action: () => {

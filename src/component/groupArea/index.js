@@ -66,7 +66,7 @@ const GroupArea = function({
     sort: new Button({
       text: 'Drag group to reorder',
       srOnly: true,
-      iconName: 'reorder',
+      iconName: 'drag',
       style: ['line'],
       title: 'Drag group to reorder',
       classList: ['group-control-button', 'group-control-sort'],
@@ -243,6 +243,8 @@ const GroupArea = function({
 
     this.element.control.control.appendChild(this.element.control.group);
 
+    this.element.header.appendChild(this.element.control.control);
+
     if (groupData.group.name.show && isValidString(groupData.group.name.text)) {
       this.element.header.appendChild(this.element.name.name);
     };
@@ -250,8 +252,6 @@ const GroupArea = function({
     if (groupData.group.openAll.show) {
       this.element.header.appendChild(this.openAll.button.button);
     };
-
-    this.element.header.appendChild(this.element.control.control);
 
     this.element.group.appendChild(this.element.header);
 

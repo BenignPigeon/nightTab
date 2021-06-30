@@ -1,18 +1,21 @@
 import { state } from '../../state';
 import { data } from '../../data';
+import { header } from '../../header';
 import { bookmark } from '../../bookmark';
 import { theme } from '../../theme';
-import { toolbar } from '../../toolbar';
 import { version } from '../../version';
 import { menu } from '../../menu';
 import { icon } from '../../icon';
 import { logo } from '../../logo';
 import { link } from '../../link';
+import { layout } from '../../layout';
+import { toolbar } from '../../toolbar';
 
 import * as form from '../../form';
 
 import { Button } from '../../button';
 import { Collapse } from '../../collapse';
+import { Edge } from '../../edge';
 
 import { Control_helperText } from '../../control/helperText';
 import { Control_inputButton } from '../../control/inputButton';
@@ -176,8 +179,7 @@ themeSetting.accent = (parent) => {
     minMaxObject: state.get.minMax(),
     action: () => {
       theme.render.accent();
-      toolbar.accent.update();
-      toolbar.render.style.update();
+      toolbar.current.update.accent();
       data.save();
     }
   });
@@ -534,7 +536,7 @@ themeSetting.background = (parent) => {
     action: () => {
       theme.render.background.type();
       themeBackgroundCollapse.update();
-      toolbar.render.style.update();
+      toolbar.current.update.style();
       updateDisabled();
       updateVideoPlayState();
       data.save();
@@ -550,7 +552,7 @@ themeSetting.background = (parent) => {
     minMaxObject: state.get.minMax(),
     action: () => {
       theme.render.background.color();
-      toolbar.render.style.update();
+      toolbar.current.update.style();
       data.save();
     }
   });
@@ -566,7 +568,7 @@ themeSetting.background = (parent) => {
     max: state.get.minMax().theme.background.gradient.angle.max,
     action: () => {
       theme.render.background.gradient();
-      toolbar.render.style.update();
+      toolbar.current.update.style();
       data.save();
     }
   });
@@ -580,7 +582,7 @@ themeSetting.background = (parent) => {
     minMaxObject: state.get.minMax(),
     action: () => {
       theme.render.background.gradient();
-      toolbar.render.style.update();
+      toolbar.current.update.style();
       data.save();
     }
   });
@@ -594,7 +596,7 @@ themeSetting.background = (parent) => {
     minMaxObject: state.get.minMax(),
     action: () => {
       theme.render.background.gradient();
-      toolbar.render.style.update();
+      toolbar.current.update.style();
       data.save();
     }
   });

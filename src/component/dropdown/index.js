@@ -51,6 +51,14 @@ const Dropdown = function({
 
   });
 
+  this.buttonStyle = {};
+
+  this.buttonStyle.update = (style) => {
+
+    this.dropdownButton.style.update(style);
+
+  };
+
   this.bind = () => {
 
     if (this.state.open) {

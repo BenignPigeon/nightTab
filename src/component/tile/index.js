@@ -88,7 +88,7 @@ const Tile = function({
     sort: new Button({
       text: 'Drag bookmark to reorder',
       srOnly: true,
-      iconName: 'reorder',
+      iconName: 'drag',
       style: ['link'],
       title: 'Drag bookmark to reorder',
       classList: ['bookmark-control-button', 'bookmark-control-sort']

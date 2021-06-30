@@ -1,13 +1,14 @@
 import { state } from '../state';
 import { data } from '../data';
+import { toolbar } from '../toolbar';
 
 import { KeyboardShortcut } from '../keyboardShortcut';
 
 import { menu } from '../menu';
 import { bookmark } from '../bookmark';
+import { header } from '../header';
 import { group } from '../group';
 import { theme } from '../theme';
-import { toolbar } from '../toolbar';
 
 import { themeSetting } from '../menuContent/themeSetting';
 
@@ -18,7 +19,7 @@ keyboard.esc = new KeyboardShortcut({
   action: () => {
     if (state.get.current().bookmark.edit && !state.get.current().modal && !state.get.current().menu) {
       bookmark.edit.close();
-      toolbar.bar.edit();
+      toolbar.current.update.edit();
     };
   }
 });
@@ -54,7 +55,18 @@ keyboard.ctrAltE = new KeyboardShortcut({
   action: () => {
     bookmark.edit.toggle();
     group.edit.toggle();
-    toolbar.bar.edit();
+    header.edit.toggle();
+    toolbar.current.update.edit();
+    data.save();
+  }
+});
+
+keyboard.ctrAltG = new KeyboardShortcut({
+  keycode: 71,
+  ctrl: true,
+  alt: true,
+  action: () => {
+    group.add();
     data.save();
   }
 });
@@ -73,6 +85,7 @@ keyboard.init = function() {
   keyboard.ctrAltA.add();
   keyboard.ctrAltE.add();
   keyboard.ctrAltD.add();
+  keyboard.ctrAltG.add();
   keyboard.ctrAltM.add();
 };
 

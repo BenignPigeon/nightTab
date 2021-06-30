@@ -1,0 +1,8 @@
+.search {
+  font-size: 1em;
+}
+
+.search input[type="text"] {
+  background-color: hsla(var(--button-background), calc(var(--header-item-opacity) / 100));
+  text-align: center;
+}

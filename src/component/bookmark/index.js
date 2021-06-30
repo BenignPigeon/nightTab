@@ -446,6 +446,7 @@ bookmark.bind.sort = function() {
 };
 
 bookmark.init = function() {
+  bookmark.mod.add.close();
   bookmark.render.style();
   bookmark.render.class();
   bookmark.render.item();

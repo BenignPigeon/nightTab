@@ -152,6 +152,8 @@ const MenuFrame = function({
 
       this.ctrAltA.add();
 
+      this.ctrAltG.add();
+
     },
     remove: () => {
 
@@ -162,6 +164,8 @@ const MenuFrame = function({
       this.esc.remove();
 
       this.ctrAltA.remove();
+
+      this.ctrAltG.remove();
 
     }
   };
@@ -175,6 +179,15 @@ const MenuFrame = function({
 
   this.ctrAltA = new KeyboardShortcut({
     keycode: 65,
+    ctrl: true,
+    alt: true,
+    action: () => {
+      this.close();
+    }
+  });
+
+  this.ctrAltG = new KeyboardShortcut({
+    keycode: 71,
     ctrl: true,
     alt: true,
     action: () => {

@@ -19,11 +19,9 @@ layout.element = {
 layout.area = {
   render: () => {
 
+    layout.area.assemble();
+
     const body = document.querySelector('body');
-
-    layout.element.layout.appendChild(layout.element.header);
-
-    layout.element.layout.appendChild(layout.element.bookmark);
 
     body.appendChild(layout.element.layout);
 
@@ -63,20 +61,44 @@ layout.area = {
 
     resize.observe(layout.element.layout);
   },
+  assemble: () => {
+
+    if (state.get.current().header.clock.second.show ||
+      state.get.current().header.clock.minute.show ||
+      state.get.current().header.clock.hour.show ||
+      state.get.current().header.date.day.show ||
+      state.get.current().header.date.date.show ||
+      state.get.current().header.date.month.show ||
+      state.get.current().header.date.year.show ||
+      state.get.current().header.greeting.show ||
+      state.get.current().header.transitional.show ||
+      state.get.current().header.search.show) {
+
+      layout.element.layout.appendChild(layout.element.header);
+
+    } else {
+
+      if (layout.element.layout.contains(layout.element.header)) {
+        layout.element.layout.removeChild(layout.element.header);
+      };
+
+    };
+
+    layout.element.layout.appendChild(layout.element.bookmark);
+
+  },
   clear: () => {
     clearChildNode(layout.element.layout);
   }
 };
 
 layout.header = {
-  render: () => {},
   clear: () => {
     clearChildNode(layout.element.header);
   }
 };
 
 layout.bookmark = {
-  render: () => {},
   clear: () => {
     clearChildNode(layout.element.bookmark);
   }

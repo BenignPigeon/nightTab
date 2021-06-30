@@ -9,11 +9,11 @@ state.default = {
     item: { justify: 'left' },
     greeting: { show: false, type: 'good', custom: '', name: '', size: 1, newLine: false },
     clock: {
-      hours: { show: true, display: 'number' },
-      minutes: { show: true, display: 'number' },
-      seconds: { show: false, display: 'number' },
+      hour: { show: true, display: 'number' },
+      minute: { show: true, display: 'number' },
+      second: { show: false, display: 'number' },
       separator: { show: true, text: '' },
-      meridiem: { show: true },
+      meridiem: { show: false },
       hour24: { show: true },
       size: 1,
       newLine: false
@@ -49,28 +49,28 @@ state.default = {
       newLine: false,
       newTab: false
     },
-    editAdd: { show: true, size: 1, opacity: 1, newLine: false },
-    colorAccent: { dot: { show: true }, show: true, size: 1, opacity: 1, newLine: false },
-    menu: { show: true, size: 1, opacity: 1, newLine: false },
-    order: ['greeting', 'transitional', 'clock', 'date', 'search', 'editAdd', 'colorAccent', 'menu'],
+    toolbar: { show: true },
+    order: ['clock', 'date', 'search', 'toolbar'],
     border: { top: 0, bottom: 0 },
     color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, style: 'scroll', opacity: 0.95, show: false, newLine: false },
-    position: 'inline',
-    radius: false
+    radius: false,
+    edit: false
   },
   bookmark: {
     size: 100,
     url: { show: true },
     line: { show: true },
     shadow: { show: true },
-    hoverScale: { show: false },
+    hoverScale: { show: true },
     orientation: 'bottom',
     style: 'block',
     newTab: false,
     edit: false,
-    add: false
+    add: false,
+    show: true
   },
   group: { area: { justify: 'left' }, edit: false, add: false },
+  toolbar: { style: 'transparent', position: 'bottom-right' },
   theme: {
     color: {
       range: { primary: { h: 222, s: 14 } },
@@ -98,7 +98,6 @@ state.default = {
     shadow: 75,
     shade: { opacity: 20 }
   },
-  toolbar: { style: 'transparent', position: 'bottom-right' },
   modal: false,
   menu: false,
   autoSuggest: false
