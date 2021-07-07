@@ -2,12 +2,13 @@ import { state } from '../state';
 import { data } from '../data';
 import { bookmark } from '../bookmark';
 import { group } from '../group';
-import { bookmarkForm } from '../bookmarkForm';
 
 import { Button } from '../button';
 import { Video } from '../video';
-import { StagedGroup } from '../stagedGroup';
 import { Modal } from '../modal';
+import { StagedBookmark } from '../stagedBookmark';
+import { StagedGroup } from '../stagedGroup';
+import { BookmarkForm } from '../bookmarkForm';
 
 import { node } from '../../utility/node';
 import { complexNode } from '../../utility/complexNode';
@@ -73,13 +74,13 @@ const Tile = function({
           bookmarkData.position.destination.item = 0;
         };
 
-        bookmark.mod.item.move(bookmarkData);
+        bookmark.item.mod.move(bookmarkData);
 
-        bookmark.render.clear();
+        bookmark.item.clear();
 
-        bookmark.render.item();
+        bookmark.item.render();
 
-        bookmark.bind.sort();
+        bookmark.sort.bind();
 
         data.save();
 
@@ -108,13 +109,13 @@ const Tile = function({
           bookmarkData.position.destination.item = bookmark.all[bookmarkData.position.destination.group].items.length - 1;
         };
 
-        bookmark.mod.item.move(bookmarkData);
+        bookmark.item.mod.move(bookmarkData);
 
-        bookmark.render.clear();
+        bookmark.item.clear();
 
-        bookmark.render.item();
+        bookmark.item.render();
 
-        bookmark.bind.sort();
+        bookmark.sort.bind();
 
         data.save();
 
@@ -129,41 +130,49 @@ const Tile = function({
       classList: ['bookmark-control-button', 'bookmark-control-edit'],
       func: () => {
 
-        bookmarkData.type.existing = true;
+        let newBookmarkData = new StagedBookmark();
+
+        newBookmarkData.link = JSON.parse(JSON.stringify(bookmarkData.link));
+
+        newBookmarkData.position = JSON.parse(JSON.stringify(bookmarkData.position));
+
+        newBookmarkData.type.existing = true;
+
+        const bookmarkForm = new BookmarkForm({ bookmarkData: newBookmarkData });
 
         const editModal = new Modal({
-          heading: isValidString(bookmarkData.link.display.name.text) ? 'Edit ' + bookmarkData.link.display.name.text : 'Edit unnamed bookmark',
-          content: bookmarkForm.form(bookmarkData),
+          heading: isValidString(newBookmarkData.link.display.name.text) ? 'Edit ' + newBookmarkData.link.display.name.text : 'Edit unnamed bookmark',
+          content: bookmarkForm.form(),
           successText: 'Save',
           width: 60,
           maxHeight: true,
           successAction: () => {
 
-            switch (bookmarkData.group.destination) {
+            switch (newBookmarkData.group.destination) {
               case 'new':
 
-                bookmarkData.position.destination.group = bookmark.all.length;
+                newBookmarkData.position.destination.group = bookmark.all.length;
 
                 const newGroupData = new StagedGroup();
 
                 newGroupData.newGroup({
-                  name: bookmarkData.group.name
+                  name: newBookmarkData.group.name
                 });
 
-                group.mod.item.add(newGroupData);
+                group.item.mod.add(newGroupData);
 
                 break;
             };
 
-            bookmark.mod.item.edit(bookmarkData);
+            bookmark.item.mod.edit(newBookmarkData);
 
-            bookmark.mod.propagate.state.apply(bookmarkData);
+            bookmark.item.mod.propagate(newBookmarkData);
 
-            bookmark.render.clear();
+            bookmark.item.clear();
 
-            bookmark.render.item();
+            bookmark.item.render();
 
-            bookmark.bind.sort();
+            bookmark.sort.bind();
 
             data.save();
 
@@ -190,13 +199,13 @@ const Tile = function({
           width: 'small',
           successAction: () => {
 
-            bookmark.mod.item.remove(bookmarkData);
+            bookmark.item.mod.remove(bookmarkData);
 
-            bookmark.render.clear();
+            bookmark.item.clear();
 
-            bookmark.render.item();
+            bookmark.item.render();
 
-            bookmark.bind.sort();
+            bookmark.sort.bind();
 
             data.save();
 
@@ -290,12 +299,12 @@ const Tile = function({
     this.element.bookmark.style.setProperty('--bookmark-border', bookmarkData.link.border);
 
     if (bookmarkData.link.accent.by == 'custom') {
-      this.element.bookmark.style.setProperty('--theme-accent-r', bookmarkData.link.accent.rgb.r);
-      this.element.bookmark.style.setProperty('--theme-accent-g', bookmarkData.link.accent.rgb.g);
-      this.element.bookmark.style.setProperty('--theme-accent-b', bookmarkData.link.accent.rgb.b);
-      this.element.bookmark.style.setProperty('--theme-accent', 'var(--theme-accent-r), var(--theme-accent-g), var(--theme-accent-b)');
+      this.element.bookmark.style.setProperty('--theme-accent-rgb-r', bookmarkData.link.accent.rgb.r);
+      this.element.bookmark.style.setProperty('--theme-accent-rgb-g', bookmarkData.link.accent.rgb.g);
+      this.element.bookmark.style.setProperty('--theme-accent-rgb-b', bookmarkData.link.accent.rgb.b);
+      this.element.bookmark.style.setProperty('--theme-accent', 'var(--theme-accent-rgb-r), var(--theme-accent-rgb-g), var(--theme-accent-rgb-b)');
 
-      this.element.bookmark.style.setProperty('--theme-accent-text', '0, 0%, calc(((((var(--theme-accent-r) * var(--theme-t-r)) + (var(--theme-accent-g) * var(--theme-t-g)) + (var(--theme-accent-b) * var(--theme-t-b))) / 255) - var(--theme-t)) * -10000000%)');
+      this.element.bookmark.style.setProperty('--theme-accent-rgb-text', '0, 0%, calc(((((var(--theme-accent-rgb-r) * var(--theme-t-r)) + (var(--theme-accent-rgb-g) * var(--theme-t-g)) + (var(--theme-accent-rgb-b) * var(--theme-t-b))) / 255) - var(--theme-t)) * -10000000%)');
 
       this.element.bookmark.style.setProperty('--bookmark-display-visual-color', 'var(--theme-accent)');
       this.element.bookmark.style.setProperty('--bookmark-display-visual-color-focus-hover', 'var(--theme-accent)');

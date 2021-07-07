@@ -2,7 +2,20 @@
   font-size: 1em;
 }
 
-.search input[type="text"] {
+.search input[type="search"] {
   background-color: hsla(var(--button-background), calc(var(--header-item-opacity) / 100));
   text-align: center;
+}
+
+input[type="search"]:hover {
+  background-color: hsla(var(--form-input-background-hover), calc(var(--header-item-opacity) / 100));
+}
+
+input[type="search"]:focus,
+input[type="search"]:active {
+  background-color: hsla(var(--form-input-background-focus-active), calc(var(--header-item-opacity) / 100));
+}
+
+input[type="search"]:disabled {
+  background-color: hsla(var(--form-input-background-disabled), calc(var(--header-item-opacity) / 100));
 }

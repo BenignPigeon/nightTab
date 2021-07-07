@@ -3,9 +3,19 @@ const state = {};
 state.current = {};
 
 state.default = {
-  layout: { size: 100, width: 80, padding: 40, gutter: 20, breakpoint: 'xs' },
+  layout: {
+    area: { header: { width: 100, align: 'center' }, bookmark: { width: 100, align: 'center' } },
+    alignment: 'center-center',
+    order: 'header-bookmark',
+    direction: 'vertical',
+    size: 100,
+    width: 80,
+    padding: 40,
+    gutter: 20,
+    breakpoint: 'xs'
+  },
   header: {
-    area: { width: 100, justify: 'center', align: 'center' },
+    area: { justify: 'center', align: 'center' },
     item: { justify: 'left' },
     greeting: { show: false, type: 'good', custom: '', name: '', size: 1, newLine: false },
     clock: {
@@ -49,14 +59,14 @@ state.default = {
       newLine: false,
       newTab: false
     },
-    toolbar: { show: true },
-    order: ['clock', 'date', 'search', 'toolbar'],
+    order: ['clock', 'date', 'search'],
     border: { top: 0, bottom: 0 },
     color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, style: 'scroll', opacity: 0.95, show: false, newLine: false },
     radius: false,
     edit: false
   },
   bookmark: {
+    area: { direction: "ltr", justify: "center" },
     size: 100,
     url: { show: true },
     line: { show: true },
@@ -70,14 +80,14 @@ state.default = {
     show: true
   },
   group: { area: { justify: 'left' }, edit: false, add: false },
-  toolbar: { style: 'transparent', position: 'bottom-right' },
+  toolbar: { style: 'transparent', position: 'bottom-right', accent: { show: true }, add: { show: true }, edit: { show: true } },
   theme: {
     color: {
       range: { primary: { h: 222, s: 14 } },
       lightness: { contrast: 28, offset: null, start: null, end: null },
       shades: 14
     },
-    accent: { hsl: { h: 221, s: 100, l: 50 }, rgb: { r: 0, g: 80, b: 255 } },
+    accent: { hsl: { h: 221, s: 100, l: 50 }, rgb: { r: 0, g: 80, b: 255 }, random: { active: false, style: 'any' } },
     font: {
       display: { name: '', weight: 400, style: 'normal' },
       ui: { name: '', weight: 400, style: 'normal' }
@@ -96,7 +106,7 @@ state.default = {
     style: 'dark',
     radius: 25,
     shadow: 75,
-    shade: { opacity: 20 }
+    shade: { opacity: 20, blur: 0 }
   },
   modal: false,
   menu: false,
@@ -108,6 +118,10 @@ state.minMax = {
     size: { min: 50, max: 500 }
   },
   layout: {
+    area: {
+      header: { width: { min: 10, max: 100 } },
+      bookmark: { width: { min: 10, max: 100 } }
+    },
     size: { min: 10, max: 200 },
     width: { min: 10, max: 100 },
     padding: { min: 0, max: 300 },
@@ -156,9 +170,7 @@ state.minMax = {
     },
     radius: { min: 0, max: 500 },
     shadow: { min: 0, max: 300 },
-    shade: {
-      opacity: { min: 0, max: 100 }
-    }
+    shade: { opacity: { min: 0, max: 100 }, blur: { min: 0, max: 200 } }
   }
 };
 
@@ -167,6 +179,28 @@ state.step = {
     font: {
       display: { weight: 100 },
       ui: { weight: 100 }
+    }
+  }
+};
+
+state.option = {
+  layout: {
+    alignment: ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'],
+    direction: ['horizontal', 'vertical'],
+    order: ['header-bookmark', 'bookmark-header']
+  },
+  bookmark: {
+    orientation: ['top', 'bottom'],
+    style: ['block', 'list']
+  },
+  group: {
+    area: { justify: ['left', 'center', 'right'] }
+  },
+  theme: {
+    accent: { random: { style: ['any', 'light', 'dark', 'pastel', 'saturated'] } },
+    style: ['dark', 'light', 'system'],
+    background: {
+      type: ['theme', 'accent', 'color', 'gradient', 'image', 'video']
     }
   }
 };
@@ -181,7 +215,8 @@ state.get = {
   current: () => { return state.current },
   default: () => { return JSON.parse(JSON.stringify(state.default)) },
   minMax: () => { return JSON.parse(JSON.stringify(state.minMax)) },
-  step: () => { return JSON.parse(JSON.stringify(state.step)) }
+  step: () => { return JSON.parse(JSON.stringify(state.step)) },
+  option: () => { return JSON.parse(JSON.stringify(state.option)) }
 };
 
 state.set = {

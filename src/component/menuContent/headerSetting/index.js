@@ -32,6 +32,9 @@ import { Control_textReset } from '../../control/textReset';
 
 import { node } from '../../../utility/node';
 import { complexNode } from '../../../utility/complexNode';
+import { applyCSSVar } from '../../../utility/applyCSSVar';
+import { applyCSSClass } from '../../../utility/applyCSSClass';
+import { applyCSSState } from '../../../utility/applyCSSState';
 
 const headerSetting = {};
 
@@ -72,7 +75,7 @@ headerSetting.greeting = (parent) => {
     id: 'header-greeting-show',
     labelText: 'Show Greeting',
     action: function() {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -97,7 +100,7 @@ headerSetting['transitional-words'] = (parent) => {
     id: 'header-transitional-show',
     labelText: 'Show Transitional words',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -124,7 +127,7 @@ headerSetting.clock = (parent) => {
     id: 'header-clock-hour-show',
     labelText: 'Show Hours',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -139,7 +142,7 @@ headerSetting.clock = (parent) => {
     id: 'header-clock-minute-show',
     labelText: 'Show Minutes',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -154,7 +157,7 @@ headerSetting.clock = (parent) => {
     id: 'header-clock-second-show',
     labelText: 'Show Seconds',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -181,7 +184,7 @@ headerSetting.date = (parent) => {
     id: 'header-date-day-show',
     labelText: 'Show Day',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -196,7 +199,7 @@ headerSetting.date = (parent) => {
     id: 'header-date-date-show',
     labelText: 'Show Date',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -211,7 +214,7 @@ headerSetting.date = (parent) => {
     id: 'header-date-month-show',
     labelText: 'Show Month',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -226,7 +229,7 @@ headerSetting.date = (parent) => {
     id: 'header-date-year-show',
     labelText: 'Show Year',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();
@@ -254,7 +257,7 @@ headerSetting.search = (parent) => {
     id: 'header-search-show',
     labelText: 'Show Search',
     action: () => {
-      header.mod.order.update();
+      header.item.mod.order();
       layout.header.clear();
       header.item.render();
       layout.area.assemble();

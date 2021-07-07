@@ -5,6 +5,9 @@ import { node } from '../../utility/node';
 import { get } from '../../utility/get';
 import { set } from '../../utility/set';
 import { clearChildNode } from '../../utility/clearChildNode';
+import { applyCSSVar } from '../../utility/applyCSSVar';
+import { applyCSSClass } from '../../utility/applyCSSClass';
+import { applyCSSState } from '../../utility/applyCSSState';
 
 import './index.css';
 
@@ -55,7 +58,7 @@ layout.area = {
         value: breakpoint
       });
 
-      layout.class.render.breakpoint();
+      layout.breakpoint.bind();
 
     });
 
@@ -63,15 +66,14 @@ layout.area = {
   },
   assemble: () => {
 
-    if (state.get.current().header.clock.second.show ||
-      state.get.current().header.clock.minute.show ||
-      state.get.current().header.clock.hour.show ||
-      state.get.current().header.date.day.show ||
-      state.get.current().header.date.date.show ||
-      state.get.current().header.date.month.show ||
-      state.get.current().header.date.year.show ||
+    if ((state.get.current().header.clock.second.show ||
+        state.get.current().header.clock.minute.show ||
+        state.get.current().header.clock.hour.show) ||
+      (state.get.current().header.date.day.show ||
+        state.get.current().header.date.date.show ||
+        state.get.current().header.date.month.show ||
+        state.get.current().header.date.year.show) ||
       state.get.current().header.greeting.show ||
-      state.get.current().header.transitional.show ||
       state.get.current().header.search.show) {
 
       layout.element.layout.appendChild(layout.element.header);
@@ -84,7 +86,17 @@ layout.area = {
 
     };
 
-    layout.element.layout.appendChild(layout.element.bookmark);
+    if (state.get.current().bookmark.show) {
+
+      layout.element.layout.appendChild(layout.element.bookmark);
+
+    } else {
+
+      if (layout.element.layout.contains(layout.element.bookmark)) {
+        layout.element.layout.removeChild(layout.element.bookmark);
+      };
+
+    };
 
   },
   clear: () => {
@@ -104,88 +116,64 @@ layout.bookmark = {
   }
 };
 
-layout.class = {
-  render: {
-    breakpoint: () => {
+layout.breakpoint = {
+  bind: () => {
 
-      const html = document.querySelector('html');
+    const html = document.querySelector('html');
 
-      const size = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
+    const size = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
 
-      size.forEach((item, i) => {
-        html.classList.remove('is-layout-breakpoint-' + item);
-      });
+    size.forEach((item, i) => {
+      html.classList.remove('is-layout-breakpoint-' + item);
+    });
 
-      switch (state.get.current().layout.breakpoint) {
-        case 'xs':
-          html.classList.add('is-layout-breakpoint-xs');
-          break;
+    switch (state.get.current().layout.breakpoint) {
+      case 'xs':
+        html.classList.add('is-layout-breakpoint-xs');
+        break;
 
-        case 'sm':
-          html.classList.add('is-layout-breakpoint-sm');
-          break;
+      case 'sm':
+        html.classList.add('is-layout-breakpoint-sm');
+        break;
 
-        case 'md':
-          html.classList.add('is-layout-breakpoint-md');
-          break;
+      case 'md':
+        html.classList.add('is-layout-breakpoint-md');
+        break;
 
-        case 'lg':
-          html.classList.add('is-layout-breakpoint-lg');
-          break;
+      case 'lg':
+        html.classList.add('is-layout-breakpoint-lg');
+        break;
 
-        case 'xl':
-          html.classList.add('is-layout-breakpoint-xl');
-          break;
+      case 'xl':
+        html.classList.add('is-layout-breakpoint-xl');
+        break;
 
-        case 'xxl':
-          html.classList.add('is-layout-breakpoint-xxl');
-          break;
+      case 'xxl':
+        html.classList.add('is-layout-breakpoint-xxl');
+        break;
 
-      };
-    }
-  }
-};
-
-layout.variable = {
-  render: {
-    size: () => {
-
-      const html = document.querySelector('html');
-
-      html.style.setProperty('--layout-size', state.get.current().layout.size);
-
-    },
-    width: () => {
-
-      const html = document.querySelector('html');
-
-      html.style.setProperty('--layout-width', state.get.current().layout.width);
-
-    },
-    padding: () => {
-
-      const html = document.querySelector('html');
-
-      html.style.setProperty('--layout-padding', state.get.current().layout.padding);
-
-    },
-    gutter: () => {
-
-      const html = document.querySelector('html');
-
-      html.style.setProperty('--layout-gutter', state.get.current().layout.gutter);
-
-    }
+    };
   }
 };
 
 layout.init = function() {
+  applyCSSVar([
+    'layout.size',
+    'layout.width',
+    'layout.area.header.width',
+    'layout.area.header.align',
+    'layout.area.bookmark.width',
+    'layout.area.bookmark.align',
+    'layout.padding',
+    'layout.gutter'
+  ]);
+  applyCSSClass([
+    'layout.alignment',
+    'layout.direction',
+    'layout.order'
+  ]);
   layout.area.render();
-  layout.class.render.breakpoint();
-  layout.variable.render.size();
-  layout.variable.render.width();
-  layout.variable.render.padding();
-  layout.variable.render.gutter();
+  layout.breakpoint.bind();
 };
 
 export { layout };

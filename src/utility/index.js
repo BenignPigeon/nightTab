@@ -9,6 +9,9 @@ import { node } from './node';
 import { set } from './set';
 import { trimString } from './trimString';
 import { clearChildNode } from './clearChildNode';
+import { applyCSSClass } from './applyCSSClass';
+import { applyCSSVar } from './applyCSSVar';
+import { applyCSSState } from './applyCSSState';
 
 export const utility = {
   complexNode,
@@ -21,5 +24,8 @@ export const utility = {
   node,
   set,
   trimString,
-  clearChildNode
+  clearChildNode,
+  applyCSSClass,
+  applyCSSVar,
+  applyCSSState
 };

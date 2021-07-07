@@ -5,8 +5,8 @@
   height: inherit;
   text-align: center;
   display: flex;
-  /* grid-column-start: 1; */
-  /* grid-column-end: -1; */
+  grid-column-start: 1;
+  grid-column-end: -1;
   gap: 1em;
   justify-content: center;
   align-items: center;

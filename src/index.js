@@ -12,3 +12,5 @@ component.theme.init();
 component.toolbar.init();
 component.menu.init();
 component.keyboard.init();
+
+component.menu.open();

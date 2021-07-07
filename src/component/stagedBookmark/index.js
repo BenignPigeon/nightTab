@@ -13,4 +13,6 @@ export const StagedBookmark = function(bookmarkData) {
 
   this.type = { new: false, existing: false };
 
+  this.propagate = { display: false, layout: false, theme: false };
+
 };

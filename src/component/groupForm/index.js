@@ -34,54 +34,18 @@ import { randomNumber } from '../../utility/randomNumber';
 
 import './index.css';
 
-const groupForm = {};
+const GroupForm = function({
+  groupData = false
+} = {}) {
 
-groupForm.current = null;
+  this.element = {
+    form: node('form|class:group-form'),
+    main: node('div|class:group-form-main')
+  };
 
-groupForm.form = function(groupData) {
+  this.selectOption = {};
 
-  const groupFormElement = node('form|class:group-form');
-
-  const groupFormMain = node('div|class:group-form-main');
-
-  const groupNameShow = new Control_checkbox({
-    object: groupData.group,
-    path: 'name.show',
-    id: 'name-show',
-    labelText: 'Show Group name',
-    action: () => {
-      groupFormElement.disable();
-    }
-  });
-
-  const groupNameText = new Control_text({
-    object: groupData.group,
-    path: 'name.text',
-    id: 'name-text',
-    value: groupData.group.name.text,
-    placeholder: 'Example group',
-    labelText: 'Group name',
-    srOnly: true
-  });
-
-  const groupNameRandom = new Button({
-    text: 'Random Group name',
-    style: ['line'],
-    func: () => {
-      groupData.group.name.text = randomString({ adjectivesCount: randomNumber(1, 3) });
-      groupNameText.update();
-    }
-  });
-
-  const groupOpenAllShow = new Control_checkbox({
-    object: groupData.group,
-    path: 'openAll.show',
-    id: 'openAll-show',
-    labelText: 'Show Open all',
-    description: 'Open all button will appear if there is at least one Bookmark in this Group.'
-  });
-
-  const positionDestinationOptions = function() {
+  this.selectOption.group = () => {
 
     const option = [];
 
@@ -109,98 +73,186 @@ groupForm.form = function(groupData) {
 
   };
 
-  const positionDestination = new Control_select({
+  this.control = {};
+
+  this.control.group = {
+    name: {
+      text: new Control_text({
+        object: groupData.group,
+        path: 'name.text',
+        id: 'name-text',
+        value: groupData.group.name.text,
+        placeholder: 'Example group',
+        labelText: 'Group name',
+        srOnly: true
+      }),
+      show: new Control_checkbox({
+        object: groupData.group,
+        path: 'name.show',
+        id: 'name-show',
+        labelText: 'Show Group name',
+        action: () => {
+          this.disable();
+        }
+      }),
+      random: new Button({
+        text: 'Random Group name',
+        style: ['line'],
+        func: () => {
+          groupData.group.name.text = randomString({ adjectivesCount: randomNumber(1, 3) });
+          this.control.group.name.text.update();
+        }
+      })
+    },
+    openAll: {
+      show: new Control_checkbox({
+        object: groupData.group,
+        path: 'openAll.show',
+        id: 'openAll-show',
+        labelText: 'Show Open all',
+        description: 'Open all button will appear if there is at least one Bookmark in this Group.'
+      })
+    },
+  };
+
+  this.control.destination = new Control_select({
     object: groupData,
     path: 'position.destination',
     id: 'position-destination',
     labelText: 'Position',
-    option: positionDestinationOptions(),
+    option: this.selectOption.group(),
     selected: groupData.position.destination
   });
 
-  groupFormElement.appendChild(node('div|class:group-form-main', [
-    form.fieldset({
-      children: [
-        form.wrap({
-          children: [
-            node('h2:Name')
-          ]
-        }),
-        form.wrap({
-          children: [
-            form.indent({
-              children: [
-                groupNameShow.wrap(),
-                form.wrap({
-                  children: [
-                    form.indent({
-                      children: [
-                        groupNameText.wrap(),
-                        groupNameRandom.wrap()
-                      ]
-                    })
-                  ]
-                })
-              ]
-            })
-          ]
-        })
-      ]
-    }),
-    node('hr'),
-    form.fieldset({
-      children: [
-        form.wrap({
-          children: [
-            node('h2:Open all')
-          ]
-        }),
-        form.wrap({
-          children: [
-            form.indent({
-              children: [
-                groupOpenAllShow.wrap()
-              ]
-            })
-          ]
-        })
-      ]
-    }),
-    node('hr'),
-    form.fieldset({
-      children: [
-        form.wrap({
-          children: [
-            node('h2:Ordering')
-          ]
-        }),
-        form.wrap({
-          children: [
-            form.indent({
-              children: [
-                positionDestination.wrap()
-              ]
-            })
-          ]
-        })
-      ]
-    })
-  ]));
-
-  groupFormElement.disable = () => {
+  this.disable = () => {
 
     if (groupData.group.name.show) {
-      groupNameText.enable();
-      groupNameRandom.enable();
+      this.control.group.name.text.enable();
+      this.control.group.name.random.enable();
     } else {
-      groupNameText.disable();
-      groupNameRandom.disable();
+      this.control.group.name.text.disable();
+      this.control.group.name.random.disable();
     };
 
   };
 
-  return groupFormElement;
+  this.update = () => {
+    this.control.group.name.text.update();
+    this.control.group.name.show.update();
+  };
+
+  this.assemble = () => {
+
+    this.element.main.appendChild(
+      form.fieldset({
+        children: [
+          form.wrap({
+            children: [
+              node('h2:Name|class:mb-2'),
+              node('p:Display a Name above this Group.|class:mb-5')
+            ]
+          }),
+          form.wrap({
+            children: [
+              form.indent({
+                children: [
+                  this.control.group.name.show.wrap(),
+                  form.wrap({
+                    children: [
+                      form.indent({
+                        children: [
+                          this.control.group.name.text.wrap(),
+                          this.control.group.name.random.wrap()
+                        ]
+                      })
+                    ]
+                  })
+                ]
+              })
+            ]
+          })
+        ]
+      })
+    );
+
+    this.element.main.appendChild(
+      node('hr'),
+    );
+
+    this.element.main.appendChild(
+      form.fieldset({
+        children: [
+          form.wrap({
+            children: [
+              node('h2:Open all|class:mb-2'),
+              node('p:Display a button to open all Bookmarks in this Group.|class:mb-5')
+            ]
+          }),
+          form.wrap({
+            children: [
+              form.indent({
+                children: [
+                  this.control.group.openAll.show.wrap()
+                ]
+              })
+            ]
+          })
+        ]
+      })
+    );
+
+    this.element.main.appendChild(
+      node('hr'),
+    );
+
+    this.element.main.appendChild(
+      form.fieldset({
+        children: [
+          form.wrap({
+            children: [
+              node('h2:Ordering|class:mb-2'),
+              node('p:The position of this Group.|class:mb-5')
+            ]
+          }),
+          form.wrap({
+            children: [
+              form.indent({
+                children: [
+                  this.control.destination.wrap()
+                ]
+              })
+            ]
+          })
+        ]
+      })
+    );
+
+    this.element.form.appendChild(this.element.main);
+
+  };
+
+  this.bind = () => {
+
+    this.element.form.addEventListener('keydown', (event) => {
+
+      if (event.keyCode == 13) { event.preventDefault(); return false; };
+
+    });
+
+  };
+
+  this.form = () => {
+
+    return this.element.form;
+
+  };
+
+  this.assemble();
+
+  this.disable();
+
+  this.update();
 
 };
 
-export { groupForm };
+export { GroupForm };

@@ -11,6 +11,14 @@
   gap: calc(var(--layout-space) * var(--layout-gutter));
 }
 
+/* .is-layout-direction-horizontal .header {
+  width: 100%;
+}
+
+.is-bookmark-show.is-layout-direction-horizontal .header {
+  width: calc(calc(var(--header-area-width) / 2) - calc(calc(var(--bookmark-area-width) / 2) - 50%));
+} */
+
 .header-item {
   min-height: 2.5em;
 }

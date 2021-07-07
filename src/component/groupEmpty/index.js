@@ -25,7 +25,7 @@ const GroupEmpty = function({
       text: 'Add a Bookmark',
       size: 'small',
       func: () => {
-        bookmark.add({
+        bookmark.add.render({
           groupIndex: groupIndex
         });
       }

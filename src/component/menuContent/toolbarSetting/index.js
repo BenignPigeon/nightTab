@@ -32,6 +32,9 @@ import { Control_textReset } from '../../control/textReset';
 
 import { node } from '../../../utility/node';
 import { complexNode } from '../../../utility/complexNode';
+import { applyCSSVar } from '../../../utility/applyCSSVar';
+import { applyCSSClass } from '../../../utility/applyCSSClass';
+import { applyCSSState } from '../../../utility/applyCSSState';
 
 const toolbarSetting = {};
 
@@ -64,6 +67,51 @@ toolbarSetting.style = (parent) => {
 
 };
 
+toolbarSetting.controls = (parent) => {
+
+  const toolbarAccentShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'toolbar-accent-show',
+    path: 'toolbar.accent.show',
+    labelText: 'Show Accent control',
+    action: () => {
+      toolbar.current.update.control();
+      data.save();
+    }
+  });
+
+  const toolbarAddShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'toolbar-add-show',
+    path: 'toolbar.add.show',
+    labelText: 'Show Add control',
+    action: () => {
+      toolbar.current.update.control();
+      data.save();
+    }
+  });
+
+  const toolbarEditShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'toolbar-edit-show',
+    path: 'toolbar.edit.show',
+    labelText: 'Show Edit control',
+    action: () => {
+      toolbar.current.update.control();
+      data.save();
+    }
+  });
+
+  parent.appendChild(
+    node('div', [
+      toolbarAccentShow.wrap(),
+      toolbarAddShow.wrap(),
+      toolbarEditShow.wrap()
+    ])
+  );
+
+};
+
 toolbarSetting.position = (parent) => {
 
   const toolbarPosition = new Control_radioGrid({
@@ -91,7 +139,7 @@ toolbarSetting.position = (parent) => {
 
   parent.appendChild(
     node('div', [
-      toolbarPosition.grid(),
+      toolbarPosition.wrap(),
       toolbarPositionHelper.wrap()
     ])
   );

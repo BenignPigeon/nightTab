@@ -1,6 +1,6 @@
 const themePreset = {};
 
-themePreset.get = function() {
+themePreset.get = () => {
   return [{
     name: 'nightTab (default)',
     font: state.get.default().theme.font,

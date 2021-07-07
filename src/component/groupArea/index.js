@@ -4,10 +4,10 @@ import { theme } from '../theme';
 import { group } from '../group';
 import { layout } from '../layout';
 import { bookmark } from '../bookmark';
-import { groupForm } from '../groupForm';
 
 import { Button } from '../button';
 import { Modal } from '../modal';
+import { GroupForm } from '../groupForm';
 
 import { node } from '../../utility/node';
 import { complexNode } from '../../utility/complexNode';
@@ -51,13 +51,13 @@ const GroupArea = function({
           groupData.position.destination = 0;
         };
 
-        group.mod.item.move(groupData);
+        group.item.mod.move(groupData);
 
         layout.bookmark.clear();
 
-        bookmark.render.item();
+        bookmark.item.render();
 
-        bookmark.bind.sort();
+        bookmark.sort.bind();
 
         data.save();
 
@@ -86,13 +86,13 @@ const GroupArea = function({
           groupData.position.destination = bookmark.all.length - 1;
         };
 
-        group.mod.item.move(groupData);
+        group.item.mod.move(groupData);
 
         layout.bookmark.clear();
 
-        bookmark.render.item();
+        bookmark.item.render();
 
-        bookmark.bind.sort();
+        bookmark.sort.bind();
 
         data.save();
 
@@ -109,20 +109,22 @@ const GroupArea = function({
 
         groupData.type.existing = true;
 
+        const groupForm = new GroupForm({ groupData: groupData });
+
         const editModal = new Modal({
           heading: isValidString(groupData.group.name.text) ? 'Edit ' + groupData.group.name.text : 'Edit unnamed group',
-          content: groupForm.form(groupData),
+          content: groupForm.form(),
           successText: 'Save',
-          width: 'small',
+          width: 40,
           successAction: () => {
 
-            group.mod.item.edit(groupData);
+            group.item.mod.edit(groupData);
 
             layout.bookmark.clear();
 
-            bookmark.render.item();
+            bookmark.item.render();
 
-            bookmark.bind.sort();
+            bookmark.sort.bind();
 
             data.save();
 
@@ -149,13 +151,13 @@ const GroupArea = function({
           width: 'small',
           successAction: () => {
 
-            group.mod.item.remove(groupData);
+            group.item.mod.remove(groupData);
 
             layout.bookmark.clear();
 
-            bookmark.render.item();
+            bookmark.item.render();
 
-            bookmark.bind.sort();
+            bookmark.sort.bind();
 
             data.save();
 

@@ -32,8 +32,131 @@ import { Control_textReset } from '../../control/textReset';
 
 import { node } from '../../../utility/node';
 import { complexNode } from '../../../utility/complexNode';
+import { applyCSSVar } from '../../../utility/applyCSSVar';
+import { applyCSSClass } from '../../../utility/applyCSSClass';
+import { applyCSSState } from '../../../utility/applyCSSState';
 
 const bookmarkSetting = {};
+
+bookmarkSetting.control = {
+  bookmark: {
+    show: false
+  }
+};
+
+bookmarkSetting.general = (parent) => {
+
+  const bookmarkEdge = new Edge({ element: bookmark.tile.current[0].tile() });
+
+  const bookmarkShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-show',
+    path: 'bookmark.show',
+    labelText: 'Show Bookmarks',
+    action: () => {
+      layout.area.assemble();
+      applyCSSClass('bookmark.show');
+      data.save();
+    }
+  });
+
+  const bookmarkSize = new Control_slider({
+    object: state.get.current(),
+    path: 'bookmark.size',
+    id: 'bookmark-size',
+    labelText: 'Bookmark size',
+    value: state.get.current().bookmark.size,
+    defaultValue: state.get.default().bookmark.size,
+    min: state.get.minMax().bookmark.size.min,
+    max: state.get.minMax().bookmark.size.max,
+    action: () => {
+      applyCSSVar('bookmark.size');
+      data.save();
+    },
+    sliderAction: () => {
+      if (bookmark.tile.current[0].tile()) { bookmarkEdge.track(); };
+    },
+    mouseDownAction: () => {
+      bookmarkEdge.show();
+    },
+    mouseUpAction: () => {
+      bookmarkEdge.hide();
+    }
+  });
+
+  const bookmarkUrlShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-url-show',
+    path: 'bookmark.url.show',
+    labelText: 'Show URL on Bookmark hover',
+    action: () => {
+      applyCSSState('bookmark.url.show');
+      data.save();
+    }
+  });
+
+  const bookmarkLineShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-line-show',
+    path: 'bookmark.line.show',
+    labelText: 'Show Bookmark line',
+    action: () => {
+      applyCSSState('bookmark.line.show');
+      data.save();
+    }
+  });
+
+  const bookmarkShadowShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-shadow-show',
+    path: 'bookmark.shadow.show',
+    labelText: 'Show shadow on Bookmark hover',
+    description: 'Effects may not be visible if Theme Shadow is set to 0.',
+    action: () => {
+      applyCSSState('bookmark.shadow.show');
+      data.save();
+    }
+  });
+
+  const bookmarkHoverScaleShow = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-hoverScale-show',
+    path: 'bookmark.hoverScale.show',
+    labelText: 'Grow on Bookmark hover',
+    action: () => {
+      applyCSSState('bookmark.hoverScale.show');
+      data.save();
+    }
+  });
+
+  const bookmarkNewTab = new Control_checkbox({
+    object: state.get.current(),
+    id: 'bookmark-newTab',
+    path: 'bookmark.newTab',
+    labelText: 'Open Bookmarks in a new tab',
+    action: () => {
+      bookmark.item.clear();
+      bookmark.item.render();
+      bookmark.sort.bind();
+      data.save();
+    }
+  });
+
+  parent.appendChild(
+    node('div', [
+      bookmarkShow.wrap(),
+      node('hr'),
+      bookmarkSize.wrap(),
+      node('hr'),
+      bookmarkUrlShow.wrap(),
+      bookmarkLineShow.wrap(),
+      bookmarkShadowShow.wrap(),
+      bookmarkHoverScaleShow.wrap(),
+      bookmarkNewTab.wrap()
+    ])
+  );
+
+};
 
 bookmarkSetting.style = (parent) => {
 
@@ -49,21 +172,21 @@ bookmarkSetting.style = (parent) => {
 
       switch (state.get.current().bookmark.style) {
         case 'block':
-          bookmark.mod.layout.direction.vertical();
+          bookmark.direction.mod.vertical();
           break;
 
         case 'list':
-          bookmark.mod.layout.direction.horizontal();
+          bookmark.direction.mod.horizontal();
           break;
       };
 
-      bookmark.render.class();
+      applyCSSClass('bookmark.style');
 
-      bookmark.render.clear();
+      bookmark.item.clear();
 
-      bookmark.render.item();
+      bookmark.item.render();
 
-      bookmark.bind.sort();
+      bookmark.sort.bind();
 
       data.save();
 
@@ -73,125 +196,6 @@ bookmarkSetting.style = (parent) => {
   parent.appendChild(
     node('div', [
       bookmarkStyle.wrap(),
-    ])
-  );
-
-};
-
-bookmarkSetting.general = (parent) => {
-
-  const bookmarkEdge = new Edge({ element: document.querySelector('.bookmark') });
-
-  const bookmarkSize = new Control_slider({
-    object: state.get.current(),
-    path: 'bookmark.size',
-    id: 'bookmark-size',
-    labelText: 'Bookmark size',
-    value: state.get.current().bookmark.size,
-    defaultValue: state.get.default().bookmark.size,
-    min: state.get.minMax().bookmark.size.min,
-    max: state.get.minMax().bookmark.size.max,
-    action: () => {
-
-      bookmark.render.style();
-
-      bookmarkEdge.updatePosition();
-
-      data.save();
-
-    },
-    mouseDownAction: () => {
-      bookmarkEdge.open();
-    },
-    mouseUpAction: () => {
-      bookmarkEdge.close();
-    }
-  });
-
-  const bookmarkUrlShow = new Control_checkbox({
-    object: state.get.current(),
-    id: 'bookmark-url-show',
-    path: 'bookmark.url.show',
-    labelText: 'Show URL on Bookmark hover',
-    action: () => {
-
-      bookmark.render.class();
-
-      data.save();
-
-    }
-  });
-
-  const bookmarkLineShow = new Control_checkbox({
-    object: state.get.current(),
-    id: 'bookmark-line-show',
-    path: 'bookmark.line.show',
-    labelText: 'Show Bookmark line',
-    action: () => {
-
-      bookmark.render.class();
-
-      data.save();
-
-    }
-  });
-
-  const bookmarkShadowShow = new Control_checkbox({
-    object: state.get.current(),
-    id: 'bookmark-shadow-show',
-    path: 'bookmark.shadow.show',
-    labelText: 'Show shadow on Bookmark hover',
-    description: 'Effects may not be visible if Theme Shadow is set to 0.',
-    action: () => {
-
-      bookmark.render.class();
-
-      data.save();
-
-    }
-  });
-
-  const bookmarkHoverScaleShow = new Control_checkbox({
-    object: state.get.current(),
-    id: 'bookmark-hoverScale-show',
-    path: 'bookmark.hoverScale.show',
-    labelText: 'Grow on Bookmark hover',
-    action: () => {
-
-      bookmark.render.class();
-
-      data.save();
-
-    }
-  });
-
-  const bookmarkNewTab = new Control_checkbox({
-    object: state.get.current(),
-    id: 'bookmark-newTab',
-    path: 'bookmark.newTab',
-    labelText: 'Open Bookmarks in a new tab',
-    action: () => {
-
-      bookmark.render.clear();
-
-      bookmark.render.item();
-
-      bookmark.bind.sort();
-
-      data.save();
-
-    }
-  });
-
-  parent.appendChild(
-    node('div', [
-      bookmarkSize.wrap(),
-      node('hr'),
-      bookmarkUrlShow.wrap(),
-      bookmarkLineShow.wrap(),
-      bookmarkShadowShow.wrap(),
-      bookmarkHoverScaleShow.wrap(),
-      bookmarkNewTab.wrap()
     ])
   );
 
@@ -208,7 +212,7 @@ bookmarkSetting.orientation = (parent) => {
     groupName: 'bookmark-orientation',
     path: 'bookmark.orientation',
     action: () => {
-      bookmark.render.class();
+      applyCSSClass('bookmark.orientation');
       data.save();
     }
   });

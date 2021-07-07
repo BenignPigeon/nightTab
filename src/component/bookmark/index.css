@@ -2,7 +2,7 @@
   --bookmark-color: var(--theme-primary-020);
   --bookmark-color-focus-hover: var(--theme-primary-030);
   --bookmark-display-visual-color: var(--theme-accent);
-  --bookmark-display-visual-color-focus-hover: var(--theme-accent-text);
+  --bookmark-display-visual-color-focus-hover: var(--theme-accent-rgb-text);
   --bookmark-display-name-color: var(--theme-primary-text-020);
   --bookmark-display-name-color-focus-hover: var(--theme-primary-text-030);
 }
@@ -49,18 +49,18 @@
   z-index: 2;
 }
 
-.is-bookmark-hover-scale-show:not(.is-bookmark-edit) .bookmark {
+.is-bookmark-hoverscale-show:not(.is-bookmark-edit) .bookmark {
   transform: scale(1);
   transition: transform var(--layout-transition-extra-fast);
 }
 
-.is-bookmark-hover-scale-show:not(.is-bookmark-edit) .bookmark:focus-within,
-.is-bookmark-hover-scale-show:not(.is-bookmark-edit) .bookmark:focus,
-.is-bookmark-hover-scale-show:not(.is-bookmark-edit) .bookmark:hover {
+.is-bookmark-hoverscale-show:not(.is-bookmark-edit) .bookmark:focus-within,
+.is-bookmark-hoverscale-show:not(.is-bookmark-edit) .bookmark:focus,
+.is-bookmark-hoverscale-show:not(.is-bookmark-edit) .bookmark:hover {
   transform: scale(1.05);
 }
 
-.is-bookmark-hover-scale-show:not(.is-bookmark-edit) .bookmark:active {
+.is-bookmark-hoverscale-show:not(.is-bookmark-edit) .bookmark:active {
   transform: scale(1.04);
   transition: none;
 }
@@ -762,7 +762,7 @@
   border-radius: 0;
   min-height: initial;
   position: relative;
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
   transition: background-color var(--layout-transition-fast), border-color var(--layout-transition-fast), color var(--layout-transition-fast), top var(--layout-transition-fast), right var(--layout-transition-fast), bottom var(--layout-transition-fast), left var(--layout-transition-fast);
 }
 
@@ -953,7 +953,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
 }
 
 .bookmark-sort-placeholder {

@@ -84,6 +84,8 @@ export const Modal = function({
       openAction();
     };
 
+    pageLock.render();
+
   };
 
   this.close = () => {
@@ -114,6 +116,8 @@ export const Modal = function({
 
     }, 6000);
 
+    pageLock.render();
+
   };
 
   this.delayedForceRemove = null;
@@ -131,6 +135,8 @@ export const Modal = function({
 
       this.ctrAltG.add();
 
+      this.ctrAltA.add();
+
     },
     remove: () => {
 
@@ -144,33 +150,18 @@ export const Modal = function({
 
       this.ctrAltG.remove();
 
+      this.ctrAltA.remove();
+
     }
   };
 
-  this.esc = new KeyboardShortcut({
-    keycode: 27,
-    action: () => {
-      this.close();
-    }
-  });
+  this.esc = new KeyboardShortcut({ keycode: 27, action: () => { this.close(); } });
 
-  this.ctrAltM = new KeyboardShortcut({
-    keycode: 77,
-    ctrl: true,
-    alt: true,
-    action: () => {
-      this.close();
-    }
-  });
+  this.ctrAltM = new KeyboardShortcut({ keycode: 77, ctrl: true, alt: true, action: () => { this.close(); } });
 
-  this.ctrAltG = new KeyboardShortcut({
-    keycode: 71,
-    ctrl: true,
-    alt: true,
-    action: () => {
-      this.close();
-    }
-  });
+  this.ctrAltG = new KeyboardShortcut({ keycode: 71, ctrl: true, alt: true, action: () => { this.close(); } });
+
+  this.ctrAltA = new KeyboardShortcut({ keycode: 65, ctrl: true, alt: true, action: () => { this.close(); } });
 
   this.clickOut = (event) => {
 
@@ -333,7 +324,11 @@ export const Modal = function({
   };
 
   this.modal = () => {
+
+    state.get.current().modal = false;
+
     return this.element.modal;
+
   };
 
 };

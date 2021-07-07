@@ -27,7 +27,9 @@ const Collapse = function({
     return target;
   };
 
-  this.collapseElement = node('div|class:collapse');
+  this.element = {
+    collapse: node('div|class:collapse')
+  };
 
   this.collapse = () => {
     target.forEach((item, i) => {
@@ -35,10 +37,10 @@ const Collapse = function({
 
       item.area.appendChild(item.spacer);
 
-      this.collapseElement.appendChild(item.area);
+      this.element.collapse.appendChild(item.area);
     });
 
-    return this.collapseElement;
+    return this.element.collapse;
   };
 
   this.toggle = () => {
@@ -108,6 +110,7 @@ const Collapse = function({
         });
         break;
     };
+
   };
 
 };

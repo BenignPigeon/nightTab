@@ -32,6 +32,9 @@ import { Control_textReset } from '../../control/textReset';
 
 import { node } from '../../../utility/node';
 import { complexNode } from '../../../utility/complexNode';
+import { applyCSSVar } from '../../../utility/applyCSSVar';
+import { applyCSSClass } from '../../../utility/applyCSSClass';
+import { applyCSSState } from '../../../utility/applyCSSState';
 
 const dataSetting = {};
 

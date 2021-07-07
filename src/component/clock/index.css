@@ -13,8 +13,8 @@
   line-height: 1.2;
 }
 
-.clock-separator,
 .clock-hour,
+.clock-separator,
 .clock-minute,
 .clock-second,
 .clock-meridiem {
@@ -25,6 +25,12 @@
   white-space: nowrap;
 }
 
+.clock-minute,
+.clock-second,
+.clock-meridiem {
+  color: hsl(var(--theme-primary-120));
+}
+
 .clock-separator {
   justify-content: center;
   color: rgb(var(--theme-accent));
@@ -32,7 +38,7 @@
 
 .is-theme-background-type-accent .clock-separator {
   justify-content: center;
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
 }
 
 .clock-hour,
@@ -46,12 +52,12 @@
 .is-theme-background-type-accent .clock-minute,
 .is-theme-background-type-accent .clock-second,
 .is-theme-background-type-accent .clock-meridiem {
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
 }
 
 .is-theme-background-type-color .clock-hour,
 .is-theme-background-type-color .clock-minute,
 .is-theme-background-type-color .clock-second,
 .is-theme-background-type-color .clock-meridiem {
-  color: hsl(var(--theme-background-color-text));
+  color: hsl(var(--theme-background-color-rgb-text));
 }

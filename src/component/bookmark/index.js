@@ -2,17 +2,20 @@ import { state } from '../state';
 import { data } from '../data';
 import { layout } from '../layout';
 import { group } from '../group';
-import { bookmarkForm } from '../bookmarkForm';
 import { bookmarkDefault } from '../bookmarkDefault';
 import { bookmarkPreset } from '../bookmarkPreset';
 
 import { Tile } from '../tile';
 import { GroupEmpty } from '../groupEmpty';
+import { BookmarkForm } from '../bookmarkForm';
 import { StagedBookmark } from '../stagedBookmark';
 import { StagedGroup } from '../stagedGroup';
 import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
+import { applyCSSVar } from '../../utility/applyCSSVar';
+import { applyCSSClass } from '../../utility/applyCSSClass';
+import { applyCSSState } from '../../utility/applyCSSState';
 
 import Sortable from 'sortablejs';
 
@@ -24,433 +27,373 @@ bookmark.all = bookmarkPreset.get();
 
 bookmark.mod = {};
 
-bookmark.mod.add = {
-  open: () => { state.get.current().bookmark.add = true; },
-  close: () => { state.get.current().bookmark.add = false; }
-};
-
-bookmark.mod.edit = {
-  open: () => { state.get.current().bookmark.edit = true; },
-  close: () => { state.get.current().bookmark.edit = false; }
-};
-
-bookmark.mod.item = {};
-
-bookmark.mod.item.add = function(bookmarkData) {
-  bookmark.all[bookmarkData.position.destination.group].items.splice(bookmarkData.position.destination.item, 0, bookmarkData.link);
-};
-
-bookmark.mod.item.edit = function(bookmarkData) {
-  bookmark.all[bookmarkData.position.origin.group].items.splice(bookmarkData.position.origin.item, 1);
-
-  bookmark.all[bookmarkData.position.destination.group].items.splice(bookmarkData.position.destination.item, 0, bookmarkData.link);
-};
-
-bookmark.mod.item.move = function(bookmarkData) {
-  bookmarkData.link = bookmark.all[bookmarkData.position.origin.group].items.splice(bookmarkData.position.origin.item, 1)[0];
-
-  bookmark.all[bookmarkData.position.destination.group].items.splice(bookmarkData.position.destination.item, 0, bookmarkData.link);
-};
-
-bookmark.mod.item.remove = function(bookmarkData) {
-  bookmark.all[bookmarkData.position.origin.group].items.splice(bookmarkData.position.origin.item, 1);
-};
-
-bookmark.mod.layout = {};
-
-bookmark.mod.layout.direction = {
-  vertical: () => {
-
-    bookmark.all.forEach(function(item, i) {
-
-      item.items.forEach((item, i) => {
-
-        item.display.direction = 'vertical';
-
-      });
-
-    });
-
-  },
-  horizontal: () => {
-
-    bookmark.all.forEach(function(item, i) {
-
-      item.items.forEach((item, i) => {
-
-        item.display.direction = 'horizontal';
-
-      });
-
-    });
-
-  }
-};
-
-bookmark.mod.propagate = {};
-
-bookmark.mod.propagate.state = {
-  current: {
-    display: false,
-    layout: false,
-    theme: false
-  },
-  reset: function() {
-    for (let key in bookmark.mod.propagate.state.current) {
-      bookmark.mod.propagate.state.current[key] = false;
-    }
-  },
-  apply: function(bookmarkData) {
-
-    bookmark.all.forEach(function(item, i) {
-
-      item.items.forEach((item, i) => {
-
-        if (bookmark.mod.propagate.state.current.display) {
-          item.display.visual.show = bookmarkData.link.display.visual.show;
-          item.display.name.show = bookmarkData.link.display.name.show;
-        };
-
-        if (bookmark.mod.propagate.state.current.layout) {
-          item.display.visual.size = bookmarkData.link.display.visual.size;
-          item.display.name.size = bookmarkData.link.display.name.size;
-          item.display.gutter = bookmarkData.link.display.gutter;
-          item.display.rotate = bookmarkData.link.display.rotate;
-          item.display.translate = bookmarkData.link.display.translate;
-          item.display.alignment = bookmarkData.link.display.alignment;
-          item.display.direction = bookmarkData.link.display.direction;
-          item.display.order = bookmarkData.link.display.order;
-          item.border = bookmarkData.link.border;
-        };
-
-        if (bookmark.mod.propagate.state.current.theme) {
-          item.accent = bookmarkData.link.accent;
-          item.color = bookmarkData.link.color;
-        };
-
-      });
-
-    });
-
-    bookmark.mod.propagate.state.reset();
-
-  }
-};
-
-bookmark.render = {};
-
-bookmark.render.clear = function() {
-
-  group.area.current.forEach((item, i) => {
-    item.clear();
-  });
-
-};
-
 bookmark.tile = {
   current: []
 };
 
-bookmark.render.tile = {};
+bookmark.item = {
+  mod: {
+    add: (bookmarkData) => {
 
-bookmark.render.tile.edit = {
-  open: function() {
-    if (bookmark.tile.current.length > 0) {
-      bookmark.tile.current.forEach((item, i) => {
-        item.control.enable();
-      });
-    };
-  },
-  close: function() {
-    if (bookmark.tile.current.length > 0) {
-      bookmark.tile.current.forEach((item, i) => {
-        item.control.disable();
-      });
-    };
-  }
-};
-
-bookmark.render.item = function() {
-
-  layout.bookmark.clear();
-
-  group.render.item();
-
-  bookmark.tile.current = [];
-
-  bookmark.all.forEach(function(item, i) {
-
-    const groupIndex = i;
-
-    const targetGroupArea = group.area.current[i].element.body;
-
-    if (item.items.length > 0) {
-
-      item.items.forEach((item, i) => {
-
-        const itemIndex = i;
-
-        const currentBookmarkData = new StagedBookmark(item);
-
-        currentBookmarkData.position.origin.group = groupIndex;
-
-        currentBookmarkData.position.origin.item = itemIndex;
-
-        currentBookmarkData.position.destination.group = groupIndex;
-
-        currentBookmarkData.position.destination.item = itemIndex;
-
-        const bookmarkTile = new Tile({ bookmarkData: currentBookmarkData });
-
-        bookmarkTile.tile().groupIndex = groupIndex;
-
-        bookmarkTile.tile().index = i;
-
-        targetGroupArea.appendChild(bookmarkTile.tile());
-
-        bookmark.tile.current.push(bookmarkTile);
-
-      });
-
-    } else {
-
-      const emptyGroupItem = new GroupEmpty({
-        groupIndex: groupIndex
-      });
-
-      targetGroupArea.appendChild(emptyGroupItem.empty());
-
-    };
-
-  });
-
-};
-
-bookmark.render.style = function() {
-  const html = document.querySelector('html');
-
-  html.style.setProperty('--bookmark-size', state.get.current().bookmark.size);
-};
-
-bookmark.render.class = function() {
-  const html = document.querySelector('html');
-
-  if (state.get.current().bookmark.edit) {
-    html.classList.add('is-bookmark-edit');
-  } else {
-    html.classList.remove('is-bookmark-edit');
-  };
-
-  const style = ['block', 'list'];
-
-  style.forEach((item, i) => {
-    html.classList.remove('is-bookmark-style-' + item);
-  });
-
-  html.classList.add('is-bookmark-style-' + state.get.current().bookmark.style);
-
-  const orientation = ['top', 'bottom'];
-
-  orientation.forEach((item, i) => {
-    html.classList.remove('is-bookmark-orientation-' + item);
-  });
-
-  html.classList.add('is-bookmark-orientation-' + state.get.current().bookmark.orientation);
-
-  if (state.get.current().bookmark.url.show) {
-    html.classList.add('is-bookmark-url-show');
-  } else {
-    html.classList.remove('is-bookmark-url-show');
-  };
-
-  if (state.get.current().bookmark.line.show) {
-    html.classList.add('is-bookmark-line-show');
-  } else {
-    html.classList.remove('is-bookmark-line-show');
-  };
-
-  if (state.get.current().bookmark.shadow.show) {
-    html.classList.add('is-bookmark-shadow-show');
-  } else {
-    html.classList.remove('is-bookmark-shadow-show');
-  };
-
-  if (state.get.current().bookmark.hoverScale.show) {
-    html.classList.add('is-bookmark-hover-scale-show');
-  } else {
-    html.classList.remove('is-bookmark-hover-scale-show');
-  };
-};
-
-bookmark.render.add = function({
-  groupIndex = false
-} = {}) {
-
-};
-
-bookmark.restore = function(dataToRestore) {
-  bookmark.all = dataToRestore.bookmark;
-  console.log('bookmark restored');
-};
-
-bookmark.add = function({
-  groupIndex = false
-} = {}) {
-
-  const newBookmarkData = new StagedBookmark();
-
-  newBookmarkData.type.new = true;
-
-  newBookmarkData.position.destination.item = bookmark.all[0].items.length;
-
-  if (groupIndex || groupIndex === 0) {
-    newBookmarkData.position.destination.group = groupIndex;
-
-    newBookmarkData.position.destination.item = bookmark.all[groupIndex].items.length;
-  };
-
-  const addModal = new Modal({
-    heading: 'Add a new Bookmark',
-    content: bookmarkForm.form(newBookmarkData),
-    successText: 'Add',
-    width: 60,
-    maxHeight: true,
-    openAction: () => {
-
-      bookmark.mod.add.open();
-
-      data.save();
+      bookmark.all[bookmarkData.position.destination.group].items.splice(bookmarkData.position.destination.item, 0, bookmarkData.link);
 
     },
-    closeAction: () => {
+    edit: (bookmarkData) => {
 
-      bookmark.mod.add.close();
+      bookmark.all[bookmarkData.position.origin.group].items.splice(bookmarkData.position.origin.item, 1);
 
-      data.save();
+      bookmark.all[bookmarkData.position.destination.group].items.splice(bookmarkData.position.destination.item, 0, bookmarkData.link);
 
     },
-    successAction: () => {
+    move: (bookmarkData) => {
 
-      switch (newBookmarkData.group.destination) {
-        case 'new':
+      bookmarkData.link = bookmark.all[bookmarkData.position.origin.group].items.splice(bookmarkData.position.origin.item, 1)[0];
 
-          const newGroupData = new StagedGroup();
+      bookmark.all[bookmarkData.position.destination.group].items.splice(bookmarkData.position.destination.item, 0, bookmarkData.link);
 
-          newGroupData.group.name.text = newBookmarkData.group.name;
+    },
+    remove: (bookmarkData) => {
 
-          newGroupData.newGroup();
+      bookmark.all[bookmarkData.position.origin.group].items.splice(bookmarkData.position.origin.item, 1);
 
-          group.mod.item.add(newGroupData);
+    },
+    propagate: (bookmarkData) => {
 
-          newBookmarkData.position.destination.group = bookmark.all.length - 1;
+      if (bookmarkData.propagate.display || bookmarkData.propagate.layout || bookmarkData.propagate.theme) {
 
-          break;
+        bookmark.all.forEach((item, i) => {
+
+          item.items.forEach((item, i) => {
+
+            if (bookmarkData.propagate.display) {
+              item.display.visual.show = bookmarkData.link.display.visual.show;
+              item.display.name.show = bookmarkData.link.display.name.show;
+            };
+
+            if (bookmarkData.propagate.layout) {
+              item.display.visual.size = bookmarkData.link.display.visual.size;
+              item.display.name.size = bookmarkData.link.display.name.size;
+              item.display.gutter = bookmarkData.link.display.gutter;
+              item.display.rotate = bookmarkData.link.display.rotate;
+              item.display.translate = bookmarkData.link.display.translate;
+              item.display.alignment = bookmarkData.link.display.alignment;
+              item.display.direction = bookmarkData.link.display.direction;
+              item.display.order = bookmarkData.link.display.order;
+              item.border = bookmarkData.link.border;
+            };
+
+            if (bookmarkData.propagate.theme) {
+              item.accent = bookmarkData.link.accent;
+              item.color = bookmarkData.link.color;
+            };
+
+          });
+
+        });
 
       };
 
-      bookmark.mod.item.add(newBookmarkData);
-
-      bookmark.mod.propagate.state.apply(newBookmarkData);
-
-      bookmark.render.clear();
-
-      bookmark.render.item();
-
-      bookmark.bind.sort();
-
-      bookmark.mod.add.close();
-
-      data.save();
-
-    },
-    dismissAction: () => {
-
-      bookmark.mod.add.close();
-
-      data.save();
-
     }
-  });
+  },
+  render: () => {
 
-  addModal.open();
+    layout.bookmark.clear();
 
+    group.item.render();
+
+    bookmark.tile.current = [];
+
+    bookmark.all.forEach((item, i) => {
+
+      const groupIndex = i;
+
+      const targetGroupArea = group.area.current[i].element.body;
+
+      if (item.items.length > 0) {
+
+        item.items.forEach((item, i) => {
+
+          const itemIndex = i;
+
+          const currentBookmarkData = new StagedBookmark(item);
+
+          currentBookmarkData.position.origin.group = groupIndex;
+
+          currentBookmarkData.position.origin.item = itemIndex;
+
+          currentBookmarkData.position.destination.group = groupIndex;
+
+          currentBookmarkData.position.destination.item = itemIndex;
+
+          const bookmarkTile = new Tile({ bookmarkData: currentBookmarkData });
+
+          bookmarkTile.tile().groupIndex = groupIndex;
+
+          bookmarkTile.tile().index = i;
+
+          targetGroupArea.appendChild(bookmarkTile.tile());
+
+          bookmark.tile.current.push(bookmarkTile);
+
+        });
+
+      } else {
+
+        const emptyGroupItem = new GroupEmpty({
+          groupIndex: groupIndex
+        });
+
+        targetGroupArea.appendChild(emptyGroupItem.empty());
+
+      };
+
+    });
+
+  },
+  clear: () => {
+
+    group.area.current.forEach((item, i) => {
+      item.clear();
+    });
+
+  }
 };
 
 bookmark.edit = {
-  open: function() {
-    bookmark.mod.edit.open();
-    bookmark.render.class();
-    bookmark.render.tile.edit.open();
+  open: () => {
+
+    state.get.current().bookmark.edit = true;
+
+    bookmark.edit.render();
+
   },
-  close: function() {
-    bookmark.mod.edit.close();
-    bookmark.render.class();
-    bookmark.render.tile.edit.close();
+  close: () => {
+
+    state.get.current().bookmark.edit = false;
+
+    bookmark.edit.render();
+
   },
-  toggle: function() {
+  toggle: () => {
+
     if (state.get.current().bookmark.edit) {
       bookmark.edit.close();
     } else {
       bookmark.edit.open();
     };
+
+  },
+  render: () => {
+
+    applyCSSState('bookmark.edit');
+
+    if (bookmark.tile.current.length > 0) {
+      bookmark.tile.current.forEach((item, i) => {
+
+        if (state.get.current().bookmark.edit) {
+          item.control.enable();
+        } else {
+          item.control.disable();
+
+        };
+
+      });
+    };
+
   }
 };
 
-bookmark.bind = {};
+bookmark.direction = {
+  mod: {
+    vertical: () => {
 
-bookmark.bind.sort = function() {
+      bookmark.all.forEach((item, i) => {
+        item.items.forEach((item, i) => {
 
-  group.area.current.forEach((item, i) => {
+          item.display.direction = 'vertical';
 
-    const sortable = Sortable.create(item.element.body, {
-      handle: '.bookmark-control-sort',
-      group: 'bookmark-sort',
-      ghostClass: 'bookmark-sort-placeholder',
-      animation: 500,
-      easing: 'cubic-bezier(0.8, 0.8, 0.4, 1.4)',
-      filter: '.group-empty',
-      onEnd: (event) => {
+        });
+      });
 
-        // console.log('============ debug sort ============');
-        // console.log(event);
-        // console.log('group:', 'origin', event.from.position.origin, 'destination', event.to.position.origin);
-        // console.log('item:', 'origin', event.oldIndex, 'destination', event.newIndex);
+    },
+    horizontal: () => {
 
-        const newBookmarkData = new StagedBookmark();
+      bookmark.all.forEach((item, i) => {
+        item.items.forEach((item, i) => {
 
-        newBookmarkData.position.origin.group = event.from.position.origin;
+          item.display.direction = 'horizontal';
 
-        newBookmarkData.position.origin.item = event.oldIndex;
+        });
+      });
 
-        newBookmarkData.position.destination.group = event.to.position.origin;
+    }
+  }
+};
 
-        newBookmarkData.position.destination.item = event.newIndex;
+bookmark.add = {
+  mod: {
+    open: () => { state.get.current().bookmark.add = true; },
+    close: () => { state.get.current().bookmark.add = false; }
+  },
+  render: ({
+    groupIndex = false
+  } = {}) => {
 
-        newBookmarkData.type.existing = true;
+    const newBookmarkData = new StagedBookmark();
 
-        bookmark.mod.item.move(newBookmarkData);
+    newBookmarkData.type.new = true;
 
-        bookmark.render.clear();
+    newBookmarkData.position.destination.item = bookmark.all[0].items.length;
 
-        bookmark.render.item();
+    if (groupIndex || groupIndex === 0) {
+      newBookmarkData.position.destination.group = groupIndex;
 
-        bookmark.bind.sort();
+      newBookmarkData.position.destination.item = bookmark.all[groupIndex].items.length;
+    };
+
+    const bookmarkForm = new BookmarkForm({ bookmarkData: newBookmarkData });
+
+    const addModal = new Modal({
+      heading: 'Add a new Bookmark',
+      content: bookmarkForm.form(),
+      successText: 'Add',
+      width: 60,
+      maxHeight: true,
+      openAction: () => {
+
+        bookmark.add.mod.open();
+
+        data.save();
+
+      },
+      closeAction: () => {
+
+        bookmark.add.mod.close();
+
+        data.save();
+
+      },
+      successAction: () => {
+
+        switch (newBookmarkData.group.destination) {
+          case 'new':
+
+            const newGroupData = new StagedGroup();
+
+            newGroupData.group.name.text = newBookmarkData.group.name;
+
+            newGroupData.newGroup();
+
+            group.item.mod.add(newGroupData);
+
+            newBookmarkData.position.destination.group = bookmark.all.length - 1;
+
+            break;
+
+        };
+
+        bookmark.item.mod.add(newBookmarkData);
+
+        bookmark.item.mod.propagate(newBookmarkData);
+
+        bookmark.item.clear();
+
+        bookmark.item.render();
+
+        bookmark.sort.bind();
+
+        bookmark.add.mod.close();
+
+        data.save();
+
+      },
+      dismissAction: () => {
+
+        bookmark.add.mod.close();
 
         data.save();
 
       }
     });
 
-  });
+    addModal.open();
 
+  }
 };
 
-bookmark.init = function() {
-  bookmark.mod.add.close();
-  bookmark.render.style();
-  bookmark.render.class();
-  bookmark.render.item();
-  bookmark.bind.sort();
+bookmark.sort = {
+  bind: () => {
+
+    group.area.current.forEach((item, i) => {
+
+      const sortable = Sortable.create(item.element.body, {
+        handle: '.bookmark-control-sort',
+        group: 'bookmark-sort',
+        ghostClass: 'bookmark-sort-placeholder',
+        animation: 500,
+        easing: 'cubic-bezier(0.8, 0.8, 0.4, 1.4)',
+        filter: '.group-empty',
+        onEnd: (event) => {
+
+          // console.log('============ debug sort ============');
+          // console.log(event);
+          // console.log('group:', 'origin', event.from.position.origin, 'destination', event.to.position.origin);
+          // console.log('item:', 'origin', event.oldIndex, 'destination', event.newIndex);
+
+          const newBookmarkData = new StagedBookmark();
+
+          newBookmarkData.position.origin.group = event.from.position.origin;
+
+          newBookmarkData.position.origin.item = event.oldIndex;
+
+          newBookmarkData.position.destination.group = event.to.position.origin;
+
+          newBookmarkData.position.destination.item = event.newIndex;
+
+          newBookmarkData.type.existing = true;
+
+          bookmark.item.mod.move(newBookmarkData);
+
+          bookmark.item.clear();
+
+          bookmark.item.render();
+
+          bookmark.sort.bind();
+
+          data.save();
+
+        }
+      });
+
+    });
+
+  }
+};
+
+bookmark.restore = (dataToRestore) => {
+  bookmark.all = dataToRestore.bookmark;
+  console.log('bookmark restored');
+};
+
+bookmark.init = () => {
+  applyCSSVar([
+    'bookmark.size'
+  ]);
+  applyCSSClass([
+    'bookmark.orientation',
+    'bookmark.style'
+  ]);
+  applyCSSState([
+    'bookmark.hoverScale.show',
+    'bookmark.shadow.show',
+    'bookmark.line.show',
+    'bookmark.url.show'
+  ]);
+
+  bookmark.add.mod.close();
+  bookmark.edit.render();
+  bookmark.item.render();
+  bookmark.sort.bind();
 };
 
 export { bookmark };

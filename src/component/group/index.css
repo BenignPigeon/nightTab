@@ -16,6 +16,10 @@
   transition: gap var(--layout-transition-extra-fast) var(--layout-duration-04);
 }
 
+.is-edge .group {
+  transition: gap var(--layout-transition-extra-fast);
+}
+
 .group.is-group-header,
 .group.is-group-open-all {
   gap: calc(var(--layout-space) * var(--layout-gutter));
@@ -34,16 +38,16 @@
   gap: calc(var(--layout-space) * var(--layout-gutter));
 }
 
-.is-group-justify-left .group-header {
+.is-group-area-justify-left .group-header {
   flex-direction: row;
 }
 
-.is-group-justify-center .group-header {
+.is-group-area-justify-center .group-header {
   flex-direction: row;
   justify-content: center;
 }
 
-.is-group-justify-right .group-header {
+.is-group-area-justify-right .group-header {
   flex-direction: row-reverse;
 }
 
@@ -63,11 +67,11 @@
 }
 
 .is-theme-background-type-accent .group-name-text {
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
 }
 
 .is-theme-background-type-color .group-name-text {
-  color: hsl(var(--theme-background-color-text));
+  color: hsl(var(--theme-background-color-rgb-text));
 }
 
 .group-body {
@@ -88,10 +92,18 @@
   transition: height var(--layout-transition-extra-fast) var(--layout-duration-04), margin var(--layout-transition-extra-fast);
 }
 
+.is-edge .group-control {
+  transition: height var(--layout-transition-extra-fast), margin var(--layout-transition-extra-fast);
+}
+
 .is-group-edit .group-control {
   margin: 0;
   height: 2.5em;
   transition: height var(--layout-transition-extra-fast), margin var(--layout-transition-extra-fast) var(--layout-duration-04);
+}
+
+.is-edge.is-group-edit .group-control {
+  transition: height var(--layout-transition-extra-fast), margin var(--layout-transition-extra-fast);
 }
 
 .group-control-group {
@@ -103,6 +115,10 @@
 .is-group-edit .group-control-group {
   width: 20em;
   transition: width var(--layout-transition-extra-fast) var(--layout-duration-04);
+}
+
+.is-edge.is-group-edit .group-control-group {
+  transition: width var(--layout-transition-extra-fast);
 }
 
 .group-sort-placeholder {

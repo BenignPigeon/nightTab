@@ -16,35 +16,48 @@ export const Search = function({} = {}) {
 
   this.element = {
     search: node('div|class:search'),
+    form: node('form|class:search,action,method:get'),
+    submit: node('input|type:submit,value:Search,class:is-hidden'),
     input: new Control_text({
       object: state.get.current(),
-      path: 'search.string',
-      id: 'search-string',
+      path: 'header.search.string',
+      id: 'header-search-string',
       value: '',
       placeholder: 'Search Bookmarks or',
       labelText: 'Search',
       srOnly: true,
       action: () => {
-        this.action();
+        this.performSearch();
       }
     })
   };
 
-  let placeholder = '';
+  this.placeholder = () => {
 
-  if (state.get.current().bookmark.show) {
-    placeholder = 'Find bookmarks or search';
-  } else {
-    placeholder = 'Search';
+    let placeholder = '';
+
+    if (state.get.current().bookmark.show) {
+      placeholder = 'Find bookmarks or search';
+    } else {
+      placeholder = 'Search';
+    };
+
+    placeholder = placeholder + ' ' + state.get.current().header.search.engine[state.get.current().header.search.engine.selected].name;
+
+    this.element.input.text.placeholder = placeholder;
+
   };
 
-  placeholder = placeholder + ' ' + state.get.current().header.search.engine[state.get.current().header.search.engine.selected].name;
+  this.engine = {
+    set: () => {
+      this.element.form.setAttribute('action', state.get.current().header.search.engine[state.get.current().header.search.engine.selected].url);
+    },
+    bind: () => {
+      this.element.input.addEventListener()
+    }
+  };
 
-  // search.setAttribute('action', state.get.current().header.search.engine[state.get.current().header.search.engine.selected].url);
-
-  this.element.input.text.placeholder = placeholder;
-
-  this.action = () => {
+  this.performSearch = () => {
 
     console.log(bookmark.all);
     // bookmark.all.forEach((item, i) => {
@@ -55,10 +68,17 @@ export const Search = function({} = {}) {
 
   };
 
-
   this.assemble = () => {
 
-    this.element.search.appendChild(this.element.input.text);
+    this.element.input.text.type = 'Search';
+
+    this.element.input.text.name = 'q';
+
+    this.element.form.appendChild(this.element.input.text);
+
+    this.element.form.appendChild(this.element.submit);
+
+    this.element.search.appendChild(this.element.form);
 
   };
 
@@ -69,5 +89,9 @@ export const Search = function({} = {}) {
   };
 
   this.assemble();
+
+  this.placeholder();
+
+  this.engine.set();
 
 };

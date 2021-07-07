@@ -20,14 +20,18 @@
   align-items: center;
 }
 
-.is-theme-background-type-accent .transitional-text {
-  color: hsl(var(--theme-accent-text));
+.transitional-text {
+  color: hsl(var(--theme-primary-120));
 }
 
 .is-theme-background-type-accent .transitional-text {
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
+}
+
+.is-theme-background-type-accent .transitional-text {
+  color: hsl(var(--theme-accent-rgb-text));
 }
 
 .is-theme-background-type-color .transitional-text {
-  color: hsl(var(--theme-background-color-text));
+  color: hsl(var(--theme-background-color-rgb-text));
 }

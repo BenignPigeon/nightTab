@@ -21,6 +21,7 @@ keyboard.esc = new KeyboardShortcut({
       bookmark.edit.close();
       toolbar.current.update.edit();
     };
+    data.save();
   }
 });
 
@@ -43,7 +44,7 @@ keyboard.ctrAltA = new KeyboardShortcut({
   alt: true,
   action: () => {
     if (!state.get.current().bookmark.add) {
-      bookmark.add();
+      bookmark.add.render();
     };
   }
 });
@@ -66,7 +67,9 @@ keyboard.ctrAltG = new KeyboardShortcut({
   ctrl: true,
   alt: true,
   action: () => {
-    group.add();
+    if (!state.get.current().group.add) {
+      group.add.render();
+    };
     data.save();
   }
 });

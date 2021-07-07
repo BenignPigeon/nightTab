@@ -1,14 +1,16 @@
+import { state } from '../state';
+
 import { node } from '../../utility/node';
 
 import './index.css';
 
-const Edge = function({
-  element
-} = {}) {
+const Edge = function({ element = false, padding = 0 } = {}) {
 
   this.tick = null;
 
-  this.edge = null;
+  this.element = {
+    edge: node('div|class:edge is-transparent')
+  };
 
   this.bind = {
     set: () => {
@@ -16,7 +18,8 @@ const Edge = function({
       this.tick = window.setTimeout(() => {
 
         this.bind.set();
-        this.updatePosition();
+
+        this.track();
 
       }, 100);
 
@@ -32,49 +35,71 @@ const Edge = function({
 
   this.assemble = () => {
 
-    this.edge = node('div|class:edge is-transparent');
+    this.element.edge = node('div|class:edge is-transparent');
 
-    this.edge.addEventListener('transitionend', (event, elapsed) => {
-      if (event.propertyName === 'opacity' && getComputedStyle(this.edge).opacity == 0) {
+    this.element.edge.addEventListener('transitionend', (event) => {
 
-        this.edge.removeAttribute('style');
+      if (event.propertyName === 'opacity' && getComputedStyle(this.element.edge).opacity == 0) {
 
-        this.edge.parentElement.removeChild(this.edge);
+        this.element.edge.parentElement.removeChild(this.element.edge);
+
+        this.element.edge.removeAttribute('style');
+
+        this.element.edge.classList.remove('is-edge-opening');
 
       };
+
+      if (event.propertyName === 'opacity' && getComputedStyle(this.element.edge).opacity == 1) {
+
+        this.bind.set();
+
+        this.element.edge.classList.remove('is-edge-opening');
+
+      };
+
     });
 
   };
 
   this.destroy = () => {
 
-    this.edge.classList.remove('is-opaque');
+    this.element.edge.classList.remove('is-opaque');
 
-    this.edge.classList.add('is-transparent');
+    this.element.edge.classList.add('is-transparent');
 
   };
 
-  this.open = () => {
+  this.show = () => {
 
     const html = document.querySelector('html');
 
     const body = document.querySelector('body');
 
-    body.appendChild(this.edge);
+    body.appendChild(this.element.edge);
 
-    getComputedStyle(this.edge).opacity;
+    getComputedStyle(this.element.edge).opacity;
 
-    this.edge.classList.remove('is-transparent');
+    getComputedStyle(this.element.edge).width;
 
-    this.edge.classList.add('is-opaque');
+    getComputedStyle(this.element.edge).height;
+
+    getComputedStyle(this.element.edge).top;
+
+    getComputedStyle(this.element.edge).left;
+
+    this.element.edge.classList.remove('is-transparent');
+
+    this.element.edge.classList.add('is-opaque');
+
+    this.track();
+
+    this.element.edge.classList.add('is-edge-opening');
 
     html.classList.add('is-edge');
 
-    this.bind.set();
-
   };
 
-  this.close = () => {
+  this.hide = () => {
 
     this.destroy();
 
@@ -86,8 +111,11 @@ const Edge = function({
 
   };
 
-  this.updatePosition = () => {
-    if (this.edge && element) {
+  this.track = () => {
+
+    if (element) {
+
+      const html = document.querySelector('html');
 
       const scrollTop = document.documentElement.scrollTop;
 
@@ -95,15 +123,30 @@ const Edge = function({
 
       const rect = element.getBoundingClientRect();
 
-      this.edge.style.width = rect.width + 'px';
+      const fontSize = parseInt(getComputedStyle(html).fontSize, 10);
 
-      this.edge.style.height = rect.height + 'px';
+      const layoutSpace = parseFloat(getComputedStyle(html).getPropertyValue('--layout-space'), 10);
 
-      this.edge.style.top = rect.top + scrollTop + 'px';
+      const layoutSize = state.get.current().layout.size;
 
-      this.edge.style.left = rect.left + scrollLeft + 'px';
+      // this.element.edge.style.setProperty('--edge-width', rect.width + (((layoutSpace * fontSize) * padding) * 2));
+      //
+      // this.element.edge.style.setProperty('--edge-height', rect.height + (((layoutSpace * fontSize) * padding) * 2));
+      //
+      // this.element.edge.style.setProperty('--edge-top', rect.top + scrollTop - ((layoutSpace * fontSize) * padding));
+      //
+      // this.element.edge.style.setProperty('--edge-left', rect.left + scrollLeft - ((layoutSpace * fontSize) * padding));
+
+      this.element.edge.style.width = rect.width + ((layoutSize / 100) * (((layoutSpace * fontSize) * padding) * 2)) + 'px';
+
+      this.element.edge.style.height = rect.height + ((layoutSize / 100) * (((layoutSpace * fontSize) * padding) * 2)) + 'px';
+
+      this.element.edge.style.top = rect.top + scrollTop - ((layoutSize / 100) * ((layoutSpace * fontSize) * padding)) + 'px';
+
+      this.element.edge.style.left = rect.left + scrollLeft - ((layoutSize / 100) * ((layoutSpace * fontSize) * padding)) + 'px';
 
     };
+
   };
 
   this.assemble();

@@ -1,6 +1,6 @@
 ::selection {
   background-color: rgb(var(--theme-accent));
-  color: hsl(var(--theme-accent-text));
+  color: hsl(var(--theme-accent-rgb-text));
 }
 
 :root {
@@ -32,6 +32,47 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+html.is-theme-style-dark,
+.is-theme-style-dark body,
+html.is-theme-style-light,
+.is-theme-style-light body {
+  background-color: hsl(var(--theme-primary-010));
+  color: hsl(var(--theme-primary-text-010));
+}
+
+@media (prefers-color-scheme: light) {
+
+  html.is-theme-style-system,
+  .is-theme-style-system body {
+    background-color: hsl(var(--theme-primary-010));
+    color: hsl(var(--theme-primary-text-010));
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  html.is-theme-style-system,
+  .is-theme-style-system body {
+    background-color: hsl(var(--theme-primary-010));
+    color: hsl(var(--theme-primary-text-010));
+  }
+}
+
+html.is-theme-background-type-theme,
+.is-theme-background-type-theme body {
+  background-color: hsl(var(--theme-background-theme));
+}
+
+html.is-theme-background-type-accent,
+.is-theme-background-type-accent body {
+  background-color: rgb(var(--theme-background-accent));
+}
+
+html.is-theme-background-type-color,
+.is-theme-background-type-color body {
+  background-color: rgb(var(--theme-background-color));
 }
 
 .is-layout-alignment-top-left body {
@@ -77,30 +118,4 @@ body {
 .is-layout-alignment-bottom-right body {
   justify-content: flex-end;
   align-items: flex-end;
-}
-
-html.is-theme-style-dark,
-.is-theme-style-dark body,
-html.is-theme-style-light,
-.is-theme-style-light body {
-  background-color: hsl(var(--theme-primary-010));
-  color: hsl(var(--theme-primary-text-010));
-}
-
-@media (prefers-color-scheme: light) {
-
-  html.is-theme-style-system,
-  .is-theme-style-system body {
-    background-color: hsl(var(--theme-primary-010));
-    color: hsl(var(--theme-primary-text-010));
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-
-  html.is-theme-style-system,
-  .is-theme-style-system body {
-    background-color: hsl(var(--theme-primary-010));
-    color: hsl(var(--theme-primary-text-010));
-  }
 }
