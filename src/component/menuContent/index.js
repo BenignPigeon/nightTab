@@ -45,6 +45,7 @@ const MenuContent = function({
         const formElement = this.element.form();
 
         switch (this.makeId(activeNavData.name)) {
+
           case 'layout':
             layoutSetting[this.makeId(item)](formElement);
             break;
@@ -77,6 +78,33 @@ const MenuContent = function({
 
       });
 
+      switch (this.makeId(activeNavData.name)) {
+
+        case 'layout':
+          layoutSetting.disable();
+          break;
+
+        case 'bookmark':
+          bookmarkSetting.disable();
+          break;
+
+        case 'header':
+          headerSetting.disable();
+          break;
+
+        case 'toolbar':
+          toolbarSetting.disable();
+          break;
+
+        case 'theme':
+          themeSetting.disable();
+          break;
+
+        case 'data':
+          break;
+
+      };
+
     } else {
 
       const menuContentItem = this.element.content(activeNavData.name);
@@ -105,7 +133,7 @@ const MenuContent = function({
   };
 
   this.makeId = (name) => {
-    return name.replace(/\s+/g, '-').toLowerCase()
+    return name.split(' ')[0].toLowerCase();
   };
 
 };

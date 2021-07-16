@@ -38,9 +38,71 @@ import { applyCSSState } from '../../../utility/applyCSSState';
 
 const toolbarSetting = {};
 
+toolbarSetting.control = {
+  size: {},
+  style: {},
+  location: {},
+  position: {},
+  controls: {}
+};
+
+toolbarSetting.disable = () => {
+
+  switch (state.get.current().toolbar.location) {
+
+    case 'corner':
+      toolbarSetting.control.positionElement.enable();
+      toolbarSetting.control.positionElementHelper.enable();
+      break;
+
+    case 'header':
+      toolbarSetting.control.positionElement.disable();
+      toolbarSetting.control.positionElementHelper.disable();
+      break;
+
+  };
+
+};
+
+toolbarSetting.size = (parent) => {
+
+  const toolbarEdge = new Edge({ element: toolbar.current.element.toolbar });
+
+  toolbarSetting.control.size = new Control_slider({
+    object: state.get.current(),
+    path: 'toolbar.size',
+    id: 'toolbar-size',
+    labelText: 'Toolbar size',
+    value: state.get.current().toolbar.size,
+    defaultValue: state.get.default().toolbar.size,
+    min: state.get.minMax().toolbar.size.min,
+    max: state.get.minMax().toolbar.size.max,
+    action: () => {
+      applyCSSVar('toolbar.size');
+      data.save();
+    },
+    sliderAction: () => {
+      toolbarEdge.track();
+    },
+    mouseDownAction: () => {
+      toolbarEdge.show();
+    },
+    mouseUpAction: () => {
+      toolbarEdge.hide();
+    }
+  });
+
+  parent.appendChild(
+    node('div', [
+      toolbarSetting.control.size.wrap()
+    ])
+  );
+
+};
+
 toolbarSetting.style = (parent) => {
 
-  const toolbarStyle = new Control_radio({
+  toolbarSetting.control.style.styleElement = new Control_radio({
     object: state.get.current(),
     radioGroup: [
       { id: 'toolbar-style-transparent', labelText: 'Transparent', value: 'transparent' },
@@ -54,59 +116,52 @@ toolbarSetting.style = (parent) => {
     }
   });
 
-  const toolbarStyleHelper = new Control_helperText({
+  toolbarSetting.control.style.styleElementHelper = new Control_helperText({
     text: ['Use the Bar style if the Toolbar is not visible with your Background.']
   });
 
   parent.appendChild(
     node('div', [
-      toolbarStyle.inline(),
-      toolbarStyleHelper.wrap()
+      toolbarSetting.control.style.styleElement.inline(),
+      toolbarSetting.control.style.styleElementHelper.wrap()
     ])
   );
 
 };
 
-toolbarSetting.controls = (parent) => {
+toolbarSetting.location = (parent) => {
 
-  const toolbarAccentShow = new Control_checkbox({
+  toolbarSetting.control.locationElement = new Control_radio({
     object: state.get.current(),
-    id: 'toolbar-accent-show',
-    path: 'toolbar.accent.show',
-    labelText: 'Show Accent control',
+    radioGroup: [
+      { id: 'toolbar-location-corner', labelText: 'In a corner', value: 'corner' },
+      { id: 'toolbar-location-header', labelText: 'Inside the Header', value: 'header' }
+    ],
+    groupName: 'toolbar-location',
+    path: 'toolbar.location',
     action: () => {
-      toolbar.current.update.control();
+      toolbar.current.assemble();
+      toolbar.current.update.location();
+      toolbar.current.update.style();
+      header.item.mod.order();
+      header.item.clear();
+      header.item.clear();
+      header.item.render();
+      toolbar.bar.render();
+      layout.area.assemble();
+      toolbarSetting.disable();
       data.save();
     }
   });
 
-  const toolbarAddShow = new Control_checkbox({
-    object: state.get.current(),
-    id: 'toolbar-add-show',
-    path: 'toolbar.add.show',
-    labelText: 'Show Add control',
-    action: () => {
-      toolbar.current.update.control();
-      data.save();
-    }
-  });
-
-  const toolbarEditShow = new Control_checkbox({
-    object: state.get.current(),
-    id: 'toolbar-edit-show',
-    path: 'toolbar.edit.show',
-    labelText: 'Show Edit control',
-    action: () => {
-      toolbar.current.update.control();
-      data.save();
-    }
+  toolbarSetting.control.locationElementHelper = new Control_helperText({
+    text: ['Position the Toolbar inside the Header or in a corner of the window.']
   });
 
   parent.appendChild(
     node('div', [
-      toolbarAccentShow.wrap(),
-      toolbarAddShow.wrap(),
-      toolbarEditShow.wrap()
+      toolbarSetting.control.locationElement.inline(),
+      toolbarSetting.control.locationElementHelper.wrap()
     ])
   );
 
@@ -114,7 +169,7 @@ toolbarSetting.controls = (parent) => {
 
 toolbarSetting.position = (parent) => {
 
-  const toolbarPosition = new Control_radioGrid({
+  toolbarSetting.control.positionElement = new Control_radioGrid({
     object: state.get.current(),
     radioGroup: [
       { id: 'toolbar-position-top-left', labelText: 'Top left', value: 'top-left', position: 1 },
@@ -127,20 +182,66 @@ toolbarSetting.position = (parent) => {
     path: 'toolbar.position',
     gridSize: '2x2',
     action: () => {
+      toolbar.current.assemble();
       toolbar.current.update.position();
       toolbar.current.update.style();
       data.save();
     }
   });
 
-  const toolbarPositionHelper = new Control_helperText({
+  toolbarSetting.control.positionElementHelper = new Control_helperText({
     text: ['Position the Toolbar in one of the four corners of the window.']
   });
 
   parent.appendChild(
     node('div', [
-      toolbarPosition.wrap(),
-      toolbarPositionHelper.wrap()
+      toolbarSetting.control.positionElement.wrap(),
+      toolbarSetting.control.positionElementHelper.wrap()
+    ])
+  );
+
+};
+
+toolbarSetting.controls = (parent) => {
+
+  toolbarSetting.control.controls.accent = new Control_checkbox({
+    object: state.get.current(),
+    id: 'toolbar-accent-show',
+    path: 'toolbar.accent.show',
+    labelText: 'Show Accent control',
+    action: () => {
+      toolbar.current.update.control();
+      data.save();
+    }
+  });
+
+  toolbarSetting.control.controls.add = new Control_checkbox({
+    object: state.get.current(),
+    id: 'toolbar-add-show',
+    path: 'toolbar.add.show',
+    labelText: 'Show Add control',
+    action: () => {
+      toolbar.current.update.control();
+      data.save();
+    }
+  });
+
+  toolbarSetting.control.controls.edit = new Control_checkbox({
+    object: state.get.current(),
+    id: 'toolbar-edit-show',
+    path: 'toolbar.edit.show',
+    labelText: 'Show Edit control',
+    action: () => {
+      toolbar.current.update.control();
+      data.save();
+    }
+  });
+
+  parent.appendChild(
+    node('div', [
+      toolbarSetting.control.controls.accent.wrap(),
+      toolbarSetting.control.controls.add.wrap(),
+      toolbarSetting.control.controls.edit.wrap()
     ])
   );
 

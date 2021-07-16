@@ -1,16 +1,14 @@
 import { state } from '../state';
 import { data } from '../data';
 import { toolbar } from '../toolbar';
-
-import { KeyboardShortcut } from '../keyboardShortcut';
-
 import { menu } from '../menu';
 import { bookmark } from '../bookmark';
 import { header } from '../header';
 import { group } from '../group';
 import { theme } from '../theme';
-
 import { themeSetting } from '../menuContent/themeSetting';
+
+import { KeyboardShortcut } from '../keyboardShortcut';
 
 const keyboard = {};
 
@@ -31,8 +29,8 @@ keyboard.ctrAltD = new KeyboardShortcut({
   alt: true,
   action: () => {
     theme.style.toggle();
-    if (themeSetting.exposeControl.style) {
-      themeSetting.exposeControl.style.update();
+    if (themeSetting.control.style.update) {
+      themeSetting.control.style.update();
     };
     data.save();
   }

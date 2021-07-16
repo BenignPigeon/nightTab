@@ -7,9 +7,9 @@
   height: calc(100vh + 2em);
   opacity: 0;
   z-index: var(--z-index-shade);
-  transition: background-color var(--layout-transition-extra-fast), opacity var(--layout-transition-extra-fast);
   pointer-events: all;
   backdrop-filter: blur(calc(var(--theme-shade-blur) * 1px));
+  transition: background-color var(--layout-transition-extra-fast), opacity var(--layout-transition-extra-fast), backdrop-filter var(--layout-transition-extra-fast);
 }
 
 .shade.is-transparent {
@@ -18,4 +18,5 @@
 
 .is-edge .shade {
   background-color: rgba(var(--theme-accent), calc(var(--theme-shade-opacity) / 500));
+  backdrop-filter: blur(0);
 }

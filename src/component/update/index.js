@@ -9,49 +9,32 @@ update.mod = updateLegacy.get();
 
 update.mod['7.0.0'] = function(data) {
 
+  data.state.header.order.splice(data.state.header.order.indexOf('editAdd'), 1);
+  data.state.header.order.splice(data.state.header.order.indexOf('colorAccent'), 1);
+  data.state.header.order.splice(data.state.header.order.indexOf('menu'), 1);
+
+  data.state.header.order.push('toolbar');
+
   data.state.layout.padding = data.state.layout.padding * 10;
 
   data.state.layout.gutter = data.state.layout.gutter * 10;
 
   data.state.layout.size = data.state.layout.size * 100;
 
-  data.state.layout.area = { header: { width: data.state.header.area.width }, bookmark: { width: data.state.link.area.width } };
-
-  switch (data.state.header.area.justify) {
-
-    case 'left':
-      data.state.layout.area.header.align = 'flex-start';
-      break;
-
-    case 'center':
-      data.state.layout.area.header.align = 'center';
-      break;
-
-    case 'right':
-      data.state.layout.area.header.align = 'flex-end';
-      break;
-
-  };
-
-  switch (data.state.link.area.justify) {
-
-    case 'left':
-      data.state.layout.area.bookmark.align = 'flex-start';
-      break;
-
-    case 'center':
-      data.state.layout.area.bookmark.align = 'center';
-      break;
-
-    case 'right':
-      data.state.layout.area.bookmark.align = 'flex-end';
-      break;
-
+  data.state.layout.area = {
+    header: {
+      width: data.state.header.area.width,
+      justify: data.state.header.area.justify
+    },
+    bookmark: {
+      width: data.state.link.area.width,
+      justify: data.state.link.area.justify
+    }
   };
 
   delete data.state.header.area.width;
-  delete data.state.link.area.width;
   delete data.state.header.area.justify;
+  delete data.state.link.area.width;
   delete data.state.link.area.justify;
 
   switch (data.state.layout.alignment) {
@@ -104,7 +87,7 @@ update.mod['7.0.0'] = function(data) {
 
   };
 
-  data.state.toolbar = { style: 'transparent', position: 'bottom-right' };
+  data.state.toolbar = { style: 'transparent', location: 'header', position: 'bottom-right', size: 100, accent: { show: true }, add: { show: true }, edit: { show: true } };
 
   data.state.theme.background = data.state.background;
 
@@ -112,8 +95,8 @@ update.mod['7.0.0'] = function(data) {
 
   data.state.theme.background.gradient = {
     angle: 160,
-    start: { hsl: { h: 191, s: 66, l: 62 }, rgb: { r: 94, g: 199, b: 222 } },
-    end: { hsl: { h: 243, s: 59, l: 22 }, rgb: { r: 26, g: 23, b: 89 } }
+    start: { hsl: { h: 206, s: 16, l: 40 }, rgb: { r: 86, g: 104, b: 118 } },
+    end: { hsl: { h: 219, s: 28, l: 12 }, rgb: { r: 22, g: 28, b: 39 } }
   };
 
   if (data.state.theme.background.visual.show) {
@@ -172,35 +155,6 @@ update.mod['7.0.0'] = function(data) {
   data.state.theme.shadow = data.state.theme.shadow * 100;
 
   data.state.theme.color.shades = 14;
-  data.state.theme.color.lightness = {
-    // contrast: Math.min(data.state.theme.color.contrast.light, data.state.theme.color.contrast.dark) * 9,
-    // contrast: Math.round(data.state.theme.color.hsl.l / 3),
-    contrast: null,
-    offset: null,
-    end: null,
-    start: null
-  };
-
-  switch (data.state.theme.style) {
-    case 'dark':
-      data.state.theme.color.lightness.contrast = Math.round(data.state.theme.color.contrast.dark * 9);
-      break;
-
-    case 'light':
-      data.state.theme.color.lightness.contrast = Math.round(data.state.theme.color.contrast.light * 9);
-      break;
-
-  };
-
-  if (data.state.theme.color.lightness.contrast > state.minMax.theme.color.lightness.contrast.max) {
-    data.state.theme.color.lightness.contrast = state.minMax.theme.color.lightness.contrast.max;
-  };
-
-  data.state.theme.color.lightness.offset = state.minMax.theme.color.lightness.contrast.max - data.state.theme.color.lightness.contrast;
-
-  data.state.theme.color.lightness.start = data.state.theme.color.lightness.offset;
-
-  data.state.theme.color.lightness.end = 100 - data.state.theme.color.lightness.offset;
 
   data.state.theme.color.range = {
     primary: {
@@ -209,13 +163,159 @@ update.mod['7.0.0'] = function(data) {
     }
   };
 
+  if (data.state.theme.color.contrast.light > data.state.theme.color.contrast.dark) {
+
+    data.state.theme.color.contrast = {
+      start: Math.ceil((data.state.theme.color.hsl.l * data.state.theme.color.contrast.dark) / 18),
+      end: Math.ceil((data.state.theme.color.hsl.l * data.state.theme.color.contrast.light) / 4)
+    };
+
+  } else if (data.state.theme.color.contrast.light < data.state.theme.color.contrast.dark) {
+
+    data.state.theme.color.contrast = {
+      start: Math.ceil((data.state.theme.color.hsl.l * data.state.theme.color.contrast.light) / 18),
+      end: Math.ceil((data.state.theme.color.hsl.l * data.state.theme.color.contrast.dark) / 4)
+    };
+
+  } else {
+
+    data.state.theme.color.contrast = {
+      start: Math.ceil(data.state.theme.color.hsl.l / 8),
+      end: Math.ceil(data.state.theme.color.contrast.dark * 18)
+    };
+
+  };
+
+  if (data.state.theme.color.contrast.end <= data.state.theme.color.contrast.start) {
+    data.state.theme.color.contrast.end = data.state.theme.color.contrast.start + 1;
+  };
+
+  if (data.state.theme.color.contrast.start > state.get.minMax().theme.color.contrast.start.max) {
+
+    data.state.theme.color.contrast.start = state.get.minMax().theme.color.contrast.start.max;
+
+  } else if (data.state.theme.color.contrast.start < state.get.minMax().theme.color.contrast.start.min) {
+
+    data.state.theme.color.contrast.start = state.get.minMax().theme.color.contrast.start.min;
+
+  };
+
+  if (data.state.theme.color.contrast.end > state.get.minMax().theme.color.contrast.end.max) {
+
+    data.state.theme.color.contrast.end = state.get.minMax().theme.color.contrast.end.max;
+
+  } else if (data.state.theme.color.contrast.end < state.get.minMax().theme.color.contrast.end.min) {
+
+    data.state.theme.color.contrast.end = state.get.minMax().theme.color.contrast.end.min;
+
+  };
+
   data.state.theme.shade.opacity = data.state.theme.shade.opacity * 100;
   data.state.theme.shade.blur = 0;
 
   delete data.state.theme.color.hsl;
   delete data.state.theme.color.rgb;
   delete data.state.theme.color.generated;
-  delete data.state.theme.color.contrast;
+
+  data.state.theme.custom.all.forEach((item, i) => {
+
+    item.color.range = {
+      primary: {
+        h: item.color.hsl.h,
+        s: item.color.hsl.s
+      }
+    };
+
+    if (item.color.contrast.light > item.color.contrast.dark) {
+
+      item.color.contrast = {
+        start: Math.ceil((item.color.hsl.l * item.color.contrast.dark) / 10),
+        end: Math.ceil((item.color.hsl.l * item.color.contrast.light) / 3)
+      };
+
+    } else if (item.color.contrast.light < item.color.contrast.dark) {
+
+      item.color.contrast = {
+        start: Math.ceil((item.color.hsl.l * item.color.contrast.light) / 10),
+        end: Math.ceil((item.color.hsl.l * item.color.contrast.dark) / 3)
+      };
+
+    } else {
+
+      item.color.contrast = {
+        start: Math.ceil((item.color.contrast.light) * 4),
+        end: Math.ceil((item.color.contrast.dark) * 16)
+      };
+
+    };
+
+    if (item.color.contrast.end <= item.color.contrast.start) {
+      item.color.contrast.end = item.color.contrast.start + 1;
+    };
+
+    if (item.color.contrast.start > state.get.minMax().theme.color.contrast.start.max) {
+
+      item.color.contrast.start = state.get.minMax().theme.color.contrast.start.max;
+
+    } else if (item.color.contrast.start < state.get.minMax().theme.color.contrast.start.min) {
+
+      item.color.contrast.start = state.get.minMax().theme.color.contrast.start.min;
+
+    };
+
+    if (item.color.contrast.end > state.get.minMax().theme.color.contrast.end.max) {
+
+      item.color.contrast.end = state.get.minMax().theme.color.contrast.end.max;
+
+    } else if (item.color.contrast.end < state.get.minMax().theme.color.contrast.end.min) {
+
+      item.color.contrast.end = state.get.minMax().theme.color.contrast.end.min;
+
+    };
+
+    delete item.color.hsl;
+    delete item.color.rgb;
+    delete item.color.generated;
+
+    item.radius = item.radius * 100;
+
+    item.shadow = item.shadow * 100;
+
+    if (item.shade) {
+      item.shade.opacity = item.shade.opacity * 100;
+    } else {
+      item.shade = {
+        opacity: 20
+      };
+    };
+
+    item.shade.blur = 0;
+
+    item.background = {
+      type: 'theme',
+      color: { hsl: { h: 221, s: 47, l: 17 }, rgb: { r: 23, g: 36, b: 64 } },
+      gradient: {
+        angle: 160,
+        start: { hsl: { h: 206, s: 16, l: 40 }, rgb: { r: 86, g: 104, b: 118 } },
+        end: { hsl: { h: 219, s: 28, l: 12 }, rgb: { r: 22, g: 28, b: 39 } }
+      },
+      image: { url: '', blur: 0, grayscale: 0, scale: 100, accent: 0, opacity: 100 },
+      video: { url: '', blur: 0, grayscale: 0, scale: 100, accent: 0, opacity: 100 }
+    };
+
+  });
+
+  data.state.theme.custom.all.push(JSON.parse(JSON.stringify({
+    name: '',
+    color: data.state.theme.color,
+    accent: { hsl: data.state.theme.accent.hsl, rgb: data.state.theme.accent.rgb },
+    font: data.state.theme.font,
+    background: data.state.theme.background,
+    radius: data.state.theme.radius,
+    shadow: data.state.theme.shadow,
+    style: data.state.theme.style,
+    shade: data.state.theme.shade
+  })));
 
   data.state.bookmark = data.state.link;
   data.state.bookmark.url = data.state.link.item.url;
@@ -233,6 +333,10 @@ update.mod['7.0.0'] = function(data) {
   data.bookmark.forEach((item, i) => {
 
     item.items.forEach((item, i) => {
+
+      item.timestamp = item.timeStamp;
+
+      delete item.timeStamp;
 
       item.border = data.state.bookmark.item.border;
 

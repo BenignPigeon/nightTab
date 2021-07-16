@@ -4,6 +4,7 @@ import { bookmark } from '../bookmark';
 import * as form from '../form';
 
 import { Control_text } from '../control/text';
+import { KeyboardShortcut } from '../keyboardShortcut';
 
 import { node } from '../../utility/node';
 import { trimString } from '../../utility/trimString';
@@ -48,6 +49,21 @@ export const Search = function({} = {}) {
 
   };
 
+  this.bind = {
+    add: () => {
+
+      this.element.input.text.addEventListener('keydown', this.clearSearch);
+
+    },
+    remove: () => {
+
+      this.element.input.text.removeEventListener('keydown', this.clearSearch);
+
+    }
+  };
+
+  this.delete = new KeyboardShortcut({ keycode: 8, action: () => { this.close(); } });
+
   this.engine = {
     set: () => {
       this.element.form.setAttribute('action', state.get.current().header.search.engine[state.get.current().header.search.engine.selected].url);
@@ -59,12 +75,43 @@ export const Search = function({} = {}) {
 
   this.performSearch = () => {
 
-    console.log(bookmark.all);
-    // bookmark.all.forEach((item, i) => {
-    //   item.items.forEach((item, i) => {
-    //
-    //   });
-    // });
+    // state.get.current().search = true;
+
+    const searchString = trimString(this.element.input.text.value).toLowerCase();
+
+    bookmark.all.forEach((item, i) => {
+      item.items.forEach((item, i) => {
+
+        // item.searchMatch = false;
+        //
+        // let matchUrl = isValidString(item.url) && item.url.toLowerCase().includes(searchString);
+        //
+        // let matchName = isValidString(item.display.name.text) && trimString(item.display.name.text).toLowerCase().includes(searchString);
+        //
+        // if (matchUrl || matchName) {
+        //   item.searchMatch = true;
+        // };
+
+      });
+    });
+
+    bookmark.item.clear();
+    bookmark.item.render();
+    bookmark.sort.bind();
+
+  };
+
+  this.clearSearch = () => {
+
+    // state.get.current().search = false;
+
+    bookmark.all.forEach((item, i) => {
+      item.items.forEach((item, i) => {
+
+        delete item.searchMatch;
+
+      });
+    });
 
   };
 
@@ -93,5 +140,9 @@ export const Search = function({} = {}) {
   this.placeholder();
 
   this.engine.set();
+
+  this.bind.add();
+
+  this.clearSearch();
 
 };

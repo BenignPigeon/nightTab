@@ -4,7 +4,10 @@ state.current = {};
 
 state.default = {
   layout: {
-    area: { header: { width: 100, align: 'center' }, bookmark: { width: 100, align: 'center' } },
+    area: {
+      header: { width: 100, justify: 'center' },
+      bookmark: { width: 100, justify: 'center' }
+    },
     alignment: 'center-center',
     order: 'header-bookmark',
     direction: 'vertical',
@@ -15,8 +18,7 @@ state.default = {
     breakpoint: 'xs'
   },
   header: {
-    area: { justify: 'center', align: 'center' },
-    item: { justify: 'left' },
+    item: { justify: 'center' },
     greeting: { show: false, type: 'good', custom: '', name: '', size: 1, newLine: false },
     clock: {
       hour: { show: true, display: 'number' },
@@ -59,14 +61,14 @@ state.default = {
       newLine: false,
       newTab: false
     },
-    order: ['clock', 'date', 'search'],
+    order: ['clock', 'date', 'search', 'toolbar'],
     border: { top: 0, bottom: 0 },
     color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, style: 'scroll', opacity: 0.95, show: false, newLine: false },
     radius: false,
     edit: false
   },
   bookmark: {
-    area: { direction: "ltr", justify: "center" },
+    item: { justify: 'center' },
     size: 100,
     url: { show: true },
     line: { show: true },
@@ -80,11 +82,11 @@ state.default = {
     show: true
   },
   group: { area: { justify: 'left' }, edit: false, add: false },
-  toolbar: { style: 'transparent', position: 'bottom-right', accent: { show: true }, add: { show: true }, edit: { show: true } },
+  toolbar: { style: 'transparent', location: 'corner', position: 'bottom-right', size: 100, accent: { show: true }, add: { show: true }, edit: { show: true } },
   theme: {
     color: {
       range: { primary: { h: 222, s: 14 } },
-      lightness: { contrast: 28, offset: null, start: null, end: null },
+      contrast: { start: 17, end: 83 },
       shades: 14
     },
     accent: { hsl: { h: 221, s: 100, l: 50 }, rgb: { r: 0, g: 80, b: 255 }, random: { active: false, style: 'any' } },
@@ -94,19 +96,20 @@ state.default = {
     },
     background: {
       type: 'theme',
-      color: { hsl: { h: 213, s: 40, l: 65 }, rgb: { r: 130, g: 162, b: 201 } },
+      color: { hsl: { h: 221, s: 47, l: 17 }, rgb: { r: 23, g: 36, b: 64 } },
       gradient: {
         angle: 160,
-        start: { hsl: { h: 191, s: 66, l: 62 }, rgb: { r: 94, g: 199, b: 222 } },
-        end: { hsl: { h: 243, s: 59, l: 22 }, rgb: { r: 26, g: 23, b: 89 } }
+        start: { hsl: { h: 206, s: 16, l: 40 }, rgb: { r: 86, g: 104, b: 118 } },
+        end: { hsl: { h: 219, s: 28, l: 12 }, rgb: { r: 22, g: 28, b: 39 } }
       },
-      image: { url: '', blur: 0, scale: 100, accent: 0, opacity: 100 },
-      video: { url: '', blur: 0, scale: 100, accent: 0, opacity: 100 }
+      image: { url: '', blur: 0, grayscale: 0, scale: 100, accent: 0, opacity: 100 },
+      video: { url: '', blur: 0, grayscale: 0, scale: 100, accent: 0, opacity: 100 }
     },
     style: 'dark',
     radius: 25,
     shadow: 75,
-    shade: { opacity: 20, blur: 0 }
+    shade: { opacity: 20, blur: 0 },
+    custom: { all: [], edit: false }
   },
   modal: false,
   menu: false,
@@ -127,10 +130,13 @@ state.minMax = {
     padding: { min: 0, max: 300 },
     gutter: { min: 0, max: 300 }
   },
+  toolbar: {
+    size: { min: 50, max: 500 }
+  },
   theme: {
     color: {
       range: { primary: { h: { min: 0, max: 359 }, s: { min: 0, max: 100 } } },
-      lightness: { contrast: { min: 5, max: 45 } }
+      contrast: { start: { min: 0, max: 99 }, end: { min: 1, max: 100 } }
     },
     accent: {
       hsl: { h: { min: 0, max: 359 }, s: { min: 0, max: 100 }, l: { min: 0, max: 100 } },
@@ -165,8 +171,8 @@ state.minMax = {
           rgb: { r: { min: 0, max: 255 }, g: { min: 0, max: 255 }, b: { min: 0, max: 255 } }
         },
       },
-      image: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, accent: { min: 0, max: 100 }, opacity: { min: 0, max: 100 } },
-      video: { blur: { min: 0, max: 200 }, scale: { min: 100, max: 400 }, accent: { min: 0, max: 100 }, opacity: { min: 0, max: 100 } }
+      image: { blur: { min: 0, max: 200 }, grayscale: { min: 0, max: 100 }, scale: { min: 100, max: 400 }, accent: { min: 0, max: 100 }, opacity: { min: 0, max: 100 } },
+      video: { blur: { min: 0, max: 200 }, grayscale: { min: 0, max: 100 }, scale: { min: 100, max: 400 }, accent: { min: 0, max: 100 }, opacity: { min: 0, max: 100 } }
     },
     radius: { min: 0, max: 500 },
     shadow: { min: 0, max: 300 },
@@ -185,16 +191,29 @@ state.step = {
 
 state.option = {
   layout: {
+    area: {
+      header: { justify: ['left', 'center', 'right'], align: ['left', 'center', 'right'] },
+      bookmark: { justify: ['left', 'center', 'right'], align: ['left', 'center', 'right'] }
+    },
     alignment: ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'],
     direction: ['horizontal', 'vertical'],
     order: ['header-bookmark', 'bookmark-header']
   },
+  header: {
+    item: { justify: ['left', 'center', 'right'] }
+  },
   bookmark: {
+    item: { justify: ['left', 'center', 'right'] },
     orientation: ['top', 'bottom'],
     style: ['block', 'list']
   },
   group: {
     area: { justify: ['left', 'center', 'right'] }
+  },
+  toolbar: {
+    style: ['bar', 'transparent'],
+    location: ['corner', 'header'],
+    position: ['top-left', 'top-right', 'bottom-right', 'bottom-left']
   },
   theme: {
     accent: { random: { style: ['any', 'light', 'dark', 'pastel', 'saturated'] } },
@@ -204,12 +223,6 @@ state.option = {
     }
   }
 };
-
-state.default.theme.color.lightness.offset = state.minMax.theme.color.lightness.contrast.max - state.default.theme.color.lightness.contrast;
-
-state.default.theme.color.lightness.start = state.default.theme.color.lightness.offset;
-
-state.default.theme.color.lightness.end = 100 - state.default.theme.color.lightness.offset;
 
 state.get = {
   current: () => { return state.current },

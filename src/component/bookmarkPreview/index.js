@@ -1,4 +1,4 @@
-import { Tile } from '../tile';
+import { BookmarkTile } from '../bookmarkTile';
 
 import { node } from '../../utility/node';
 
@@ -36,7 +36,7 @@ const BookmarkPreview = function({
 
   };
 
-  this.bookmarkTile = new Tile({
+  this.bookmarkTile = new BookmarkTile({
     bookmarkData: bookmarkData,
     preview: true
   });
@@ -58,7 +58,7 @@ const BookmarkPreview = function({
 
     this.grid.removeChild(this.bookmarkTile.tile());
 
-    this.bookmarkTile = new Tile({
+    this.bookmarkTile = new BookmarkTile({
       bookmarkData: bookmarkData,
       preview: true
     });

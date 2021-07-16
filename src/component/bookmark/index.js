@@ -5,7 +5,7 @@ import { group } from '../group';
 import { bookmarkDefault } from '../bookmarkDefault';
 import { bookmarkPreset } from '../bookmarkPreset';
 
-import { Tile } from '../tile';
+import { BookmarkTile } from '../bookmarkTile';
 import { GroupEmpty } from '../groupEmpty';
 import { BookmarkForm } from '../bookmarkForm';
 import { StagedBookmark } from '../stagedBookmark';
@@ -13,6 +13,7 @@ import { StagedGroup } from '../stagedGroup';
 import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
+import { clearChildNode } from '../../utility/clearChildNode';
 import { applyCSSVar } from '../../utility/applyCSSVar';
 import { applyCSSClass } from '../../utility/applyCSSClass';
 import { applyCSSState } from '../../utility/applyCSSState';
@@ -23,9 +24,11 @@ import './index.css';
 
 const bookmark = {};
 
-bookmark.all = bookmarkPreset.get();
+bookmark.element = {
+  area: node('div|class:bookmark-area')
+};
 
-bookmark.mod = {};
+bookmark.all = bookmarkPreset.get();
 
 bookmark.tile = {
   current: []
@@ -97,7 +100,7 @@ bookmark.item = {
   },
   render: () => {
 
-    layout.bookmark.clear();
+    bookmark.item.clear();
 
     group.item.render();
 
@@ -125,7 +128,7 @@ bookmark.item = {
 
           currentBookmarkData.position.destination.item = itemIndex;
 
-          const bookmarkTile = new Tile({ bookmarkData: currentBookmarkData });
+          const bookmarkTile = new BookmarkTile({ bookmarkData: currentBookmarkData });
 
           bookmarkTile.tile().groupIndex = groupIndex;
 
@@ -149,12 +152,12 @@ bookmark.item = {
 
     });
 
+    layout.element.bookmark.appendChild(bookmark.element.area);
+
   },
   clear: () => {
 
-    group.area.current.forEach((item, i) => {
-      item.clear();
-    });
+    clearChildNode(bookmark.element.area);
 
   }
 };
@@ -194,7 +197,6 @@ bookmark.edit = {
           item.control.enable();
         } else {
           item.control.disable();
-
         };
 
       });
@@ -292,6 +294,8 @@ bookmark.add = {
 
         };
 
+        newBookmarkData.link.timestamp = new Date().getTime();
+
         bookmark.item.mod.add(newBookmarkData);
 
         bookmark.item.mod.propagate(newBookmarkData);
@@ -354,6 +358,8 @@ bookmark.sort = {
 
           bookmark.item.mod.move(newBookmarkData);
 
+          layout.bookmark.clear();
+
           bookmark.item.clear();
 
           bookmark.item.render();
@@ -384,6 +390,7 @@ bookmark.init = () => {
     'bookmark.style'
   ]);
   applyCSSState([
+    'bookmark.show',
     'bookmark.hoverScale.show',
     'bookmark.shadow.show',
     'bookmark.line.show',

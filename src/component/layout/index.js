@@ -66,7 +66,8 @@ layout.area = {
   },
   assemble: () => {
 
-    if ((state.get.current().header.clock.second.show ||
+    if (
+      (state.get.current().header.clock.second.show ||
         state.get.current().header.clock.minute.show ||
         state.get.current().header.clock.hour.show) ||
       (state.get.current().header.date.day.show ||
@@ -74,7 +75,9 @@ layout.area = {
         state.get.current().header.date.month.show ||
         state.get.current().header.date.year.show) ||
       state.get.current().header.greeting.show ||
-      state.get.current().header.search.show) {
+      state.get.current().header.search.show ||
+      state.get.current().toolbar.location === 'header'
+    ) {
 
       layout.element.layout.appendChild(layout.element.header);
 
@@ -161,16 +164,16 @@ layout.init = function() {
     'layout.size',
     'layout.width',
     'layout.area.header.width',
-    'layout.area.header.align',
     'layout.area.bookmark.width',
-    'layout.area.bookmark.align',
     'layout.padding',
     'layout.gutter'
   ]);
   applyCSSClass([
     'layout.alignment',
     'layout.direction',
-    'layout.order'
+    'layout.order',
+    'layout.area.header.justify',
+    'layout.area.bookmark.justify'
   ]);
   layout.area.render();
   layout.breakpoint.bind();

@@ -3,13 +3,8 @@ import { data } from '../data';
 import { header } from '../header';
 
 import { Button } from '../button';
-import { Modal } from '../modal';
 
 import { node } from '../../utility/node';
-import { complexNode } from '../../utility/complexNode';
-import { isValidString } from '../../utility/isValidString';
-import { trimString } from '../../utility/trimString';
-import { clearChildNode } from '../../utility/clearChildNode';
 
 import './index.css';
 

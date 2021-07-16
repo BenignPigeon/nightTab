@@ -57,7 +57,7 @@ group.item = {
         groupData: currentGroupkData
       });
 
-      layout.element.bookmark.appendChild(groupArea.group());
+      bookmark.element.area.appendChild(groupArea.group());
 
       group.area.current.push(groupArea);
 
@@ -179,7 +179,7 @@ group.add = {
 group.sort = {
   bind: () => {
 
-    const sortable = Sortable.create(layout.element.bookmark, {
+    const sortable = Sortable.create(bookmark.element.area, {
       handle: '.group-control-sort',
       ghostClass: 'group-sort-placeholder',
       animation: 500,

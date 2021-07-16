@@ -35,10 +35,8 @@
 .layout {
   width: calc(var(--layout-width) * 1%);
   font-size: calc(var(--layout-size) * 0.01rem);
-  padding: calc(var(--layout-space) * var(--layout-padding));
   z-index: var(--z-index-layout);
   display: flex;
-  gap: calc(var(--layout-space) * var(--layout-padding));
 }
 
 .is-layout-order-header-bookmark.is-layout-direction-horizontal .layout {
@@ -64,12 +62,19 @@
   flex-grow: 1;
 }
 
+.is-layout-direction-horizontal .layout-header {
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+  align-self: stretch;
+  align-items: center;
+}
+
 .layout-header {
   display: flex;
   gap: calc(var(--layout-space) * var(--layout-padding));
   align-items: stretch;
   justify-content: stretch;
-  width: calc(var(--layout-area-header-width) * 1%);
 }
 
 .layout-bookmark {
@@ -78,13 +83,60 @@
   gap: calc(var(--layout-space) * var(--layout-padding));
   align-items: stretch;
   justify-content: stretch;
-  width: calc(var(--layout-area-bookmark-width) * 1%);
+}
+
+.is-layout-direction-vertical.is-layout-area-header-justify-left .layout-header {
+  align-self: flex-start;
+}
+
+.is-layout-direction-vertical.is-layout-area-header-justify-center .layout-header {
+  align-self: center;
+}
+
+.is-layout-direction-vertical.is-layout-area-header-justify-right .layout-header {
+  align-self: flex-end;
+}
+
+.is-layout-direction-vertical.is-layout-area-bookmark-justify-left .layout-bookmark {
+  align-self: flex-start;
+}
+
+.is-layout-direction-vertical.is-layout-area-bookmark-justify-center .layout-bookmark {
+  align-self: center;
+}
+
+.is-layout-direction-vertical.is-layout-area-bookmark-justify-right .layout-bookmark {
+  align-self: flex-end;
 }
 
 .is-layout-direction-vertical .layout-header {
-  align-self: var(--layout-area-header-align);
+  width: calc(var(--layout-area-header-width) * 1%);
 }
 
 .is-layout-direction-vertical .layout-bookmark {
-  align-self: var(--layout-area-bookmark-align);
+  width: calc(var(--layout-area-bookmark-width) * 1%);
+}
+
+.is-layout-direction-horizontal .layout-header {
+  width: calc(calc(var(--layout-area-header-width) / 2) * 1%);
+}
+
+.is-layout-direction-horizontal .layout-bookmark {
+  width: calc(calc(var(--layout-area-bookmark-width) / 2) * 1%);
+}
+
+.is-layout-direction-vertical.is-layout-order-header-bookmark .layout-header {
+  margin-bottom: calc(calc(var(--layout-space) * var(--layout-padding)) * -1);
+}
+
+.is-layout-direction-vertical.is-layout-order-bookmark-header .layout-header {
+  margin-top: calc(calc(var(--layout-space) * var(--layout-padding)) * -1);
+}
+
+.is-layout-direction-horizontal.is-layout-order-header-bookmark .layout-header {
+  margin-right: calc(calc(var(--layout-space) * var(--layout-padding)) * -1);
+}
+
+.is-layout-direction-horizontal.is-layout-order-bookmark-header .layout-header {
+  margin-left: calc(calc(var(--layout-space) * var(--layout-padding)) * -1);
 }

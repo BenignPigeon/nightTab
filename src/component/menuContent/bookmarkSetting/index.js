@@ -39,28 +39,59 @@ import { applyCSSState } from '../../../utility/applyCSSState';
 const bookmarkSetting = {};
 
 bookmarkSetting.control = {
-  bookmark: {
-    show: false
-  }
+  general: {},
+  style: {},
+  orientation: {}
+};
+
+bookmarkSetting.disable = () => {
+
+  if (state.get.current().bookmark.show) {
+    bookmarkSetting.control.general.size.enable();
+    bookmarkSetting.control.general.urlShow.enable();
+    bookmarkSetting.control.general.lineShow.enable();
+    bookmarkSetting.control.general.shadowShow.enable();
+    bookmarkSetting.control.general.hoverScaleShow.enable();
+    bookmarkSetting.control.general.newTab.enable();
+    bookmarkSetting.control.style.enable();
+    bookmarkSetting.control.orientation.enable();
+    bookmarkSetting.control.orientationHelper.enable();
+  } else {
+    bookmarkSetting.control.general.size.disable();
+    bookmarkSetting.control.general.urlShow.disable();
+    bookmarkSetting.control.general.lineShow.disable();
+    bookmarkSetting.control.general.shadowShow.disable();
+    bookmarkSetting.control.general.hoverScaleShow.disable();
+    bookmarkSetting.control.general.newTab.disable();
+    bookmarkSetting.control.style.disable();
+    bookmarkSetting.control.orientation.disable();
+    bookmarkSetting.control.orientationHelper.disable();
+  };
+
 };
 
 bookmarkSetting.general = (parent) => {
 
-  const bookmarkEdge = new Edge({ element: bookmark.tile.current[0].tile() });
+  let bookmarkEdge = false;
 
-  const bookmarkShow = new Control_checkbox({
+  if (state.get.current().bookmark.show && bookmark.tile.current.length > 0) {
+    bookmarkEdge = new Edge({ element: bookmark.tile.current[0].tile() })
+  };
+
+  bookmarkSetting.control.general.show = new Control_checkbox({
     object: state.get.current(),
     id: 'bookmark-show',
     path: 'bookmark.show',
     labelText: 'Show Bookmarks',
     action: () => {
       layout.area.assemble();
-      applyCSSClass('bookmark.show');
+      applyCSSState('bookmark.show');
+      bookmarkSetting.disable();
       data.save();
     }
   });
 
-  const bookmarkSize = new Control_slider({
+  bookmarkSetting.control.general.size = new Control_slider({
     object: state.get.current(),
     path: 'bookmark.size',
     id: 'bookmark-size',
@@ -74,17 +105,17 @@ bookmarkSetting.general = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      if (bookmark.tile.current[0].tile()) { bookmarkEdge.track(); };
+      if (state.get.current().bookmark.show && bookmarkEdge) { bookmarkEdge.track(); };
     },
     mouseDownAction: () => {
-      bookmarkEdge.show();
+      if (state.get.current().bookmark.show && bookmarkEdge) { bookmarkEdge.show(); };
     },
     mouseUpAction: () => {
-      bookmarkEdge.hide();
+      if (state.get.current().bookmark.show && bookmarkEdge) { bookmarkEdge.hide(); };
     }
   });
 
-  const bookmarkUrlShow = new Control_checkbox({
+  bookmarkSetting.control.general.urlShow = new Control_checkbox({
     object: state.get.current(),
     id: 'bookmark-url-show',
     path: 'bookmark.url.show',
@@ -95,7 +126,7 @@ bookmarkSetting.general = (parent) => {
     }
   });
 
-  const bookmarkLineShow = new Control_checkbox({
+  bookmarkSetting.control.general.lineShow = new Control_checkbox({
     object: state.get.current(),
     id: 'bookmark-line-show',
     path: 'bookmark.line.show',
@@ -106,7 +137,7 @@ bookmarkSetting.general = (parent) => {
     }
   });
 
-  const bookmarkShadowShow = new Control_checkbox({
+  bookmarkSetting.control.general.shadowShow = new Control_checkbox({
     object: state.get.current(),
     id: 'bookmark-shadow-show',
     path: 'bookmark.shadow.show',
@@ -118,7 +149,7 @@ bookmarkSetting.general = (parent) => {
     }
   });
 
-  const bookmarkHoverScaleShow = new Control_checkbox({
+  bookmarkSetting.control.general.hoverScaleShow = new Control_checkbox({
     object: state.get.current(),
     id: 'bookmark-hoverScale-show',
     path: 'bookmark.hoverScale.show',
@@ -129,7 +160,7 @@ bookmarkSetting.general = (parent) => {
     }
   });
 
-  const bookmarkNewTab = new Control_checkbox({
+  bookmarkSetting.control.general.newTab = new Control_checkbox({
     object: state.get.current(),
     id: 'bookmark-newTab',
     path: 'bookmark.newTab',
@@ -144,15 +175,15 @@ bookmarkSetting.general = (parent) => {
 
   parent.appendChild(
     node('div', [
-      bookmarkShow.wrap(),
+      bookmarkSetting.control.general.show.wrap(),
       node('hr'),
-      bookmarkSize.wrap(),
+      bookmarkSetting.control.general.size.wrap(),
       node('hr'),
-      bookmarkUrlShow.wrap(),
-      bookmarkLineShow.wrap(),
-      bookmarkShadowShow.wrap(),
-      bookmarkHoverScaleShow.wrap(),
-      bookmarkNewTab.wrap()
+      bookmarkSetting.control.general.urlShow.wrap(),
+      bookmarkSetting.control.general.lineShow.wrap(),
+      bookmarkSetting.control.general.shadowShow.wrap(),
+      bookmarkSetting.control.general.hoverScaleShow.wrap(),
+      bookmarkSetting.control.general.newTab.wrap()
     ])
   );
 
@@ -160,7 +191,7 @@ bookmarkSetting.general = (parent) => {
 
 bookmarkSetting.style = (parent) => {
 
-  const bookmarkStyle = new Control_radio({
+  bookmarkSetting.control.style = new Control_radio({
     object: state.get.current(),
     radioGroup: [
       { id: 'bookmark-style-block', labelText: 'Block', description: 'Bookmark tiles more square shaped.', value: 'block' },
@@ -195,7 +226,7 @@ bookmarkSetting.style = (parent) => {
 
   parent.appendChild(
     node('div', [
-      bookmarkStyle.wrap(),
+      bookmarkSetting.control.style.wrap(),
     ])
   );
 
@@ -203,7 +234,7 @@ bookmarkSetting.style = (parent) => {
 
 bookmarkSetting.orientation = (parent) => {
 
-  const bookmarkOrientation = new Control_radio({
+  bookmarkSetting.control.orientation = new Control_radio({
     object: state.get.current(),
     radioGroup: [
       { id: 'bookmark-orientation-top', labelText: 'Top', value: 'top' },
@@ -217,14 +248,14 @@ bookmarkSetting.orientation = (parent) => {
     }
   });
 
-  const bookmarkOrientationHelper = new Control_helperText({
+  bookmarkSetting.control.orientationHelper = new Control_helperText({
     text: ['Display the URL and Controls either at the top or bottom of a Bookmark Tile.']
   });
 
   parent.appendChild(
     node('div', [
-      bookmarkOrientation.wrap(),
-      bookmarkOrientationHelper.wrap()
+      bookmarkSetting.control.orientation.wrap(),
+      bookmarkSetting.control.orientationHelper.wrap()
     ])
   );
 

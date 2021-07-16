@@ -15,7 +15,7 @@ import { complexNode } from '../../utility/complexNode';
 import { isValidString } from '../../utility/isValidString';
 import { trimString } from '../../utility/trimString';
 
-const Tile = function({
+const BookmarkTile = function({
   bookmarkData = {},
   preview = false
 } = {}) {
@@ -472,4 +472,4 @@ const Tile = function({
 
 };
 
-export { Tile };
+export { BookmarkTile };

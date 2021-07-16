@@ -39,16 +39,15 @@ import { applyCSSState } from '../../../utility/applyCSSState';
 const headerSetting = {};
 
 headerSetting.control = {
-  header: {
-    greeting: { show: false },
-    transitional: { show: false },
-    clock: { hour: { show: false }, minute: { show: false }, second: { show: false } },
-    date: { day: { show: false }, date: { show: false }, month: { show: false }, year: { show: false } },
-    search: { show: false }
-  }
+  area: {},
+  greeting: {},
+  transitional: {},
+  clock: {},
+  date: {},
+  search: {}
 };
 
-const updateDisabled = () => {
+headerSetting.disable = () => {
 
   if ((
       state.get.current().header.clock.second.show ||
@@ -60,60 +59,102 @@ const updateDisabled = () => {
       state.get.current().header.date.month.show ||
       state.get.current().header.date.year.show
     )) {
-    headerSetting.control.header.transitional.show.enable();
+    headerSetting.control.transitional.show.enable();
   } else {
-    headerSetting.control.header.transitional.show.disable();
+    headerSetting.control.transitional.show.disable();
   };
+
+};
+
+headerSetting.update = () => {
+
+  for (let key in headerSetting.control) {
+
+    headerSetting.control[key].forEach((item, i) => {
+      item.update();
+    });
+
+  };
+
+};
+
+headerSetting.area = (parent) => {
+
+  headerSetting.area.alignment = new Control_radioGrid({
+    object: state.get.current(),
+    radioGroup: [
+      { id: 'header-item-justify-left', labelText: 'Left', value: 'left', position: 1 },
+      { id: 'header-item-justify-center', labelText: 'Center', value: 'center', position: 2 },
+      { id: 'header-item-justify-right', labelText: 'Right', value: 'right', position: 3 }
+    ],
+    label: 'Header item alignment',
+    groupName: 'header-item-justify',
+    path: 'header.item.justify',
+    gridSize: '3x1',
+    action: () => {
+      applyCSSClass('header.item.justify');
+      data.save();
+    }
+  });
+
+  headerSetting.area.alignmentHelper = new Control_helperText({
+    text: ['Effects may not be visible if the <a href="#layout-direction-horizontal">Search box size</a> size is set to Auto and grows to fill available space.']
+  });
+
+  parent.appendChild(
+    node('div', [
+      headerSetting.area.alignment.wrap(),
+      headerSetting.area.alignmentHelper.wrap()
+    ])
+  );
 
 };
 
 headerSetting.greeting = (parent) => {
 
-  headerSetting.control.header.greeting.show = new Control_checkbox({
+  headerSetting.control.greeting.show = new Control_checkbox({
     object: state.get.current(),
     path: 'header.greeting.show',
     id: 'header-greeting-show',
     labelText: 'Show Greeting',
     action: function() {
       header.item.mod.order();
-      layout.header.clear();
+      header.item.clear();
       header.item.render();
       layout.area.assemble();
-      updateDisabled();
+      headerSetting.disable();
       data.save();
     }
   });
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.header.greeting.show.wrap()
+      headerSetting.control.greeting.show.wrap()
     ])
   );
 
 };
 
-headerSetting['transitional-words'] = (parent) => {
+headerSetting.transitional = (parent) => {
 
-  headerSetting.control.header.transitional.show = new Control_checkbox({
+  headerSetting.control.transitional.show = new Control_checkbox({
     object: state.get.current(),
     path: 'header.transitional.show',
     id: 'header-transitional-show',
     labelText: 'Show Transitional words',
     action: () => {
       header.item.mod.order();
-      layout.header.clear();
+      header.item.clear();
       header.item.render();
       layout.area.assemble();
-      updateDisabled();
+      headerSetting.disable();
       data.save();
     }
   });
 
-  updateDisabled();
-
   parent.appendChild(
     node('div', [
-      headerSetting.control.header.transitional.show.wrap()
+      headerSetting.control.transitional.show.wrap()
     ])
   );
 
@@ -121,56 +162,62 @@ headerSetting['transitional-words'] = (parent) => {
 
 headerSetting.clock = (parent) => {
 
-  headerSetting.control.header.clock.hour.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.clock.hour.show',
-    id: 'header-clock-hour-show',
-    labelText: 'Show Hours',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.clock.hour = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.clock.hour.show',
+      id: 'header-clock-hour-show',
+      labelText: 'Show Hours',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
-  headerSetting.control.header.clock.minute.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.clock.minute.show',
-    id: 'header-clock-minute-show',
-    labelText: 'Show Minutes',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.clock.minute = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.clock.minute.show',
+      id: 'header-clock-minute-show',
+      labelText: 'Show Minutes',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
-  headerSetting.control.header.clock.second.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.clock.second.show',
-    id: 'header-clock-second-show',
-    labelText: 'Show Seconds',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.clock.second = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.clock.second.show',
+      id: 'header-clock-second-show',
+      labelText: 'Show Seconds',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.header.clock.hour.show.wrap(),
-      headerSetting.control.header.clock.minute.show.wrap(),
-      headerSetting.control.header.clock.second.show.wrap()
+      headerSetting.control.clock.hour.show.wrap(),
+      headerSetting.control.clock.minute.show.wrap(),
+      headerSetting.control.clock.second.show.wrap()
     ])
   );
 
@@ -178,72 +225,80 @@ headerSetting.clock = (parent) => {
 
 headerSetting.date = (parent) => {
 
-  headerSetting.control.header.date.day.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.date.day.show',
-    id: 'header-date-day-show',
-    labelText: 'Show Day',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.date.day = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.date.day.show',
+      id: 'header-date-day-show',
+      labelText: 'Show Day',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
-  headerSetting.control.header.date.date.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.date.date.show',
-    id: 'header-date-date-show',
-    labelText: 'Show Date',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.date.date = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.date.date.show',
+      id: 'header-date-date-show',
+      labelText: 'Show Date',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
-  headerSetting.control.header.date.month.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.date.month.show',
-    id: 'header-date-month-show',
-    labelText: 'Show Month',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.date.month = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.date.month.show',
+      id: 'header-date-month-show',
+      labelText: 'Show Month',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
-  headerSetting.control.header.date.year.show = new Control_checkbox({
-    object: state.get.current(),
-    path: 'header.date.year.show',
-    id: 'header-date-year-show',
-    labelText: 'Show Year',
-    action: () => {
-      header.item.mod.order();
-      layout.header.clear();
-      header.item.render();
-      layout.area.assemble();
-      updateDisabled();
-      data.save();
-    }
-  });
+  headerSetting.control.date.year = {
+    show: new Control_checkbox({
+      object: state.get.current(),
+      path: 'header.date.year.show',
+      id: 'header-date-year-show',
+      labelText: 'Show Year',
+      action: () => {
+        header.item.mod.order();
+        header.item.clear();
+        header.item.render();
+        layout.area.assemble();
+        headerSetting.disable();
+        data.save();
+      }
+    })
+  };
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.header.date.day.show.wrap(),
-      headerSetting.control.header.date.date.show.wrap(),
-      headerSetting.control.header.date.month.show.wrap(),
-      headerSetting.control.header.date.year.show.wrap()
+      headerSetting.control.date.day.show.wrap(),
+      headerSetting.control.date.date.show.wrap(),
+      headerSetting.control.date.month.show.wrap(),
+      headerSetting.control.date.year.show.wrap()
     ])
   );
 
@@ -251,24 +306,24 @@ headerSetting.date = (parent) => {
 
 headerSetting.search = (parent) => {
 
-  headerSetting.control.header.search.show = new Control_checkbox({
+  headerSetting.control.search.show = new Control_checkbox({
     object: state.get.current(),
     path: 'header.search.show',
     id: 'header-search-show',
     labelText: 'Show Search',
     action: () => {
       header.item.mod.order();
-      layout.header.clear();
+      header.item.clear();
       header.item.render();
       layout.area.assemble();
-      updateDisabled();
+      headerSetting.disable();
       data.save();
     }
   });
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.header.search.show.wrap()
+      headerSetting.control.search.show.wrap()
     ])
   );
 

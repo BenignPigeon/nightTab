@@ -14,5 +14,6 @@ export const bookmarkDefault = {
   color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, opacity: 100 },
   background: { show: false, type: 'image', opacity: 100, image: { url: '' }, video: { url: '' } },
   border: 0,
-  shape: { wide: false, tall: false }
+  shape: { wide: false, tall: false },
+  timestamp: null
 };

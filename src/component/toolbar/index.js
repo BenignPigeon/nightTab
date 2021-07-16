@@ -2,33 +2,9 @@ import { state } from '../state';
 
 import { ToolbarControl } from '../toolbarControl';
 
-import './index.css';
-
 const toolbar = {};
 
-toolbar.current = false;
-
-toolbar.class = {};
-
-toolbar.class.render = () => {
-  const html = document.querySelector('html');
-
-  const position = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-
-  position.forEach((item, i) => {
-    html.classList.remove('is-toolbar-position-' + item);
-  });
-
-  html.classList.add('is-toolbar-position-' + state.get.current().toolbar.position);
-
-  const style = ['bar', 'transparent'];
-
-  style.forEach((item, i) => {
-    html.classList.remove('is-toolbar-style-' + item);
-  });
-
-  html.classList.add('is-toolbar-style-' + state.get.current().toolbar.style);
-};
+toolbar.current = null;
 
 toolbar.bar = {};
 
@@ -36,14 +12,20 @@ toolbar.bar.render = () => {
 
   const body = document.querySelector('body');
 
-  toolbar.current = new ToolbarControl();
+  switch (state.get.current().toolbar.location) {
 
-  body.appendChild(toolbar.current.toolbar());
+    case 'corner':
+
+      body.appendChild(toolbar.current.toolbar());
+
+      break;
+
+  };
 
 };
 
 toolbar.init = () => {
-  toolbar.class.render();
+  toolbar.current = new ToolbarControl();
   toolbar.bar.render();
 };
 

@@ -18,7 +18,7 @@ const MenuClose = function() {
     style: ['link'],
     iconName: 'cross',
     classList: ['menu-close-button'],
-    func: function() {
+    func: () => {
       menu.close();
     }
   });
@@ -31,11 +31,11 @@ const MenuClose = function() {
 
   this.close = () => {
 
-    this.assemble();
-
     return this.element.close;
 
   };
+
+  this.assemble();
 
 };
 

@@ -4,9 +4,10 @@ export const get = function({
   object = null,
   path = null
 } = {}) {
+
   const address = makePath(path);
 
-  const getValue = function() {
+  const getValue = () => {
     while (address.length > 1) {
       // shift off and store the first key
       var currentKey = address.shift();

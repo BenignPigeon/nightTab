@@ -1,13 +1,13 @@
 import { state } from '../state';
 import { data } from '../data';
 import { layout } from '../layout';
+import { toolbar } from '../toolbar';
 
 import { Clock } from '../clock';
 import { Date } from '../date';
 import { Greeting } from '../greeting';
 import { Transitional } from '../transitional';
 import { Search } from '../search';
-import { Toolbar } from '../toolbar';
 import { HeaderItem } from '../headerItem';
 
 import { node } from '../../utility/node';
@@ -22,6 +22,11 @@ import './index.css';
 
 const header = {};
 
+header.element = {
+  header: node('header|class:header'),
+  area: node('div|class:header-area')
+};
+
 header.item = {};
 
 header.item.mod = {
@@ -34,12 +39,14 @@ header.item.mod = {
   },
   order: () => {
 
-    const headerItems = ['greeting', 'transitional', 'clock', 'date', 'search'];
+    const headerItems = ['greeting', 'transitional', 'clock', 'date', 'search', 'toolbar'];
 
     headerItems.forEach((item, i) => {
+
       switch (item) {
 
         case 'clock':
+
           if (state.get.current().header.clock.second.show ||
             state.get.current().header.clock.minute.show ||
             state.get.current().header.clock.hour.show) {
@@ -48,12 +55,14 @@ header.item.mod = {
             };
           } else {
             if (state.get.current().header.order.includes(item)) {
-              state.get.current().header.order.splice(state.get.current().header.order.indexOf(item), 1)
+              state.get.current().header.order.splice(state.get.current().header.order.indexOf(item), 1);
             };
           };
+
           break;
 
         case 'date':
+
           if (state.get.current().header.date.day.show ||
             state.get.current().header.date.date.show ||
             state.get.current().header.date.month.show ||
@@ -66,18 +75,45 @@ header.item.mod = {
               state.get.current().header.order.splice(state.get.current().header.order.indexOf(item), 1)
             };
           };
+
+          break;
+
+        case 'toolbar':
+
+          switch (state.get.current().toolbar.location) {
+
+            case 'corner':
+
+              if (state.get.current().header.order.includes(item)) {
+                state.get.current().header.order.splice(state.get.current().header.order.indexOf(item), 1);
+              };
+
+              break;
+
+            case 'header':
+
+              if (!state.get.current().header.order.includes(item)) {
+                state.get.current().header.order.push(item);
+              };
+
+              break;
+
+          };
+
           break;
 
         default:
+
           if (state.get.current().header[item].show) {
             if (!state.get.current().header.order.includes(item)) {
               state.get.current().header.order.unshift(item);
             };
           } else {
             if (state.get.current().header.order.includes(item)) {
-              state.get.current().header.order.splice(state.get.current().header.order.indexOf(item), 1)
+              state.get.current().header.order.splice(state.get.current().header.order.indexOf(item), 1);
             };
           };
+
           break;
 
       };
@@ -91,16 +127,14 @@ header.item.current = [];
 
 header.item.render = () => {
 
-  const element = {
-    header: node('header|class:header')
-  };
-
   const order = state.get.current().header.order;
 
   order.forEach((item, i) => {
 
     switch (item) {
+
       case 'clock':
+
         if (state.get.current().header.clock.second.show ||
           state.get.current().header.clock.minute.show ||
           state.get.current().header.clock.hour.show) {
@@ -114,13 +148,14 @@ header.item.render = () => {
 
           header.item.current.push(headerItem);
 
-          element.header.appendChild(headerItem.item());
+          header.element.header.appendChild(headerItem.item());
 
         };
 
         break;
 
       case 'date':
+
         if (state.get.current().header.date.day.show || state.get.current().header.date.date.show || state.get.current().header.date.month.show || state.get.current().header.date.year.show) {
 
           const headerDate = new Date();
@@ -132,13 +167,14 @@ header.item.render = () => {
 
           header.item.current.push(headerItem);
 
-          element.header.appendChild(headerItem.item());
+          header.element.header.appendChild(headerItem.item());
 
         };
 
         break;
 
       case 'greeting':
+
         if (state.get.current().header.greeting.show) {
 
           const headerGreeting = new Greeting();
@@ -150,13 +186,14 @@ header.item.render = () => {
 
           header.item.current.push(headerItem);
 
-          element.header.appendChild(headerItem.item());
+          header.element.header.appendChild(headerItem.item());
 
         };
 
         break;
 
       case 'transitional':
+
         if (
           ((
             state.get.current().header.clock.second.show ||
@@ -180,13 +217,14 @@ header.item.render = () => {
 
           header.item.current.push(headerItem);
 
-          element.header.appendChild(headerItem.item());
+          header.element.header.appendChild(headerItem.item());
 
         };
 
         break;
 
       case 'search':
+
         if (state.get.current().header.search.show) {
 
           const headerSearch = new Search();
@@ -198,7 +236,28 @@ header.item.render = () => {
 
           header.item.current.push(headerItem);
 
-          element.header.appendChild(headerItem.item());
+          header.element.header.appendChild(headerItem.item());
+
+        };
+
+        break;
+
+      case 'toolbar':
+
+        switch (state.get.current().toolbar.location) {
+
+          case 'header':
+
+            const headerItem = new HeaderItem({
+              name: item,
+              child: toolbar.current.toolbar()
+            });
+
+            header.item.current.push(headerItem);
+
+            header.element.header.appendChild(headerItem.item());
+
+            break;
 
         };
 
@@ -206,11 +265,13 @@ header.item.render = () => {
 
     };
 
-    layout.element.header.appendChild(element.header);
+    header.element.area.appendChild(header.element.header);
 
   });
 
-  const sortable = Sortable.create(element.header, {
+  layout.element.header.appendChild(header.element.area);
+
+  const sortable = Sortable.create(header.element.header, {
     handle: '.header-control-sort',
     ghostClass: 'header-sort-placeholder',
     animation: 500,
@@ -227,6 +288,12 @@ header.item.render = () => {
 
     }
   });
+
+};
+
+header.item.clear = () => {
+
+  clearChildNode(header.element.header);
 
 };
 
@@ -274,6 +341,10 @@ header.edit = {
 };
 
 header.init = () => {
+  state.get.current().search = false;
+  applyCSSClass([
+    'header.item.justify'
+  ]);
   header.edit.render();
   header.item.render();
 };

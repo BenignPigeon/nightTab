@@ -1,0 +1,167 @@
+:root {
+  --theme-preset-preview-size: 6em;
+  --theme-preset-edit-height: 3em;
+}
+
+.theme-preset-tile {
+  width: var(--theme-preset-preview-size);
+  height: var(--theme-preset-preview-size);
+  position: relative;
+  display: block;
+}
+
+.theme-preset-tile-front,
+.theme-preset-tile-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: background-color var(--layout-transition-extra-fast), height var(--layout-transition-extra-fast), box-shadow var(--layout-transition-extra-fast), border-radius var(--layout-transition-extra-fast);
+}
+
+.theme-preset-tile-front {
+  z-index: 2;
+}
+
+.is-theme-preset-edit .theme-preset-tile-front {
+  height: calc(var(--theme-preset-preview-size) - var(--theme-preset-edit-height));
+  box-shadow: var(--theme-shadow-bottom-medium);
+}
+
+.theme-preset-tile-back {
+  background-color: hsl(var(--button-background));
+  border-radius: var(--theme-radius-base);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.theme-preset-button {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 1.6;
+  display: block;
+  overflow: hidden;
+  transition: background-color var(--layout-transition-extra-fast), border-color var(--layout-transition-extra-fast), color var(--layout-transition-extra-fast), height var(--layout-transition-extra-fast), box-shadow var(--layout-transition-extra-fast), border-radius var(--layout-transition-extra-fast);
+}
+
+.is-theme-preset-edit .theme-preset-button {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.theme-preset-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--theme-preset-preview-size);
+  height: var(--theme-preset-preview-size);
+  display: block;
+}
+
+.theme-preset-background-01,
+.theme-preset-background-02,
+.theme-preset-background-03,
+.theme-preset-background-04,
+.theme-preset-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: clip-path var(--layout-transition-extra-fast);
+}
+
+.theme-preset-background-01 {
+  z-index: 1;
+}
+
+.theme-preset-background-01 {
+  background-color: rgb(var(--theme-preset-background-01));
+}
+
+.theme-preset-background-02 {
+  z-index: 2;
+  clip-path: polygon(70% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 70%);
+  transition-delay: var(--layout-duration-03);
+}
+
+.theme-preset-background-02 {
+  background-color: rgb(var(--theme-preset-background-02));
+}
+
+.theme-preset-background-03 {
+  z-index: 3;
+  clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%);
+  transition-delay: var(--layout-duration-02);
+}
+
+.theme-preset-background-03 {
+  background-color: rgb(var(--theme-preset-background-03));
+}
+
+.theme-preset-background-04 {
+  z-index: 4;
+  clip-path: polygon(100% 30%, 100% 100%, 30% 100%);
+  transition-delay: var(--layout-duration-01);
+}
+
+.theme-preset-background-04 {
+  background-color: rgb(var(--theme-preset-background-04));
+}
+
+.theme-preset-accent {
+  z-index: 5;
+  background-color: rgb(var(--theme-preset-accent));
+  clip-path: circle(30% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(100% - calc(var(--theme-radius-base) / 12)));
+}
+
+.is-theme-preset-edit .theme-preset-accent {
+  clip-path: circle(30% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(calc(100% - var(--theme-preset-edit-height)) - calc(var(--theme-radius-base) / 12)));
+}
+
+.theme-preset-name {
+  color: hsl(var(--theme-preset-text));
+  font-style: normal;
+  font-size: 0.75em;
+  text-align: left;
+  display: block;
+  max-width: calc(100% - 1.5em - calc(var(--theme-radius-base) / 3));
+  max-height: calc(100% - 1.5em - calc(var(--theme-radius-base) / 3));
+  position: absolute;
+  top: calc(0.75em + calc(var(--theme-radius-base) / 6));
+  left: calc(0.75em + calc(var(--theme-radius-base) / 6));
+  z-index: 6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  transform: scale(1);
+  transition: color var(--layout-transition-extra-fast), transform var(--layout-transition-extra-fast), max-width var(--layout-transition-extra-fast), max-height var(--layout-transition-extra-fast), top var(--layout-transition-extra-fast), left var(--layout-transition-extra-fast);
+}
+
+.theme-preset-button:focus .theme-preset-background-02,
+.theme-preset-button:hover .theme-preset-background-02 {
+  clip-path: polygon(60% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 60%);
+}
+
+.theme-preset-button:focus .theme-preset-background-03,
+.theme-preset-button:hover .theme-preset-background-03 {
+  clip-path: polygon(90% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 90%);
+}
+
+.theme-preset-button:focus .theme-preset-background-04,
+.theme-preset-button:hover .theme-preset-background-04 {
+  clip-path: polygon(100% 20%, 100% 100%, 20% 100%);
+}
+
+.theme-preset-button:focus .theme-preset-accent,
+.theme-preset-button:hover .theme-preset-accent {
+  clip-path: circle(40% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(100% - calc(var(--theme-radius-base) / 12)));
+}
+
+.is-theme-preset-edit .theme-preset-button:focus .theme-preset-accent,
+.is-theme-preset-edit .theme-preset-button:hover .theme-preset-accent {
+  clip-path: circle(40% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(60% - calc(var(--theme-radius-base) / 12)));
+}

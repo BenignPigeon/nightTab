@@ -32,7 +32,7 @@ export const range = function({
 
   if (func) {
 
-    input.addEventListener('input', function(event) {
+    input.addEventListener('input', (event) => {
       func();
     });
 
@@ -40,7 +40,7 @@ export const range = function({
 
   if (focusFunc) {
 
-    input.addEventListener('focus', function(event) {
+    input.addEventListener('focus', (event) => {
       focusFunc();
     });
 
@@ -48,7 +48,7 @@ export const range = function({
 
   if (blurFunc) {
 
-    input.addEventListener('blur', function(event) {
+    input.addEventListener('blur', (event) => {
       blurFunc();
     });
 
@@ -56,7 +56,7 @@ export const range = function({
 
   if (mouseDownFunc) {
 
-    input.addEventListener('mousedown', function(event) {
+    input.addEventListener('mousedown', (event) => {
       mouseDownFunc();
     });
 
@@ -64,7 +64,7 @@ export const range = function({
 
   if (mouseUpFunc) {
 
-    input.addEventListener('mouseup', function(event) {
+    input.addEventListener('mouseup', (event) => {
       mouseUpFunc();
     });
 

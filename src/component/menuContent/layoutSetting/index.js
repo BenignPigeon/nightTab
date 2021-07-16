@@ -38,11 +38,41 @@ import { applyCSSState } from '../../../utility/applyCSSState';
 
 const layoutSetting = {};
 
+layoutSetting.control = {
+  scaling: {},
+  area: {},
+  padding: {},
+  gutter: {},
+  alignment: {}
+};
+
+layoutSetting.disable = () => {
+
+  switch (state.get.current().layout.direction) {
+
+    case 'vertical':
+      layoutSetting.control.area.header.justify.enable();
+      layoutSetting.control.area.header.justifyHelper1.enable();
+      layoutSetting.control.area.bookmark.justify.enable();
+      layoutSetting.control.area.bookmark.justifyHelper1.enable();
+      break;
+
+    case 'horizontal':
+      layoutSetting.control.area.header.justify.disable();
+      layoutSetting.control.area.header.justifyHelper1.disable();
+      layoutSetting.control.area.bookmark.justify.disable();
+      layoutSetting.control.area.bookmark.justifyHelper1.disable();
+      break;
+
+  };
+
+};
+
 layoutSetting.scaling = (parent) => {
 
   const layoutEdge = new Edge({ element: layout.element.layout });
 
-  const layoutSize = new Control_slider({
+  layoutSetting.control.scaling.size = new Control_slider({
     object: state.get.current(),
     path: 'layout.size',
     id: 'layout-size',
@@ -68,7 +98,7 @@ layoutSetting.scaling = (parent) => {
 
   parent.appendChild(
     node('div', [
-      layoutSize.wrap()
+      layoutSetting.control.scaling.size.wrap()
     ])
   );
 
@@ -78,15 +108,15 @@ layoutSetting.area = (parent) => {
 
   const layoutEdge = new Edge({ element: layout.element.layout });
 
-  const layoutHeaderEdge = new Edge({ element: layout.element.header, padding: state.get.current().layout.padding });
+  const layoutHeaderEdge = new Edge({ element: header.element.area });
 
-  const layoutBookmarkEdge = new Edge({ element: layout.element.bookmark, padding: state.get.current().layout.padding });
+  const layoutBookmarkEdge = new Edge({ element: bookmark.element.area });
 
-  const layoutWidth = new Control_slider({
+  layoutSetting.control.area.width = new Control_slider({
     object: state.get.current(),
     path: 'layout.width',
     id: 'layout-width',
-    labelText: 'Layout width',
+    labelText: 'Layout area width',
     value: state.get.current().layout.width,
     defaultValue: state.get.default().layout.width,
     min: state.get.minMax().layout.width.min,
@@ -106,111 +136,119 @@ layoutSetting.area = (parent) => {
     }
   });
 
-  const layoutAreaHeaderWidth = new Control_slider({
-    object: state.get.current(),
-    path: 'layout.area.header.width',
-    id: 'layout-area-header-width',
-    labelText: 'Header width',
-    value: state.get.current().layout.area.header.width,
-    defaultValue: state.get.default().layout.area.header.width,
-    min: state.get.minMax().layout.area.header.width.min,
-    max: state.get.minMax().layout.area.header.width.max,
-    action: () => {
-      applyCSSVar('layout.area.header.width');
-      data.save();
-    },
-    sliderAction: () => {
-      layoutHeaderEdge.track();
-    },
-    mouseDownAction: () => {
-      layoutHeaderEdge.show();
-    },
-    mouseUpAction: () => {
-      layoutHeaderEdge.hide();
-    }
-  });
+  layoutSetting.control.area.header = {
+    width: new Control_slider({
+      object: state.get.current(),
+      path: 'layout.area.header.width',
+      id: 'layout-area-header-width',
+      labelText: 'Header area width',
+      value: state.get.current().layout.area.header.width,
+      defaultValue: state.get.default().layout.area.header.width,
+      min: state.get.minMax().layout.area.header.width.min,
+      max: state.get.minMax().layout.area.header.width.max,
+      action: () => {
+        applyCSSVar('layout.area.header.width');
+        data.save();
+      },
+      sliderAction: () => {
+        layoutHeaderEdge.track();
+      },
+      mouseDownAction: () => {
+        layoutHeaderEdge.show();
+      },
+      mouseUpAction: () => {
+        layoutHeaderEdge.hide();
+      }
+    }),
+    justify: new Control_radioGrid({
+      object: state.get.current(),
+      radioGroup: [
+        { id: 'layout-area-header-justify-left', labelText: 'Left', value: 'left', position: 1 },
+        { id: 'layout-area-header-justify-center', labelText: 'Center', value: 'center', position: 2 },
+        { id: 'layout-area-header-justify-right', labelText: 'Right', value: 'right', position: 3 }
+      ],
+      label: 'Header area alignment',
+      groupName: 'layout-area-header-justify',
+      path: 'layout.area.header.justify',
+      gridSize: '3x1',
+      action: () => {
+        applyCSSClass('layout.area.header.justify');
+        data.save();
+      }
+    }),
+    justifyHelper1: new Control_helperText({
+      text: ['Effects may not be visible if the Header Area is full width.']
+    }),
+    justifyHelper2: new Control_helperText({
+      text: ['Only available when <a href="#layout-direction-horizontal">Layout Direction</a> is Vertical.']
+    })
+  };
 
-  const layoutAreaHeaderAlign = new Control_radioGrid({
-    object: state.get.current(),
-    radioGroup: [
-      { id: 'layout-area-header-align-left', labelText: 'Left', value: 'flex-start', position: 1 },
-      { id: 'layout-area-header-align-center', labelText: 'Center', value: 'center', position: 2 },
-      { id: 'layout-area-header-align-right', labelText: 'Right', value: 'flex-end', position: 3 }
-    ],
-    label: 'Header area alignment',
-    groupName: 'layout-area-header-align',
-    path: 'layout.area.header.align',
-    gridSize: '3x1',
-    action: () => {
-      applyCSSVar('layout.area.header.align');
-      data.save();
-    }
-  });
-
-  const layoutAreaHeaderAlignHelper = new Control_helperText({
-    text: ['Effects may not be visible if the Header Area is full width.', 'Only available when Layout Alignment is Vertical.']
-  });
-
-  const layoutAreaBookmarkWidth = new Control_slider({
-    object: state.get.current(),
-    path: 'layout.area.bookmark.width',
-    id: 'layout-area-bookmark-width',
-    labelText: 'Bookmark width',
-    value: state.get.current().layout.area.bookmark.width,
-    defaultValue: state.get.default().layout.area.bookmark.width,
-    min: state.get.minMax().layout.area.bookmark.width.min,
-    max: state.get.minMax().layout.area.bookmark.width.max,
-    action: () => {
-      applyCSSVar('layout.area.bookmark.width');
-      data.save();
-    },
-    sliderAction: () => {
-      layoutBookmarkEdge.track();
-    },
-    mouseDownAction: () => {
-      layoutBookmarkEdge.show();
-    },
-    mouseUpAction: () => {
-      layoutBookmarkEdge.hide();
-    }
-  });
-
-  const layoutAreaBookmarkAlign = new Control_radioGrid({
-    object: state.get.current(),
-    radioGroup: [
-      { id: 'layout-area-bookmark-align-left', labelText: 'Left', value: 'flex-start', position: 1 },
-      { id: 'layout-area-bookmark-align-center', labelText: 'Center', value: 'center', position: 2 },
-      { id: 'layout-area-bookmark-align-right', labelText: 'Right', value: 'flex-end', position: 3 }
-    ],
-    label: 'Bookmark area alignment',
-    groupName: 'layout-area-bookmark-align',
-    path: 'layout.area.bookmark.align',
-    gridSize: '3x1',
-    action: () => {
-      applyCSSVar('layout.area.bookmark.align');
-      data.save();
-    }
-  });
-
-  const layoutAreaBookmarkAlignHelper = new Control_helperText({
-    text: ['Effects may not be visible if the Bookmark Area is full width.', 'Only available when Layout Alignment is Vertical.']
-  });
+  layoutSetting.control.area.bookmark = {
+    width: new Control_slider({
+      object: state.get.current(),
+      path: 'layout.area.bookmark.width',
+      id: 'layout-area-bookmark-width',
+      labelText: 'Bookmark area width',
+      value: state.get.current().layout.area.bookmark.width,
+      defaultValue: state.get.default().layout.area.bookmark.width,
+      min: state.get.minMax().layout.area.bookmark.width.min,
+      max: state.get.minMax().layout.area.bookmark.width.max,
+      action: () => {
+        applyCSSVar('layout.area.bookmark.width');
+        data.save();
+      },
+      sliderAction: () => {
+        layoutBookmarkEdge.track();
+      },
+      mouseDownAction: () => {
+        layoutBookmarkEdge.show();
+      },
+      mouseUpAction: () => {
+        layoutBookmarkEdge.hide();
+      }
+    }),
+    justify: new Control_radioGrid({
+      object: state.get.current(),
+      radioGroup: [
+        { id: 'layout-area-bookmark-justify-left', labelText: 'Left', value: 'left', position: 1 },
+        { id: 'layout-area-bookmark-justify-center', labelText: 'Center', value: 'center', position: 2 },
+        { id: 'layout-area-bookmark-justify-right', labelText: 'Right', value: 'right', position: 3 }
+      ],
+      label: 'Bookmark area alignment',
+      groupName: 'layout-area-bookmark-justify',
+      path: 'layout.area.bookmark.justify',
+      gridSize: '3x1',
+      action: () => {
+        applyCSSClass('layout.area.bookmark.justify');
+        data.save();
+      }
+    }),
+    justifyHelper1: new Control_helperText({
+      text: ['Effects may not be visible if the Bookmark Area is full width.']
+    }),
+    justifyHelper2: new Control_helperText({
+      text: ['Only available when <a href="#layout-direction-horizontal">Layout Direction</a> is Vertical.']
+    })
+  };
 
   parent.appendChild(
     node('div', [
-      layoutWidth.wrap(),
+      layoutSetting.control.area.width.wrap(),
       node('hr'),
       form.wrap({
         children: [
           form.indent({
             children: [
-              layoutAreaHeaderWidth.wrap(),
-              layoutAreaHeaderAlign.wrap(),
-              layoutAreaHeaderAlignHelper.wrap(),
+              layoutSetting.control.area.header.width.wrap(),
+              layoutSetting.control.area.header.justify.wrap(),
+              layoutSetting.control.area.header.justifyHelper1.wrap(),
+              layoutSetting.control.area.header.justifyHelper2.wrap(),
               node('hr'),
-              layoutAreaBookmarkWidth.wrap(),
-              layoutAreaBookmarkAlign.wrap(),
-              layoutAreaBookmarkAlignHelper.wrap()
+              layoutSetting.control.area.bookmark.width.wrap(),
+              layoutSetting.control.area.bookmark.justify.wrap(),
+              layoutSetting.control.area.bookmark.justifyHelper1.wrap(),
+              layoutSetting.control.area.bookmark.justifyHelper2.wrap()
             ]
           })
         ]
@@ -224,7 +262,7 @@ layoutSetting.padding = (parent) => {
 
   const layoutEdge = new Edge({ element: layout.element.layout });
 
-  const layoutPadding = new Control_slider({
+  layoutSetting.control.padding = new Control_slider({
     object: state.get.current(),
     path: 'layout.padding',
     id: 'layout-padding',
@@ -250,7 +288,7 @@ layoutSetting.padding = (parent) => {
 
   parent.appendChild(
     node('div', [
-      layoutPadding.wrap()
+      layoutSetting.control.padding.wrap()
     ])
   );
 
@@ -260,7 +298,7 @@ layoutSetting.gutter = (parent) => {
 
   const layoutEdge = new Edge({ element: layout.element.layout });
 
-  const layoutGutter = new Control_slider({
+  layoutSetting.control.gutter = new Control_slider({
     object: state.get.current(),
     path: 'layout.gutter',
     id: 'layout-gutter',
@@ -286,7 +324,7 @@ layoutSetting.gutter = (parent) => {
 
   parent.appendChild(
     node('div', [
-      layoutGutter.wrap()
+      layoutSetting.control.gutter.wrap()
     ])
   );
 
@@ -294,7 +332,7 @@ layoutSetting.gutter = (parent) => {
 
 layoutSetting.alignment = (parent) => {
 
-  const layoutAlignment = new Control_radioGrid({
+  layoutSetting.control.alignment.alignment = new Control_radioGrid({
     object: state.get.current(),
     radioGroup: [
       { id: 'layout-alignment-top-left', labelText: 'Top Left', value: 'top-left', position: 1 },
@@ -316,7 +354,7 @@ layoutSetting.alignment = (parent) => {
     }
   });
 
-  const layoutDirection = new Control_radio({
+  layoutSetting.control.alignment.direction = new Control_radio({
     object: state.get.current(),
     radioGroup: [
       { id: 'layout-direction-horizontal', labelText: 'Align horizontal', description: 'Stack the Header and Bookmarks in a row side by side.', value: 'horizontal' },
@@ -326,11 +364,12 @@ layoutSetting.alignment = (parent) => {
     path: 'layout.direction',
     action: () => {
       applyCSSClass('layout.direction');
+      layoutSetting.disable();
       data.save();
     }
   });
 
-  const layoutOrder = new Control_radio({
+  layoutSetting.control.alignment.order = new Control_radio({
     object: state.get.current(),
     radioGroup: [
       { id: 'layout-order-header-bookmark', labelText: 'Header then Bookmarks', description: 'Order the Header area to appear before the Bookmarks area.', value: 'header-bookmark' },
@@ -347,11 +386,11 @@ layoutSetting.alignment = (parent) => {
 
   parent.appendChild(
     node('div', [
-      layoutAlignment.wrap(),
+      layoutSetting.control.alignment.alignment.wrap(),
       node('hr'),
-      layoutDirection.wrap(),
+      layoutSetting.control.alignment.direction.wrap(),
       node('hr'),
-      layoutOrder.wrap()
+      layoutSetting.control.alignment.order.wrap()
     ])
   );
 

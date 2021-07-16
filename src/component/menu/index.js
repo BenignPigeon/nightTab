@@ -15,11 +15,11 @@ import { clearChildNode } from '../../utility/clearChildNode';
 const menu = {};
 
 menu.navData = [
-  { name: 'Layout', active: false, overscroll: true, sub: ['Scaling', 'Area', 'Padding', 'Gutter', 'Alignment'] },
-  { name: 'Header', active: false, overscroll: true, sub: ['Greeting', 'Transitional words', 'Clock', 'Date', 'Search', ] },
+  { name: 'Layout', active: true, overscroll: true, sub: ['Scaling', 'Area', 'Padding', 'Gutter', 'Alignment'] },
+  { name: 'Header', active: false, overscroll: true, sub: ['Area', 'Greeting', 'Transitional words', 'Clock', 'Date', 'Search', ] },
   { name: 'Bookmark', active: false, overscroll: true, sub: ['General', 'Style', 'Orientation'] },
-  { name: 'Toolbar', active: false, overscroll: true, sub: ['Style', 'Controls', 'Position'] },
-  { name: 'Theme', active: true, overscroll: true, sub: ['Preset', 'Style', 'Colour', 'Accent', 'Font', 'Radius', 'Shadow', 'Shade', 'Background'] },
+  { name: 'Toolbar', active: false, overscroll: true, sub: ['Size', 'Style', 'Location', 'Position', 'Controls'] },
+  { name: 'Theme', active: false, overscroll: true, sub: ['Preset', 'Saved', 'Style', 'Colour', 'Accent', 'Font', 'Radius', 'Shadow', 'Shade', 'Background'] },
   { name: 'Data', active: false, overscroll: true, sub: ['Import', 'Backup', 'Clear'] },
   { name: 'Coffee', active: false, overscroll: false },
   { name: data.saveName.toLowerCase(), active: false, overscroll: false }
@@ -30,28 +30,31 @@ menu.mod = {};
 menu.frame = null;
 
 menu.open = () => {
+
   menu.frame = new MenuFrame({
     navData: menu.navData
   });
+
   menu.frame.open();
+
 };
 
 menu.close = () => {
+
   if (menu.frame) {
     menu.frame.close();
   };
+
 };
 
 menu.toggle = () => {
+
   if (state.get.current().menu) {
     menu.close();
   } else {
     menu.open();
   };
-};
 
-menu.init = () => {
-  state.get.current().menu = false;
 };
 
 export { menu };

@@ -110,7 +110,9 @@ theme.color = {
 
     const html = document.querySelector('html');
 
-    let shades = (state.get.current().theme.color.lightness.end - state.get.current().theme.color.lightness.start) / (state.get.current().theme.color.shades - 1);
+    const head = document.querySelector('head');
+
+    let shades = (state.get.current().theme.color.contrast.end - state.get.current().theme.color.contrast.start) / (state.get.current().theme.color.shades - 1);
 
     for (var type in state.get.current().theme.color.range) {
 
@@ -118,7 +120,7 @@ theme.color = {
 
         let hsl = JSON.parse(JSON.stringify(state.get.current().theme.color.range[type]));
 
-        hsl.l = Math.round((shades * i) + state.get.current().theme.color.lightness.start);
+        hsl.l = Math.round((shades * i) + state.get.current().theme.color.contrast.start);
 
         let rgb = convertColor.hsl.rgb(hsl);
 
@@ -132,6 +134,10 @@ theme.color = {
 
       };
 
+    };
+
+    for (let i = 1; i <= state.get.current().theme.color.shades; i++) {
+      html.style.setProperty(`--theme-primary-${i}`, `var(--theme-primary-${i}-h), calc(var(--theme-primary-${i}-s) * 1%), calc(var(--theme-primary-${i}-l) * 1%)`);
     };
 
   }
@@ -224,8 +230,16 @@ theme.background = {
       accent: node('div|class:theme-background-type theme-background-type-accent'),
       color: node('div|class:theme-background-type theme-background-type-color'),
       gradient: node('div|class:theme-background-type theme-background-type-gradient'),
-      image: node('div|class:theme-background-type theme-background-type-image'),
-      video: node('div|class:theme-background-type theme-background-type-video')
+      image: {
+        imageElement: node('div|class:theme-background-type theme-background-type-image'),
+        wrap: node('div|class:theme-background-type-image-wrap'),
+        accent: node('div|class:theme-background-type-image-accent')
+      },
+      video: {
+        videoElement: node('div|class:theme-background-type theme-background-type-video'),
+        wrap: node('div|class:theme-background-type-video-wrap'),
+        accent: node('div|class:theme-background-type-video-accent')
+      },
     },
     video: false
   }
@@ -238,7 +252,29 @@ theme.background.area = {
 
     state.get.option().theme.background.type.forEach((item, i) => {
 
-      theme.background.element.background.appendChild(theme.background.element.type[item]);
+      switch (item) {
+
+        case 'image':
+
+          theme.background.element.type.image.imageElement.appendChild(theme.background.element.type.image.wrap);
+          theme.background.element.type.image.imageElement.appendChild(theme.background.element.type.image.accent);
+          theme.background.element.background.appendChild(theme.background.element.type.image.imageElement);
+
+          break;
+
+        case 'video':
+
+          theme.background.element.type.video.videoElement.appendChild(theme.background.element.type.video.wrap);
+          theme.background.element.type.video.videoElement.appendChild(theme.background.element.type.video.accent);
+          theme.background.element.background.appendChild(theme.background.element.type.video.videoElement);
+
+          break;
+
+        default:
+
+          theme.background.element.background.appendChild(theme.background.element.type[item]);
+
+      };
 
     });
 
@@ -270,7 +306,7 @@ theme.background.video = {
 
     if (isValidString(state.get.current().theme.background.video.url)) {
 
-      theme.background.element.type.video.appendChild(theme.background.element.video.video);
+      theme.background.element.type.video.wrap.appendChild(theme.background.element.video.video);
 
     } else {
 
@@ -283,9 +319,9 @@ theme.background.video = {
 
     theme.background.element.video = false;
 
-    if (theme.background.element.type.video.lastChild) {
+    if (theme.background.element.type.video.wrap.lastChild) {
 
-      clearChildNode(theme.background.element.type.video);
+      clearChildNode(theme.background.element.type.video.wrap);
 
     };
 
@@ -320,10 +356,12 @@ theme.init = () => {
     'theme.background.color.hsl.s',
     'theme.background.color.hsl.l',
     'theme.background.image.blur',
+    'theme.background.image.grayscale',
     'theme.background.image.scale',
     'theme.background.image.accent',
     'theme.background.image.opacity',
     'theme.background.video.blur',
+    'theme.background.video.grayscale',
     'theme.background.video.scale',
     'theme.background.video.accent',
     'theme.background.video.opacity',

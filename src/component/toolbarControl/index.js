@@ -18,10 +18,13 @@ import { applyCSSVar } from '../../utility/applyCSSVar';
 import { applyCSSClass } from '../../utility/applyCSSClass';
 import { applyCSSState } from '../../utility/applyCSSState';
 
+import './index.css';
+
 const ToolbarControl = function() {
 
   this.element = {
     toolbar: node('div|class:toolbar'),
+    control: node('div|class:toolbar-control'),
     group: form.group()
   };
 
@@ -50,6 +53,17 @@ const ToolbarControl = function() {
         data.save();
       }
     }),
+    add: new Dropdown({
+      text: 'Add',
+      buttonStyle: ['line'],
+      buttonClassList: ['toolbar-item'],
+      srOnly: true,
+      iconName: 'add',
+      menuItem: [
+        { text: 'New Group', action: () => { group.add.render(); } },
+        { text: 'New Bookmark', action: () => { bookmark.add.render(); } }
+      ]
+    }),
     edit: new Button({
       text: 'Enter edit bookmark mode',
       srOnly: true,
@@ -73,37 +87,39 @@ const ToolbarControl = function() {
       func: () => {
         menu.toggle();
       }
-    }),
-    add: new Dropdown({
-      text: 'Add',
-      buttonStyle: ['line'],
-      buttonClassList: ['toolbar-item'],
-      srOnly: true,
-      iconName: 'add',
-      menuItem: [
-        { text: 'New Group', action: () => { group.add.render(); } },
-        { text: 'New Bookmark', action: () => { bookmark.add.render(); } }
-      ]
     })
   };
 
   this.assemble = () => {
 
-    const toolbarControl = node('div|class:toolbar-control');
 
-    switch (state.get.current().toolbar.position) {
+    switch (state.get.current().toolbar.location) {
 
-      case 'top-right':
-      case 'bottom-right':
+      case 'corner':
+
+        switch (state.get.current().toolbar.position) {
+
+          case 'top-right':
+          case 'bottom-right':
+            this.element.group.classList.remove('form-group-reverse');
+            break;
+
+          case 'top-left':
+          case 'bottom-left':
+            this.element.group.classList.add('form-group-reverse');
+            break;
+
+        };
+
+        break;
+
+      case 'header':
         this.element.group.classList.remove('form-group-reverse');
         break;
 
-      case 'top-left':
-      case 'bottom-left':
-        this.element.group.classList.add('form-group-reverse');
-        break;
-
     };
+
+
 
     if (state.get.current().toolbar.accent.show) {
 
@@ -143,9 +159,9 @@ const ToolbarControl = function() {
 
     this.element.group.appendChild(this.control.button.setting.button);
 
-    toolbarControl.appendChild(this.element.group);
+    this.element.control.appendChild(this.element.group);
 
-    this.element.toolbar.appendChild(toolbarControl);
+    this.element.toolbar.appendChild(this.element.control);
 
   };
 
@@ -292,6 +308,12 @@ const ToolbarControl = function() {
 
   };
 
+  this.update.location = () => {
+
+    applyCSSClass('toolbar.location');
+
+  };
+
   this.update.position = () => {
 
     switch (state.get.current().toolbar.position) {
@@ -308,33 +330,8 @@ const ToolbarControl = function() {
 
     };
 
-    this.element.toolbar.classList.remove('is-toolbar-position-top-left');
-
-    this.element.toolbar.classList.remove('is-toolbar-position-top-right');
-
-    this.element.toolbar.classList.remove('is-toolbar-position-bottom-left');
-
-    this.element.toolbar.classList.remove('is-toolbar-position-bottom-right');
-
-    switch (state.get.current().toolbar.position) {
-
-      case 'top-left':
-        this.element.toolbar.classList.add('is-toolbar-position-top-left');
-        break;
-
-      case 'top-right':
-        this.element.toolbar.classList.add('is-toolbar-position-top-right');
-        break;
-
-      case 'bottom-right':
-        this.element.toolbar.classList.add('is-toolbar-position-bottom-right');
-        break;
-
-      case 'bottom-left':
-        this.element.toolbar.classList.add('is-toolbar-position-bottom-left');
-        break;
-
-    };
+    applyCSSVar('toolbar.size');
+    applyCSSClass('toolbar.position');
 
   };
 
@@ -351,6 +348,8 @@ const ToolbarControl = function() {
   this.assemble();
 
   this.update.style();
+
+  this.update.location();
 
   this.update.position();
 

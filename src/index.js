@@ -5,12 +5,12 @@ console.log(component.data.saveName + ' version:', component.version.number, com
 
 component.data.init();
 component.layout.init();
+component.toolbar.init();
 component.group.init();
 component.bookmark.init();
 component.header.init();
 component.theme.init();
-component.toolbar.init();
-component.menu.init();
+component.pageLock.init();
 component.keyboard.init();
 
-component.menu.open();
+// component.menu.open();

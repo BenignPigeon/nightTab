@@ -53,7 +53,7 @@ const GroupArea = function({
 
         group.item.mod.move(groupData);
 
-        layout.bookmark.clear();
+        bookmark.item.clear();
 
         bookmark.item.render();
 
@@ -88,7 +88,7 @@ const GroupArea = function({
 
         group.item.mod.move(groupData);
 
-        layout.bookmark.clear();
+        bookmark.item.clear();
 
         bookmark.item.render();
 
@@ -120,7 +120,7 @@ const GroupArea = function({
 
             group.item.mod.edit(groupData);
 
-            layout.bookmark.clear();
+            bookmark.item.clear();
 
             bookmark.item.render();
 
@@ -153,7 +153,7 @@ const GroupArea = function({
 
             group.item.mod.remove(groupData);
 
-            layout.bookmark.clear();
+            bookmark.item.clear();
 
             bookmark.item.render();
 
