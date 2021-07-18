@@ -2,6 +2,7 @@ import { state } from '../state';
 import { data } from '../data';
 import { bookmark } from '../bookmark';
 import { group } from '../group';
+import { groupAndBookmark } from '../groupAndBookmark';
 
 import { Button } from '../button';
 import { Video } from '../video';
@@ -76,11 +77,7 @@ const BookmarkTile = function({
 
         bookmark.item.mod.move(bookmarkData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
+        groupAndBookmark.render();
 
         data.save();
 
@@ -111,11 +108,7 @@ const BookmarkTile = function({
 
         bookmark.item.mod.move(bookmarkData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
+        groupAndBookmark.render();
 
         data.save();
 
@@ -168,11 +161,7 @@ const BookmarkTile = function({
 
             bookmark.item.mod.propagate(newBookmarkData);
 
-            bookmark.item.clear();
-
-            bookmark.item.render();
-
-            bookmark.sort.bind();
+            groupAndBookmark.render();
 
             data.save();
 
@@ -201,11 +190,7 @@ const BookmarkTile = function({
 
             bookmark.item.mod.remove(bookmarkData);
 
-            bookmark.item.clear();
-
-            bookmark.item.render();
-
-            bookmark.sort.bind();
+            groupAndBookmark.render();
 
             data.save();
 
@@ -219,15 +204,37 @@ const BookmarkTile = function({
   };
 
   this.control.disable = () => {
+
     for (var key in this.control.button) {
       this.control.button[key].disable();
     };
+
+    this.control.searchState();
+
   };
 
   this.control.enable = () => {
+
     for (var key in this.control.button) {
       this.control.button[key].enable();
     };
+
+    this.control.searchState();
+
+  };
+
+  this.control.searchState = () => {
+
+    if (state.get.current().search) {
+      this.control.button.left.disable();
+      this.control.button.right.disable();
+      this.control.button.sort.disable();
+    } else {
+      this.control.button.left.enable();
+      this.control.button.right.enable();
+      this.control.button.sort.enable();
+    };
+
   };
 
   this.style = (newBookmarkData) => {
@@ -439,6 +446,8 @@ const BookmarkTile = function({
     if (isValidString(bookmarkData.link.url)) {
 
       this.element.url.text.textContent = trimString(bookmarkData.link.url).replace(/^https?\:\/\//i, '').replace(/\/+$/, '');
+
+      this.element.url.text.title = trimString(bookmarkData.link.url);
 
       this.element.url.url.appendChild(this.element.url.text);
 

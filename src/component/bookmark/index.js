@@ -2,8 +2,10 @@ import { state } from '../state';
 import { data } from '../data';
 import { layout } from '../layout';
 import { group } from '../group';
+import { header } from '../header';
 import { bookmarkDefault } from '../bookmarkDefault';
 import { bookmarkPreset } from '../bookmarkPreset';
+import { groupAndBookmark } from '../groupAndBookmark';
 
 import { BookmarkTile } from '../bookmarkTile';
 import { GroupEmpty } from '../groupEmpty';
@@ -29,6 +31,14 @@ bookmark.element = {
 };
 
 bookmark.all = bookmarkPreset.get();
+
+bookmark.area = {
+  render: () => {
+
+    layout.element.bookmark.appendChild(bookmark.element.area);
+
+  }
+};
 
 bookmark.tile = {
   current: []
@@ -98,66 +108,103 @@ bookmark.item = {
 
     }
   },
-  render: () => {
+  render: (groupIndex) => {
 
-    bookmark.item.clear();
+    const addBookmarkToGroup = (bookmarkData, groupIndex, bookmarkIndex) => {
 
-    group.item.render();
+      const currentBookmarkData = new StagedBookmark(bookmarkData);
 
-    bookmark.tile.current = [];
+      currentBookmarkData.position.origin.group = groupIndex;
 
-    bookmark.all.forEach((item, i) => {
+      currentBookmarkData.position.origin.item = bookmarkIndex;
 
-      const groupIndex = i;
+      currentBookmarkData.position.destination.group = groupIndex;
 
-      const targetGroupArea = group.area.current[i].element.body;
+      currentBookmarkData.position.destination.item = bookmarkIndex;
 
-      if (item.items.length > 0) {
+      const bookmarkTile = new BookmarkTile({ bookmarkData: currentBookmarkData });
 
-        item.items.forEach((item, i) => {
+      bookmarkTile.tile().groupIndex = groupIndex;
 
-          const itemIndex = i;
+      bookmarkTile.tile().index = bookmarkIndex;
 
-          const currentBookmarkData = new StagedBookmark(item);
+      group.area.current[groupIndex].element.body.appendChild(bookmarkTile.tile());
 
-          currentBookmarkData.position.origin.group = groupIndex;
+      bookmark.tile.current.push(bookmarkTile);
 
-          currentBookmarkData.position.origin.item = itemIndex;
+    };
 
-          currentBookmarkData.position.destination.group = groupIndex;
+    const addEmptyGroup = (groupIndex) => {
 
-          currentBookmarkData.position.destination.item = itemIndex;
+      const emptyGroupItem = new GroupEmpty({ groupIndex: groupIndex });
 
-          const bookmarkTile = new BookmarkTile({ bookmarkData: currentBookmarkData });
+      group.area.current[groupIndex].element.body.appendChild(emptyGroupItem.empty());
 
-          bookmarkTile.tile().groupIndex = groupIndex;
+    };
 
-          bookmarkTile.tile().index = i;
+    if (state.get.current().search) {
 
-          targetGroupArea.appendChild(bookmarkTile.tile());
+      // searching
 
-          bookmark.tile.current.push(bookmarkTile);
+      if (header.element.search.resultCount().total > 0) {
+
+        bookmark.all.forEach((item, i) => {
+
+          const groupIndex = i;
+
+          if (header.element.search.resultCount().group[groupIndex].searchMatch > 0) {
+
+            item.items.forEach((item, i) => {
+
+              const bookmarkIndex = i;
+
+              if (item.searchMatch) {
+
+                addBookmarkToGroup(item, groupIndex, bookmarkIndex);
+
+              };
+
+            });
+
+          };
 
         });
-
-      } else {
-
-        const emptyGroupItem = new GroupEmpty({
-          groupIndex: groupIndex
-        });
-
-        targetGroupArea.appendChild(emptyGroupItem.empty());
 
       };
 
-    });
 
-    layout.element.bookmark.appendChild(bookmark.element.area);
+    } else {
+
+      // not searching
+
+      bookmark.all.forEach((item, i) => {
+
+        const groupIndex = i;
+
+        if (item.items.length > 0) {
+
+          item.items.forEach((item, i) => {
+
+            const bookmarkIndex = i;
+
+            addBookmarkToGroup(item, groupIndex, bookmarkIndex);
+
+          });
+
+        } else {
+
+          addEmptyGroup(groupIndex);
+
+        };
+
+      });
+
+    };
 
   },
   clear: () => {
 
-    clearChildNode(bookmark.element.area);
+    bookmark.tile.current = [];
 
   }
 };
@@ -191,6 +238,7 @@ bookmark.edit = {
     applyCSSState('bookmark.edit');
 
     if (bookmark.tile.current.length > 0) {
+
       bookmark.tile.current.forEach((item, i) => {
 
         if (state.get.current().bookmark.edit) {
@@ -200,6 +248,7 @@ bookmark.edit = {
         };
 
       });
+
     };
 
   }
@@ -300,13 +349,9 @@ bookmark.add = {
 
         bookmark.item.mod.propagate(newBookmarkData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
-
         bookmark.add.mod.close();
+
+        groupAndBookmark.render();
 
         data.save();
 
@@ -326,11 +371,14 @@ bookmark.add = {
 };
 
 bookmark.sort = {
+  sortable: [],
   bind: () => {
+
+    bookmark.sort.sortable = [];
 
     group.area.current.forEach((item, i) => {
 
-      const sortable = Sortable.create(item.element.body, {
+      bookmark.sort.sortable.push(Sortable.create(item.element.body, {
         handle: '.bookmark-control-sort',
         group: 'bookmark-sort',
         ghostClass: 'bookmark-sort-placeholder',
@@ -358,18 +406,12 @@ bookmark.sort = {
 
           bookmark.item.mod.move(newBookmarkData);
 
-          layout.bookmark.clear();
-
-          bookmark.item.clear();
-
-          bookmark.item.render();
-
-          bookmark.sort.bind();
+          groupAndBookmark.render();
 
           data.save();
 
         }
-      });
+      }));
 
     });
 
@@ -386,6 +428,7 @@ bookmark.init = () => {
     'bookmark.size'
   ]);
   applyCSSClass([
+    'bookmark.item.justify',
     'bookmark.orientation',
     'bookmark.style'
   ]);
@@ -396,11 +439,9 @@ bookmark.init = () => {
     'bookmark.line.show',
     'bookmark.url.show'
   ]);
-
+  bookmark.area.render();
   bookmark.add.mod.close();
   bookmark.edit.render();
-  bookmark.item.render();
-  bookmark.sort.bind();
 };
 
 export { bookmark };

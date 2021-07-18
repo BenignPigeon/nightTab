@@ -1,8 +1,12 @@
+import { data } from '../data';
 import { state } from '../state';
+import { group } from '../group';
 import { bookmark } from '../bookmark';
+import { groupAndBookmark } from '../groupAndBookmark';
 
 import * as form from '../form';
 
+import { Button } from '../button';
 import { Control_text } from '../control/text';
 import { KeyboardShortcut } from '../keyboardShortcut';
 
@@ -13,7 +17,7 @@ import { complexNode } from '../../utility/complexNode';
 
 import './index.css';
 
-export const Search = function({} = {}) {
+export const Search = function() {
 
   this.element = {
     search: node('div|class:search'),
@@ -26,11 +30,42 @@ export const Search = function({} = {}) {
       value: '',
       placeholder: 'Search Bookmarks or',
       labelText: 'Search',
+      classList: ['search-input'],
       srOnly: true,
       action: () => {
+        this.state();
+        this.performSearch();
+      }
+    }),
+    clear: new Button({
+      text: 'Clear search',
+      srOnly: true,
+      iconName: 'cross',
+      style: ['link'],
+      title: 'Clear search',
+      classList: ['search-clear'],
+      func: () => {
+        this.element.input.text.value = '';
+        this.state();
         this.performSearch();
       }
     })
+  };
+
+  this.state = () => {
+
+    if (isValidString(trimString(this.element.input.text.value))) {
+
+      state.get.current().search = true;
+
+    } else {
+
+      state.get.current().search = false;
+
+    };
+
+    data.save();
+
   };
 
   this.placeholder = () => {
@@ -49,19 +84,6 @@ export const Search = function({} = {}) {
 
   };
 
-  this.bind = {
-    add: () => {
-
-      this.element.input.text.addEventListener('keydown', this.clearSearch);
-
-    },
-    remove: () => {
-
-      this.element.input.text.removeEventListener('keydown', this.clearSearch);
-
-    }
-  };
-
   this.delete = new KeyboardShortcut({ keycode: 8, action: () => { this.close(); } });
 
   this.engine = {
@@ -75,43 +97,57 @@ export const Search = function({} = {}) {
 
   this.performSearch = () => {
 
-    // state.get.current().search = true;
+    const html = document.querySelector('html');
 
-    const searchString = trimString(this.element.input.text.value).toLowerCase();
+    if (state.get.current().search) {
 
-    bookmark.all.forEach((item, i) => {
-      item.items.forEach((item, i) => {
+      html.classList.add('is-search');
 
-        // item.searchMatch = false;
-        //
-        // let matchUrl = isValidString(item.url) && item.url.toLowerCase().includes(searchString);
-        //
-        // let matchName = isValidString(item.display.name.text) && trimString(item.display.name.text).toLowerCase().includes(searchString);
-        //
-        // if (matchUrl || matchName) {
-        //   item.searchMatch = true;
-        // };
+      const searchString = trimString(this.element.input.text.value).toLowerCase();
+
+      bookmark.all.forEach((item, i) => {
+
+        item.items.forEach((item, i) => {
+
+          item.searchMatch = false;
+
+          let matchUrl = isValidString(item.url) && item.url.toLowerCase().includes(searchString);
+
+          let matchName = isValidString(item.display.name.text) && trimString(item.display.name.text).toLowerCase().includes(searchString);
+
+          if (matchUrl || matchName) {
+            item.searchMatch = true;
+          };
+
+        });
 
       });
-    });
 
-    bookmark.item.clear();
-    bookmark.item.render();
-    bookmark.sort.bind();
+    } else {
+
+      html.classList.remove('is-search');
+
+      this.clearSearch();
+
+    };
+
+    groupAndBookmark.render();
 
   };
 
   this.clearSearch = () => {
 
-    // state.get.current().search = false;
-
     bookmark.all.forEach((item, i) => {
+
       item.items.forEach((item, i) => {
 
         delete item.searchMatch;
 
       });
+
     });
+
+    data.save();
 
   };
 
@@ -125,6 +161,8 @@ export const Search = function({} = {}) {
 
     this.element.form.appendChild(this.element.submit);
 
+    this.element.form.appendChild(this.element.clear.button);
+
     this.element.search.appendChild(this.element.form);
 
   };
@@ -135,13 +173,40 @@ export const Search = function({} = {}) {
 
   };
 
+  this.resultCount = () => {
+
+    const count = { total: 0, group: [] };
+
+    bookmark.all.forEach((item, i) => {
+
+      count.group.push({
+        bookmarkCount: item.items.length,
+        searchMatch: 0
+      })
+
+      const groupIndex = i;
+
+      item.items.forEach((item, i) => {
+
+        if (item.searchMatch) { count.group[groupIndex].searchMatch++ };
+
+      });
+
+      count.total = count.total + count.group[groupIndex].searchMatch;
+
+    });
+
+    return count;
+
+  };
+
+  this.state();
+
   this.assemble();
 
   this.placeholder();
 
   this.engine.set();
-
-  this.bind.add();
 
   this.clearSearch();
 

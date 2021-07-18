@@ -13,6 +13,12 @@ update.mod['7.0.0'] = function(data) {
   data.state.header.order.splice(data.state.header.order.indexOf('colorAccent'), 1);
   data.state.header.order.splice(data.state.header.order.indexOf('menu'), 1);
 
+  data.state.header.greeting.size = data.state.header.greeting.size * 100;
+  data.state.header.clock.size = data.state.header.clock.size * 100;
+  data.state.header.transitional.size = data.state.header.transitional.size * 100;
+  data.state.header.date.size = data.state.header.date.size * 100;
+  data.state.header.search.size = data.state.header.search.size * 100;
+
   data.state.header.order.push('toolbar');
 
   data.state.layout.padding = data.state.layout.padding * 10;

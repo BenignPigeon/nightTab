@@ -24,6 +24,7 @@ import { Control_slimSlider } from './control/slimSlider';
 import { Control_text } from './control/text';
 import { Control_select } from './control/select';
 
+import { appName } from './appName';
 import { base } from './base';
 import { state } from './state';
 import { data } from './data';
@@ -42,10 +43,12 @@ import { bookmark } from './bookmark';
 import { header } from './header';
 import { group } from './group';
 import { toolbar } from './toolbar';
+import { groupAndBookmark } from './groupAndBookmark';
 
 import * as form from './form';
 
 export const component = {
+  appName,
   base,
   state,
   data,
@@ -64,5 +67,6 @@ export const component = {
   header,
   group,
   form,
-  toolbar
+  toolbar,
+  groupAndBookmark
 };

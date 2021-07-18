@@ -36,12 +36,7 @@ const CustomThemeForm = function({
       id: 'name',
       value: customThemeData.theme.name,
       placeholder: 'Example theme',
-      labelText: 'Name',
-      action: () => {
-        console.log(
-          customThemeData
-        );
-      }
+      labelText: 'Name'
     }),
     randomName: new Button({
       text: 'Random theme name',

@@ -2,14 +2,19 @@ import { state } from '../state';
 import { data } from '../data';
 import { layout } from '../layout';
 import { bookmark } from '../bookmark';
+import { header } from '../header';
 import { groupDefault } from '../groupDefault';
+import { groupAndBookmark } from '../groupAndBookmark';
 
 import { GroupArea } from '../groupArea';
+import { GroupEmpty } from '../groupEmpty';
 import { StagedGroup } from '../stagedGroup';
 import { GroupForm } from '../groupForm';
 import { Modal } from '../modal';
+import { EmptySearch } from '../emptySearch';
 
 import { node } from '../../utility/node';
+import { clearChildNode } from '../../utility/clearChildNode';
 import { isValidString } from '../../utility/isValidString';
 import { trimString } from '../../utility/trimString';
 import { applyCSSVar } from '../../utility/applyCSSVar';
@@ -21,6 +26,10 @@ import Sortable from 'sortablejs';
 import './index.css';
 
 const group = {};
+
+group.area = {
+  current: []
+};
 
 group.item = {
   mod: {
@@ -41,30 +50,84 @@ group.item = {
   },
   render: () => {
 
-    group.area.current = [];
+    const addGroup = (groupData, groupIndex) => {
 
-    bookmark.all.forEach((item, i) => {
+      const currentGroupkData = new StagedGroup(groupData);
 
-      const itemIndex = i;
+      currentGroupkData.position.origin = groupIndex;
 
-      const currentGroupkData = new StagedGroup(item);
+      currentGroupkData.position.destination = groupIndex;
 
-      currentGroupkData.position.origin = itemIndex;
-
-      currentGroupkData.position.destination = itemIndex;
-
-      const groupArea = new GroupArea({
-        groupData: currentGroupkData
-      });
-
-      bookmark.element.area.appendChild(groupArea.group());
+      const groupArea = new GroupArea({ groupData: currentGroupkData });
 
       group.area.current.push(groupArea);
 
-    });
+      if (state.get.current().search) {
+
+        if (header.element.search.resultCount().group[groupIndex].searchMatch > 0) {
+
+          bookmark.element.area.appendChild(groupArea.group());
+
+        };
+
+      } else {
+
+        bookmark.element.area.appendChild(groupArea.group());
+
+      };
+
+    };
+
+    const addEmptySearch = () => {
+
+      const emptySearch = new EmptySearch();
+
+      bookmark.element.area.appendChild(emptySearch.empty());
+
+    };
+
+    if (state.get.current().search) {
+
+      // searching
+
+      if (header.element.search.resultCount().total > 0) {
+
+        bookmark.all.forEach((item, i) => {
+
+          const groupIndex = i;
+
+          addGroup(item, groupIndex);
+
+        });
+
+      } else {
+
+        addEmptySearch();
+
+      };
+
+    } else {
+
+      // not searching
+
+      bookmark.all.forEach((item, i) => {
+
+        const groupIndex = i;
+
+        addGroup(item, groupIndex);
+
+      });
+
+    };
 
   },
-  clear: () => {}
+  clear: () => {
+
+    group.area.current = [];
+
+    clearChildNode(bookmark.element.area);
+
+  }
 };
 
 group.edit = {
@@ -102,17 +165,12 @@ group.edit = {
           item.control.enable();
         } else {
           item.control.disable();
-
         };
 
       });
     };
 
   }
-};
-
-group.area = {
-  current: []
 };
 
 group.add = {
@@ -151,13 +209,9 @@ group.add = {
 
         group.item.mod.add(newGroupData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
-
         group.add.mod.close();
+
+        groupAndBookmark.render();
 
         data.save();
 
@@ -177,9 +231,12 @@ group.add = {
 };
 
 group.sort = {
+  sortable: null,
   bind: () => {
 
-    const sortable = Sortable.create(bookmark.element.area, {
+    group.sort.sortable = null;
+
+    group.sort.sortable = Sortable.create(bookmark.element.area, {
       handle: '.group-control-sort',
       ghostClass: 'group-sort-placeholder',
       animation: 500,
@@ -198,11 +255,7 @@ group.sort = {
 
         group.item.mod.move(newGroupData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
+        groupAndBookmark.render();
 
         data.save();
 
@@ -218,7 +271,6 @@ group.init = () => {
   ]);
   group.add.mod.close();
   group.edit.render();
-  group.sort.bind();
 };
 
 export { group };

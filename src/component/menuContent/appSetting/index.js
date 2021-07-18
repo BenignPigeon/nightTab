@@ -10,6 +10,7 @@ import { logo } from '../../logo';
 import { link } from '../../link';
 import { layout } from '../../layout';
 import { toolbar } from '../../toolbar';
+import { appName } from '../../appName';
 
 import * as form from '../../form';
 
@@ -38,7 +39,7 @@ import { applyCSSState } from '../../../utility/applyCSSState';
 
 const appSetting = {};
 
-appSetting[data.saveName.toLowerCase()] = (parent) => {
+appSetting[appName.toLowerCase()] = (parent) => {
 
   parent.appendChild(
     node('div', [
@@ -55,7 +56,7 @@ appSetting[data.saveName.toLowerCase()] = (parent) => {
         text: 'Project repository on ',
         node: [link.render({
           text: 'GitHub.',
-          href: 'https://github.com/zombieFox/' + data.saveName,
+          href: 'https://github.com/zombieFox/' + appName,
           openNew: true
         })]
       }),
@@ -65,7 +66,7 @@ appSetting[data.saveName.toLowerCase()] = (parent) => {
         text: 'For feedback and support, submit an ',
         node: [link.render({
           text: 'Issue.',
-          href: 'https://github.com/zombieFox/' + data.saveName + '/issues',
+          href: 'https://github.com/zombieFox/' + appName + '/issues',
           openNew: true
         })]
       })

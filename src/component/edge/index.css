@@ -7,8 +7,8 @@
     inset 0 0 0 calc(var(--layout-line-width) * 8) hsla(var(--theme-accent-rgb-text), 0.1);
 }
 
-.edge {
-  background-color: rgba(var(--theme-accent), 0.2);
+.edge,
+.edge-secondary {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,13 +16,22 @@
   height: 100vh;
   opacity: 0;
   border-radius: var(--theme-radius-base);
-  box-shadow: var(--edge);
   z-index: var(--z-index-edge);
   pointer-events: none;
-  transition: opacity var(--layout-transition-extra-fast);
+  transition: opacity var(--layout-transition-fast);
 }
 
-.edge.is-edge-opening {
+.edge {
+  background-color: rgba(var(--theme-accent), 0.2);
+  box-shadow: var(--edge);
+}
+
+.edge-secondary {
+  border: var(--layout-line-width) solid rgba(var(--theme-accent), 0.5);
+}
+
+.edge.is-edge-opening,
+.edge-secondary.is-edge-opening {
   transition:
     opacity var(--layout-transition-fast),
     top var(--layout-transition-fast),
@@ -31,6 +40,7 @@
     height var(--layout-transition-fast);
 }
 
-.is-theme-background-type-accent .edge {
+.is-theme-background-type-accent .edge,
+.is-theme-background-type-accent .edge-secondary {
   box-shadow: var(--edge-on-accent);
 }

@@ -10,6 +10,7 @@ import { logo } from '../../logo';
 import { link } from '../../link';
 import { layout } from '../../layout';
 import { toolbar } from '../../toolbar';
+import { appName } from '../../appName';
 
 import * as form from '../../form';
 
@@ -56,7 +57,7 @@ dataSetting.import = (parent) => {
   });
 
   const importHelper = new Control_helperText({
-    text: ['Restore a previously exported ' + data.saveName + ' backup.']
+    text: ['Restore a previously exported ' + appName + ' backup.']
   });
 
   parent.appendChild(
@@ -84,7 +85,7 @@ dataSetting.backup = (parent) => {
   });
 
   const exportHelper = new Control_helperText({
-    text: ['Download a backup of your ' + data.saveName + ' Bookmarks and Settings.', 'This file can later be imported on this or another deivce.']
+    text: ['Download a backup of your ' + appName + ' Bookmarks and Settings.', 'This file can later be imported on this or another deivce.']
   });
 
   parent.appendChild(
@@ -108,7 +109,7 @@ dataSetting.clear = (parent) => {
   });
 
   const clearHelper = new Control_helperText({
-    text: ['Wipe all data and restore ' + data.saveName + ' to the default state.']
+    text: ['Wipe all data and restore ' + appName + ' to the default state.']
   });
 
   parent.appendChild(

@@ -37,23 +37,31 @@ export const Greeting = function({} = {}) {
     switch (state.get.current().header.greeting.type) {
 
       case 'good':
+
         value = this.message[Math.floor(this.now.hours() / 6)];
+
         break;
 
       case 'hello':
+
         value = 'Hello';
+
         break;
 
       case 'hi':
+
         value = 'Hi';
+
         break;
 
       case 'custom':
+
         if (isValidString(state.get.current().header.greeting.custom)) {
           value = trimString(state.get.current().header.greeting.custom);
         } else {
           value = this.message[Math.floor(this.now.hours() / 6)];
         };
+
         break;
 
     };

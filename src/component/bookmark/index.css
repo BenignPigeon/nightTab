@@ -777,6 +777,10 @@
   transition: background-color var(--layout-transition-fast), border-color var(--layout-transition-fast), color var(--layout-transition-fast), top var(--layout-transition-fast), right var(--layout-transition-fast), bottom var(--layout-transition-fast), left var(--layout-transition-fast);
 }
 
+.bookmark-control .bookmark-control-button:disabled {
+  opacity: 0.25;
+}
+
 .is-bookmark-style-block .bookmark-control-left {
   grid-column: 1 / span 2;
   grid-row: 1;

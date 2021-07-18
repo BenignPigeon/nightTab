@@ -10,6 +10,7 @@ import { logo } from '../../logo';
 import { link } from '../../link';
 import { layout } from '../../layout';
 import { toolbar } from '../../toolbar';
+import { appName } from '../../appName';
 
 import * as form from '../../form';
 
@@ -44,7 +45,7 @@ coffeeSetting.coffee = (parent) => {
     node('div', [
       complexNode({
         tag: 'p',
-        text: data.saveName + ' is free, appreciation is welcome in the form of coffee!'
+        text: appName + ' is free, appreciation is welcome in the form of coffee!'
       }),
       node('hr'),
       form.wrap({

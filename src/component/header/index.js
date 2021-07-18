@@ -24,7 +24,12 @@ const header = {};
 
 header.element = {
   header: node('header|class:header'),
-  area: node('div|class:header-area')
+  area: node('div|class:header-area'),
+  greeting: false,
+  transitional: false,
+  clock: false,
+  date: false,
+  search: false
 };
 
 header.item = {};
@@ -39,7 +44,7 @@ header.item.mod = {
   },
   order: () => {
 
-    const headerItems = ['greeting', 'transitional', 'clock', 'date', 'search', 'toolbar'];
+    const headerItems = ['toolbar', 'search', 'date', 'clock', 'transitional', 'greeting'];
 
     headerItems.forEach((item, i) => {
 
@@ -129,6 +134,16 @@ header.item.render = () => {
 
   const order = state.get.current().header.order;
 
+  header.element.clock = new Clock();
+
+  header.element.date = new Date();
+
+  header.element.greeting = new Greeting();
+
+  header.element.transitional = new Transitional();
+
+  header.element.search = new Search();
+
   order.forEach((item, i) => {
 
     switch (item) {
@@ -139,11 +154,9 @@ header.item.render = () => {
           state.get.current().header.clock.minute.show ||
           state.get.current().header.clock.hour.show) {
 
-          const headerClock = new Clock();
-
           const headerItem = new HeaderItem({
             name: item,
-            child: headerClock.clock()
+            child: header.element.clock.clock()
           });
 
           header.item.current.push(headerItem);
@@ -158,11 +171,9 @@ header.item.render = () => {
 
         if (state.get.current().header.date.day.show || state.get.current().header.date.date.show || state.get.current().header.date.month.show || state.get.current().header.date.year.show) {
 
-          const headerDate = new Date();
-
           const headerItem = new HeaderItem({
             name: item,
-            child: headerDate.date()
+            child: header.element.date.date()
           });
 
           header.item.current.push(headerItem);
@@ -177,11 +188,9 @@ header.item.render = () => {
 
         if (state.get.current().header.greeting.show) {
 
-          const headerGreeting = new Greeting();
-
           const headerItem = new HeaderItem({
             name: item,
-            child: headerGreeting.greeting()
+            child: header.element.greeting.greeting()
           });
 
           header.item.current.push(headerItem);
@@ -208,11 +217,9 @@ header.item.render = () => {
           state.get.current().header.transitional.show
         ) {
 
-          const headerTransitional = new Transitional();
-
           const headerItem = new HeaderItem({
             name: item,
-            child: headerTransitional.transitional()
+            child: header.element.transitional.transitional()
           });
 
           header.item.current.push(headerItem);
@@ -227,11 +234,9 @@ header.item.render = () => {
 
         if (state.get.current().header.search.show) {
 
-          const headerSearch = new Search();
-
           const headerItem = new HeaderItem({
             name: item,
-            child: headerSearch.search()
+            child: header.element.search.search()
           });
 
           header.item.current.push(headerItem);
@@ -342,6 +347,14 @@ header.edit = {
 
 header.init = () => {
   state.get.current().search = false;
+  header.item.mod.order();
+  applyCSSVar([
+    'header.greeting.size',
+    'header.transitional.size',
+    'header.clock.size',
+    'header.date.size',
+    'header.search.size'
+  ]);
   applyCSSClass([
     'header.item.justify'
   ]);

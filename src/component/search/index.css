@@ -1,5 +1,6 @@
 .search {
   font-size: 1em;
+  position: relative;
 }
 
 .search input[type="search"] {
@@ -18,4 +19,23 @@ input[type="search"]:active {
 
 input[type="search"]:disabled {
   background-color: hsla(var(--form-input-background-disabled), calc(var(--header-item-opacity) / 100));
+}
+
+.search-clear {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0, -50%);
+  transition: opacity var(--layout-transition-extra-fast);
+}
+
+.is-search .search-clear {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.is-search .search-input {
+  padding-right: 4em;
 }

@@ -19,7 +19,7 @@ state.default = {
   },
   header: {
     item: { justify: 'center' },
-    greeting: { show: false, type: 'good', custom: '', name: '', size: 1, newLine: false },
+    greeting: { show: false, type: 'good', custom: '', name: '', size: 100, newLine: false },
     clock: {
       hour: { show: true, display: 'number' },
       minute: { show: true, display: 'number' },
@@ -27,10 +27,10 @@ state.default = {
       separator: { show: true, text: '' },
       meridiem: { show: false },
       hour24: { show: true },
-      size: 1,
+      size: 100,
       newLine: false
     },
-    transitional: { show: false, type: 'timeanddate', size: 1, newLine: false },
+    transitional: { show: false, type: 'timeanddate', size: 100, newLine: false },
     date: {
       day: { show: true, display: 'word', weekStart: 'monday', length: 'long' },
       date: { show: true, display: 'number', ordinal: true },
@@ -38,7 +38,7 @@ state.default = {
       year: { show: false, display: 'number' },
       separator: { show: true, text: '' },
       format: 'datemonth',
-      size: 1,
+      size: 100,
       newLine: false
     },
     search: {
@@ -56,12 +56,12 @@ state.default = {
         custom: { url: '', name: '', queryName: '' }
       },
       text: { justify: 'center' },
-      size: 1,
+      size: 100,
       opacity: 1,
       newLine: false,
       newTab: false
     },
-    order: ['clock', 'date', 'search', 'toolbar'],
+    order: [],
     border: { top: 0, bottom: 0 },
     color: { by: 'theme', hsl: { h: 0, s: 0, l: 0 }, rgb: { r: 0, g: 0, b: 0 }, style: 'scroll', opacity: 0.95, show: false, newLine: false },
     radius: false,
@@ -111,14 +111,22 @@ state.default = {
     shade: { opacity: 20, blur: 0 },
     custom: { all: [], edit: false }
   },
+  search: false,
   modal: false,
   menu: false,
   autoSuggest: false
 };
 
 state.minMax = {
+  header: {
+    greeting: { size: { min: 50, max: 1000 } },
+    transitional: { size: { min: 50, max: 1000 } },
+    clock: { size: { min: 50, max: 1000 } },
+    date: { size: { min: 50, max: 1000 } },
+    search: { size: { min: 50, max: 1000 } }
+  },
   bookmark: {
-    size: { min: 50, max: 500 }
+    size: { min: 50, max: 1000 }
   },
   layout: {
     area: {

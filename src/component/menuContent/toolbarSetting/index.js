@@ -64,9 +64,23 @@ toolbarSetting.disable = () => {
 
 };
 
+toolbarSetting.edge = {
+  size: false
+};
+
 toolbarSetting.size = (parent) => {
 
-  const toolbarEdge = new Edge({ element: toolbar.current.element.toolbar });
+  switch (state.get.current().toolbar.location) {
+
+    case 'header':
+      toolbarSetting.edge.size = new Edge({ primary: toolbar.current.element.toolbar, secondary: [layout.element.header] });
+      break;
+
+    case 'corner':
+      toolbarSetting.edge.size = new Edge({ primary: toolbar.current.element.toolbar });
+      break;
+
+  };
 
   toolbarSetting.control.size = new Control_slider({
     object: state.get.current(),
@@ -82,13 +96,13 @@ toolbarSetting.size = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      toolbarEdge.track();
+      toolbarSetting.edge.size.track();
     },
     mouseDownAction: () => {
-      toolbarEdge.show();
+      toolbarSetting.edge.size.show();
     },
     mouseUpAction: () => {
-      toolbarEdge.hide();
+      toolbarSetting.edge.size.hide();
     }
   });
 
@@ -135,7 +149,7 @@ toolbarSetting.location = (parent) => {
     object: state.get.current(),
     radioGroup: [
       { id: 'toolbar-location-corner', labelText: 'In a corner', value: 'corner' },
-      { id: 'toolbar-location-header', labelText: 'Inside the Header', value: 'header' }
+      { id: 'toolbar-location-header', labelText: 'In the Header', value: 'header' }
     ],
     groupName: 'toolbar-location',
     path: 'toolbar.location',
@@ -150,6 +164,19 @@ toolbarSetting.location = (parent) => {
       toolbar.bar.render();
       layout.area.assemble();
       toolbarSetting.disable();
+
+      switch (state.get.current().toolbar.location) {
+
+        case 'header':
+          toolbarSetting.edge.size = new Edge({ primary: toolbar.current.element.toolbar, secondary: [layout.element.header] });
+          break;
+
+        case 'corner':
+          toolbarSetting.edge.size = new Edge({ primary: toolbar.current.element.toolbar });
+          break;
+
+      };
+
       data.save();
     }
   });

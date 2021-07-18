@@ -70,7 +70,7 @@ layoutSetting.disable = () => {
 
 layoutSetting.scaling = (parent) => {
 
-  const layoutEdge = new Edge({ element: layout.element.layout });
+  const layoutEdge = new Edge({ primary: layout.element.layout });
 
   layoutSetting.control.scaling.size = new Control_slider({
     object: state.get.current(),
@@ -106,11 +106,11 @@ layoutSetting.scaling = (parent) => {
 
 layoutSetting.area = (parent) => {
 
-  const layoutEdge = new Edge({ element: layout.element.layout });
+  const layoutEdge = new Edge({ primary: layout.element.layout });
 
-  const layoutHeaderEdge = new Edge({ element: header.element.area });
+  const layoutHeaderEdge = new Edge({ primary: header.element.area, secondary: [layout.element.layout] });
 
-  const layoutBookmarkEdge = new Edge({ element: bookmark.element.area });
+  const layoutBookmarkEdge = new Edge({ primary: bookmark.element.area, secondary: [layout.element.layout] });
 
   layoutSetting.control.area.width = new Control_slider({
     object: state.get.current(),
@@ -235,11 +235,11 @@ layoutSetting.area = (parent) => {
   parent.appendChild(
     node('div', [
       layoutSetting.control.area.width.wrap(),
-      node('hr'),
       form.wrap({
         children: [
           form.indent({
             children: [
+              node('hr'),
               layoutSetting.control.area.header.width.wrap(),
               layoutSetting.control.area.header.justify.wrap(),
               layoutSetting.control.area.header.justifyHelper1.wrap(),
@@ -260,7 +260,7 @@ layoutSetting.area = (parent) => {
 
 layoutSetting.padding = (parent) => {
 
-  const layoutEdge = new Edge({ element: layout.element.layout });
+  const layoutEdge = new Edge({ primary: layout.element.layout });
 
   layoutSetting.control.padding = new Control_slider({
     object: state.get.current(),
@@ -296,7 +296,7 @@ layoutSetting.padding = (parent) => {
 
 layoutSetting.gutter = (parent) => {
 
-  const layoutEdge = new Edge({ element: layout.element.layout });
+  const layoutEdge = new Edge({ primary: layout.element.layout });
 
   layoutSetting.control.gutter = new Control_slider({
     object: state.get.current(),
@@ -351,6 +351,7 @@ layoutSetting.alignment = (parent) => {
     gridSize: '3x3',
     action: () => {
       applyCSSClass('layout.alignment');
+      data.save();
     }
   });
 

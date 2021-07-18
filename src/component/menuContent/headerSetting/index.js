@@ -49,6 +49,29 @@ headerSetting.control = {
 
 headerSetting.disable = () => {
 
+  if (state.get.current().header.clock.second.show ||
+    state.get.current().header.clock.minute.show ||
+    state.get.current().header.clock.hour.show) {
+    headerSetting.control.clock.size.enable();
+  } else {
+    headerSetting.control.clock.size.disable();
+  };
+
+  if (state.get.current().header.date.day.show ||
+    state.get.current().header.date.date.show ||
+    state.get.current().header.date.month.show ||
+    state.get.current().header.date.year.show) {
+    headerSetting.control.date.size.enable();
+  } else {
+    headerSetting.control.date.size.disable();
+  };
+
+  if (state.get.current().header.search.show) {
+    headerSetting.control.search.size.enable();
+  } else {
+    headerSetting.control.search.size.disable();
+  };
+
   if ((
       state.get.current().header.clock.second.show ||
       state.get.current().header.clock.minute.show ||
@@ -63,6 +86,7 @@ headerSetting.disable = () => {
   } else {
     headerSetting.control.transitional.show.disable();
   };
+
 
 };
 
@@ -162,6 +186,8 @@ headerSetting.transitional = (parent) => {
 
 headerSetting.clock = (parent) => {
 
+  let headerClockSizeEdge = new Edge({ primary: header.element.clock.clock(), secondary: [layout.element.header] });
+
   headerSetting.control.clock.hour = {
     show: new Control_checkbox({
       object: state.get.current(),
@@ -174,6 +200,7 @@ headerSetting.clock = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerClockSizeEdge.update.primary(header.element.clock.clock());
         data.save();
       }
     })
@@ -191,6 +218,7 @@ headerSetting.clock = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerClockSizeEdge.update.primary(header.element.clock.clock());
         data.save();
       }
     })
@@ -208,22 +236,50 @@ headerSetting.clock = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerClockSizeEdge.update.primary(header.element.clock.clock());
         data.save();
       }
     })
   };
 
+  headerSetting.control.clock.size = new Control_slider({
+    object: state.get.current(),
+    path: 'header.clock.size',
+    id: 'header-clock-size',
+    labelText: 'Clock size',
+    value: state.get.current().header.clock.size,
+    defaultValue: state.get.default().header.clock.size,
+    min: state.get.minMax().header.clock.size.min,
+    max: state.get.minMax().header.clock.size.max,
+    action: () => {
+      applyCSSVar('header.clock.size');
+      data.save();
+    },
+    sliderAction: () => {
+      headerClockSizeEdge.track();
+    },
+    mouseDownAction: () => {
+      headerClockSizeEdge.show();
+    },
+    mouseUpAction: () => {
+      headerClockSizeEdge.hide();
+    }
+  });
+
   parent.appendChild(
     node('div', [
       headerSetting.control.clock.hour.show.wrap(),
       headerSetting.control.clock.minute.show.wrap(),
-      headerSetting.control.clock.second.show.wrap()
+      headerSetting.control.clock.second.show.wrap(),
+      headerSetting.control.clock.size.wrap()
     ])
   );
 
 };
 
 headerSetting.date = (parent) => {
+
+  let headerDateSizeEdge = new Edge({ primary: header.element.date.date(), secondary: [layout.element.header] });
 
   headerSetting.control.date.day = {
     show: new Control_checkbox({
@@ -237,6 +293,7 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerDateSizeEdge.update.primary(header.element.date.date());
         data.save();
       }
     })
@@ -254,6 +311,7 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerDateSizeEdge.update.primary(header.element.date.date());
         data.save();
       }
     })
@@ -271,6 +329,7 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerDateSizeEdge.update.primary(header.element.date.date());
         data.save();
       }
     })
@@ -288,23 +347,51 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
+        headerDateSizeEdge.update.primary(header.element.date.date());
         data.save();
       }
     })
   };
+
+  headerSetting.control.date.size = new Control_slider({
+    object: state.get.current(),
+    path: 'header.date.size',
+    id: 'header-date-size',
+    labelText: 'Date size',
+    value: state.get.current().header.date.size,
+    defaultValue: state.get.default().header.date.size,
+    min: state.get.minMax().header.date.size.min,
+    max: state.get.minMax().header.date.size.max,
+    action: () => {
+      applyCSSVar('header.date.size');
+      data.save();
+    },
+    sliderAction: () => {
+      headerDateSizeEdge.track();
+    },
+    mouseDownAction: () => {
+      headerDateSizeEdge.show();
+    },
+    mouseUpAction: () => {
+      headerDateSizeEdge.hide();
+    }
+  });
 
   parent.appendChild(
     node('div', [
       headerSetting.control.date.day.show.wrap(),
       headerSetting.control.date.date.show.wrap(),
       headerSetting.control.date.month.show.wrap(),
-      headerSetting.control.date.year.show.wrap()
+      headerSetting.control.date.year.show.wrap(),
+      headerSetting.control.date.size.wrap()
     ])
   );
 
 };
 
 headerSetting.search = (parent) => {
+
+  const headerSearchSizeEdge = new Edge({ primary: header.element.search.search(), secondary: [layout.element.header] });
 
   headerSetting.control.search.show = new Control_checkbox({
     object: state.get.current(),
@@ -317,13 +404,39 @@ headerSetting.search = (parent) => {
       header.item.render();
       layout.area.assemble();
       headerSetting.disable();
+      headerSearchSizeEdge.update.primary(header.element.search.search());
       data.save();
+    }
+  });
+
+  headerSetting.control.search.size = new Control_slider({
+    object: state.get.current(),
+    path: 'header.search.size',
+    id: 'header-search-size',
+    labelText: 'Search size',
+    value: state.get.current().header.search.size,
+    defaultValue: state.get.default().header.search.size,
+    min: state.get.minMax().header.search.size.min,
+    max: state.get.minMax().header.search.size.max,
+    action: () => {
+      applyCSSVar('header.search.size');
+      data.save();
+    },
+    sliderAction: () => {
+      headerSearchSizeEdge.track();
+    },
+    mouseDownAction: () => {
+      headerSearchSizeEdge.show();
+    },
+    mouseUpAction: () => {
+      headerSearchSizeEdge.hide();
     }
   });
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.search.show.wrap()
+      headerSetting.control.search.show.wrap(),
+      headerSetting.control.search.size.wrap()
     ])
   );
 

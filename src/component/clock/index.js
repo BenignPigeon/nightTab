@@ -190,7 +190,7 @@ export const Clock = function({} = {}) {
 
 
         parts.forEach((item, i) => {
-          console.log();
+
           if (i > 0 && item != this.element.meridiem) {
 
             let separator = complexNode({

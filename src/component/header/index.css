@@ -47,3 +47,15 @@
 .is-theme-background-type-accent .header-sort-placeholder {
   box-shadow: var(--edge-on-accent);
 }
+
+.header-item-clock .header-item-body {
+  font-size: calc(var(--header-clock-size) * 0.01em);
+}
+
+.header-item-date .header-item-body {
+  font-size: calc(var(--header-date-size) * 0.01em);
+}
+
+.header-item-search .header-item-body {
+  font-size: calc(var(--header-search-size) * 0.01em);
+}

@@ -2,6 +2,7 @@ import { state } from '../state';
 import { bookmark } from '../bookmark';
 import { version } from '../version';
 import { update } from '../update';
+import { appName } from '../appName';
 
 import { Modal } from '../modal';
 
@@ -11,8 +12,6 @@ import { isJson } from '../../utility/isJson';
 import { clearChildNode } from '../../utility/clearChildNode';
 
 const data = {};
-
-data.saveName = 'nightTab';
 
 data.set = (key, data) => {
   localStorage.setItem(key, data);
@@ -38,7 +37,7 @@ data.validateJsonFile = (fileList, input, feedback) => {
     // is this a JSON file
     if (isJson(event.target.result)) {
       // is this JSON from this app
-      if (JSON.parse(event.target.result)[data.saveName] || JSON.parse(event.target.result)[data.saveName.toLowerCase()]) {
+      if (JSON.parse(event.target.result)[appName] || JSON.parse(event.target.result)[appName.toLowerCase()]) {
         data.render.feedback.clear(feedback);
         data.render.feedback.success(feedback, fileList[0].name, () => {
           data.restore(JSON.parse(event.target.result));
@@ -80,7 +79,7 @@ data.export = () => {
   timestamp.year = leadingZero(timestamp.year);
   timestamp = timestamp.year + '.' + timestamp.month + '.' + timestamp.date + ' - ' + timestamp.hours + ' ' + timestamp.minutes + ' ' + timestamp.seconds;
 
-  const fileName = data.saveName + ' backup - ' + timestamp + '.json';
+  const fileName = appName + ' backup - ' + timestamp + '.json';
 
   const dataToExport = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data.load()));
 
@@ -104,7 +103,7 @@ data.remove = (key) => {
 data.backup = (dataToBackup) => {
   if (dataToBackup) {
     console.log('data version ' + dataToBackup.version + ' backed up');
-    data.set(data.saveName + 'Backup', JSON.stringify(dataToBackup));
+    data.set(appName + 'Backup', JSON.stringify(dataToBackup));
   };
 };
 
@@ -116,7 +115,7 @@ data.restore = (dataToRestore) => {
       // run update on save data
       dataToRestore = update.run(dataToRestore);
       // save data
-      data.set(data.saveName, JSON.stringify(dataToRestore));
+      data.set(appName, JSON.stringify(dataToRestore));
     } else {
       console.log('data version:', version.number, 'no need to run update');
     };
@@ -130,8 +129,8 @@ data.restore = (dataToRestore) => {
 };
 
 data.save = () => {
-  data.set(data.saveName, JSON.stringify({
-    [data.saveName]: true,
+  data.set(appName, JSON.stringify({
+    [appName]: true,
     version: version.number,
     state: state.get.current(),
     bookmark: bookmark.all
@@ -139,15 +138,15 @@ data.save = () => {
 };
 
 data.load = () => {
-  if (data.get(data.saveName) != null && data.get(data.saveName) != undefined) {
-    return JSON.parse(data.get(data.saveName));
+  if (data.get(appName) != null && data.get(appName) != undefined) {
+    return JSON.parse(data.get(appName));
   } else {
     return false;
   };
 };
 
 data.wipe = () => {
-  data.remove(data.saveName);
+  data.remove(appName);
   data.render.reload();
 };
 
@@ -160,7 +159,7 @@ data.render.reload = () => {
 data.render.clear = () => {
   const clearContent = node('div');
 
-  const para1 = node('p:Are you sure you want to clear all ' + data.saveName + ' Bookmarks and Settings? ' + data.saveName + ' will be restore to the default state.');
+  const para1 = node('p:Are you sure you want to clear all ' + appName + ' Bookmarks and Settings? ' + appName + ' will be restore to the default state.');
 
   const para2 = node('p:This can not be undone.');
 
@@ -169,7 +168,7 @@ data.render.clear = () => {
   clearContent.appendChild(para2);
 
   const clearModal = new Modal({
-    heading: 'Clear all ' + data.saveName + ' data?',
+    heading: 'Clear all ' + appName + ' data?',
     content: clearContent,
     successText: 'Clear all data',
     width: 'small',
@@ -187,7 +186,7 @@ data.render.feedback = {
     feedback.appendChild(node('p:No JSON file selected.|class:muted small'));
   },
   success: (feedback, filename, action) => {
-    feedback.appendChild(node('p:Success! Restoring ' + data.saveName + ' Bookmarks and Settings.|class:muted small'));
+    feedback.appendChild(node('p:Success! Restoring ' + appName + ' Bookmarks and Settings.|class:muted small'));
     feedback.appendChild(node('p:' + filename));
     if (action) {
       data.render.feedback.animation.set(feedback, 'is-pop', action);
@@ -200,12 +199,12 @@ data.render.feedback = {
   },
   fail: {
     notJson: (feedback, filename) => {
-      feedback.appendChild(node('p:Not a JSON file. Make sure the selected file came from ' + data.saveName + '.|class:small muted'));
+      feedback.appendChild(node('p:Not a JSON file. Make sure the selected file came from ' + appName + '.|class:small muted'));
       feedback.appendChild(node('p:' + filename));
       data.render.feedback.animation.set(feedback, 'is-shake');
     },
     notAppJson: (feedback, filename) => {
-      feedback.appendChild(node('p:Not the right kind of JSON file. Make sure the selected file came from ' + data.saveName + '.|class:small muted'));
+      feedback.appendChild(node('p:Not the right kind of JSON file. Make sure the selected file came from ' + appName + '.|class:small muted'));
       feedback.appendChild(node('p:' + filename));
       data.render.feedback.animation.set(feedback, 'is-shake');
     }

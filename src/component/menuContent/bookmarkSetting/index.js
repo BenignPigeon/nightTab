@@ -10,6 +10,7 @@ import { logo } from '../../logo';
 import { link } from '../../link';
 import { layout } from '../../layout';
 import { toolbar } from '../../toolbar';
+import { groupAndBookmark } from '../../groupAndBookmark';
 
 import * as form from '../../form';
 
@@ -75,7 +76,9 @@ bookmarkSetting.general = (parent) => {
   let bookmarkEdge = false;
 
   if (state.get.current().bookmark.show && bookmark.tile.current.length > 0) {
-    bookmarkEdge = new Edge({ element: bookmark.tile.current[0].tile() })
+
+    bookmarkEdge = new Edge({ primary: bookmark.tile.current[0].tile(), secondary: [bookmark.element.area] });
+
   };
 
   bookmarkSetting.control.general.show = new Control_checkbox({
@@ -166,9 +169,7 @@ bookmarkSetting.general = (parent) => {
     path: 'bookmark.newTab',
     labelText: 'Open Bookmarks in a new tab',
     action: () => {
-      bookmark.item.clear();
-      bookmark.item.render();
-      bookmark.sort.bind();
+      groupAndBookmark.render();
       data.save();
     }
   });
@@ -177,13 +178,12 @@ bookmarkSetting.general = (parent) => {
     node('div', [
       bookmarkSetting.control.general.show.wrap(),
       node('hr'),
-      bookmarkSetting.control.general.size.wrap(),
-      node('hr'),
       bookmarkSetting.control.general.urlShow.wrap(),
       bookmarkSetting.control.general.lineShow.wrap(),
       bookmarkSetting.control.general.shadowShow.wrap(),
       bookmarkSetting.control.general.hoverScaleShow.wrap(),
-      bookmarkSetting.control.general.newTab.wrap()
+      bookmarkSetting.control.general.newTab.wrap(),
+      bookmarkSetting.control.general.size.wrap()
     ])
   );
 
@@ -212,13 +212,7 @@ bookmarkSetting.style = (parent) => {
       };
 
       applyCSSClass('bookmark.style');
-
-      bookmark.item.clear();
-
-      bookmark.item.render();
-
-      bookmark.sort.bind();
-
+      groupAndBookmark.render();
       data.save();
 
     }

@@ -3,6 +3,7 @@ import { data } from '../data';
 import { form } from '../form';
 import { bookmark } from '../bookmark';
 import { theme } from '../theme';
+import { appName } from '../appName';
 
 import { Button } from '../button';
 import { MenuFrame } from '../menuFrame';
@@ -15,14 +16,14 @@ import { clearChildNode } from '../../utility/clearChildNode';
 const menu = {};
 
 menu.navData = [
-  { name: 'Layout', active: true, overscroll: true, sub: ['Scaling', 'Area', 'Padding', 'Gutter', 'Alignment'] },
+  { name: 'Theme', active: true, overscroll: true, sub: ['Preset', 'Saved', 'Style', 'Colour', 'Accent', 'Font', 'Radius', 'Shadow', 'Shade', 'Background'] },
+  { name: 'Layout', active: false, overscroll: true, sub: ['Scaling', 'Area', 'Padding', 'Gutter', 'Alignment'] },
   { name: 'Header', active: false, overscroll: true, sub: ['Area', 'Greeting', 'Transitional words', 'Clock', 'Date', 'Search', ] },
   { name: 'Bookmark', active: false, overscroll: true, sub: ['General', 'Style', 'Orientation'] },
   { name: 'Toolbar', active: false, overscroll: true, sub: ['Size', 'Style', 'Location', 'Position', 'Controls'] },
-  { name: 'Theme', active: false, overscroll: true, sub: ['Preset', 'Saved', 'Style', 'Colour', 'Accent', 'Font', 'Radius', 'Shadow', 'Shade', 'Background'] },
   { name: 'Data', active: false, overscroll: true, sub: ['Import', 'Backup', 'Clear'] },
   { name: 'Coffee', active: false, overscroll: false },
-  { name: data.saveName.toLowerCase(), active: false, overscroll: false }
+  { name: appName, active: false, overscroll: false }
 ];
 
 menu.mod = {};

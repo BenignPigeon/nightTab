@@ -31,7 +31,6 @@
   margin-left: calc(calc(var(--layout-space) * var(--layout-gutter)) * -1);
   height: 0;
   flex-grow: 0;
-  align-self: flex-end;
   transition: height var(--layout-transition-extra-fast) var(--layout-duration-04), margin var(--layout-transition-extra-fast);
 }
 

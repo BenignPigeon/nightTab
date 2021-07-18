@@ -4,6 +4,7 @@ import { theme } from '../theme';
 import { group } from '../group';
 import { layout } from '../layout';
 import { bookmark } from '../bookmark';
+import { groupAndBookmark } from '../groupAndBookmark';
 
 import { Button } from '../button';
 import { Modal } from '../modal';
@@ -53,11 +54,7 @@ const GroupArea = function({
 
         group.item.mod.move(groupData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
+        groupAndBookmark.render();
 
         data.save();
 
@@ -88,11 +85,7 @@ const GroupArea = function({
 
         group.item.mod.move(groupData);
 
-        bookmark.item.clear();
-
-        bookmark.item.render();
-
-        bookmark.sort.bind();
+        groupAndBookmark.render();
 
         data.save();
 
@@ -120,11 +113,7 @@ const GroupArea = function({
 
             group.item.mod.edit(groupData);
 
-            bookmark.item.clear();
-
-            bookmark.item.render();
-
-            bookmark.sort.bind();
+            groupAndBookmark.render();
 
             data.save();
 
@@ -153,11 +142,7 @@ const GroupArea = function({
 
             group.item.mod.remove(groupData);
 
-            bookmark.item.clear();
-
-            bookmark.item.render();
-
-            bookmark.sort.bind();
+            groupAndBookmark.render();
 
             data.save();
 
@@ -216,15 +201,37 @@ const GroupArea = function({
   };
 
   this.control.disable = () => {
+
     for (var key in this.control.button) {
       this.control.button[key].disable();
     };
+
+    this.control.searchState();
+
   };
 
   this.control.enable = () => {
+
     for (var key in this.control.button) {
       this.control.button[key].enable();
     };
+
+    this.control.searchState();
+
+  };
+
+  this.control.searchState = () => {
+
+    if (state.get.current().search) {
+      this.control.button.up.disable();
+      this.control.button.down.disable();
+      this.control.button.sort.disable();
+    } else {
+      this.control.button.up.enable();
+      this.control.button.down.enable();
+      this.control.button.sort.enable();
+    };
+
   };
 
   this.assemble = () => {
@@ -260,6 +267,12 @@ const GroupArea = function({
     this.element.group.appendChild(this.element.body);
 
     this.element.body.position = groupData.position;
+
+    if (state.get.current().bookmark.edit) {
+      this.control.enable();
+    } else {
+      this.control.disable();
+    };
 
   };
 

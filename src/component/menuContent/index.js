@@ -1,4 +1,5 @@
 import { data } from '../data';
+import { appName } from '../appName';
 import { layoutSetting } from './layoutSetting';
 import { bookmarkSetting } from './bookmarkSetting';
 import { headerSetting } from './headerSetting';
@@ -118,7 +119,7 @@ const MenuContent = function({
           coffeeSetting[this.makeId(activeNavData.name)](formElement);
           break;
 
-        case this.makeId(data.saveName):
+        case this.makeId(appName):
           appSetting[this.makeId(activeNavData.name)](formElement);
           break;
 

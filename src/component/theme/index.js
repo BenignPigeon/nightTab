@@ -1,5 +1,6 @@
 import { state } from '../state';
 import { data } from '../data';
+import { appName } from '../appName';
 
 import { Video } from '../video';
 
@@ -183,15 +184,15 @@ theme.style = {
       case 'dark':
       case 'light':
 
-        localStorage.setItem(data.saveName + 'Style', state.get.current().theme.style);
+        localStorage.setItem(appName + 'Style', state.get.current().theme.style);
         break;
 
       case 'system':
 
         if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
-          localStorage.setItem(data.saveName + 'Style', 'dark');
+          localStorage.setItem(appName + 'Style', 'dark');
         } else if (window.matchMedia('(prefers-color-scheme:light)').matches) {
-          localStorage.setItem(data.saveName + 'Style', 'light');
+          localStorage.setItem(appName + 'Style', 'light');
         };
         break;
 
