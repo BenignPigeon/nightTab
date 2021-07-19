@@ -55,8 +55,8 @@ bookmarkSetting.disable = () => {
     bookmarkSetting.control.general.hoverScaleShow.enable();
     bookmarkSetting.control.general.newTab.enable();
     bookmarkSetting.control.style.enable();
-    bookmarkSetting.control.orientation.enable();
-    bookmarkSetting.control.orientationHelper.enable();
+    bookmarkSetting.control.orientation.orientationElement.enable();
+    bookmarkSetting.control.orientation.orientationHelper.enable();
   } else {
     bookmarkSetting.control.general.size.disable();
     bookmarkSetting.control.general.urlShow.disable();
@@ -65,19 +65,23 @@ bookmarkSetting.disable = () => {
     bookmarkSetting.control.general.hoverScaleShow.disable();
     bookmarkSetting.control.general.newTab.disable();
     bookmarkSetting.control.style.disable();
-    bookmarkSetting.control.orientation.disable();
-    bookmarkSetting.control.orientationHelper.disable();
+    bookmarkSetting.control.orientation.orientationElement.disable();
+    bookmarkSetting.control.orientation.orientationHelper.disable();
   };
 
 };
 
-bookmarkSetting.general = (parent) => {
+bookmarkSetting.edge = {
+  general: {},
+  style: {},
+  orientation: {}
+};
 
-  let bookmarkEdge = false;
+bookmarkSetting.general = (parent) => {
 
   if (state.get.current().bookmark.show && bookmark.tile.current.length > 0) {
 
-    bookmarkEdge = new Edge({ primary: bookmark.tile.current[0].tile(), secondary: [bookmark.element.area] });
+    bookmarkSetting.edge.general.size = new Edge({ primary: bookmark.tile.current[0].tile(), secondary: [bookmark.element.area] });
 
   };
 
@@ -108,13 +112,13 @@ bookmarkSetting.general = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      if (state.get.current().bookmark.show && bookmarkEdge) { bookmarkEdge.track(); };
+      if (state.get.current().bookmark.show && bookmarkSetting.edge.general.size) { bookmarkSetting.edge.general.size.track(); };
     },
     mouseDownAction: () => {
-      if (state.get.current().bookmark.show && bookmarkEdge) { bookmarkEdge.show(); };
+      if (state.get.current().bookmark.show && bookmarkSetting.edge.general.size) { bookmarkSetting.edge.general.size.show(); };
     },
     mouseUpAction: () => {
-      if (state.get.current().bookmark.show && bookmarkEdge) { bookmarkEdge.hide(); };
+      if (state.get.current().bookmark.show && bookmarkSetting.edge.general.size) { bookmarkSetting.edge.general.size.hide(); };
     }
   });
 
@@ -228,7 +232,7 @@ bookmarkSetting.style = (parent) => {
 
 bookmarkSetting.orientation = (parent) => {
 
-  bookmarkSetting.control.orientation = new Control_radio({
+  bookmarkSetting.control.orientation.orientationElement = new Control_radio({
     object: state.get.current(),
     radioGroup: [
       { id: 'bookmark-orientation-top', labelText: 'Top', value: 'top' },
@@ -242,14 +246,14 @@ bookmarkSetting.orientation = (parent) => {
     }
   });
 
-  bookmarkSetting.control.orientationHelper = new Control_helperText({
+  bookmarkSetting.control.orientation.orientationHelper = new Control_helperText({
     text: ['Display the URL and Controls either at the top or bottom of a Bookmark Tile.']
   });
 
   parent.appendChild(
     node('div', [
-      bookmarkSetting.control.orientation.wrap(),
-      bookmarkSetting.control.orientationHelper.wrap()
+      bookmarkSetting.control.orientation.orientationElement.wrap(),
+      bookmarkSetting.control.orientation.orientationHelper.wrap()
     ])
   );
 

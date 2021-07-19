@@ -11,7 +11,8 @@ import { GroupEmpty } from '../groupEmpty';
 import { StagedGroup } from '../stagedGroup';
 import { GroupForm } from '../groupForm';
 import { Modal } from '../modal';
-import { EmptySearch } from '../emptySearch';
+import { SearchEmpty } from '../searchEmpty';
+import { BookmarkEmpty } from '../bookmarkEmpty';
 
 import { node } from '../../utility/node';
 import { clearChildNode } from '../../utility/clearChildNode';
@@ -66,31 +67,59 @@ group.item = {
 
         if (header.element.search.resultCount().group[groupIndex].searchMatch > 0) {
 
-          bookmark.element.area.appendChild(groupArea.group());
+          bookmark.element.group.appendChild(groupArea.group());
 
         };
 
       } else {
 
-        bookmark.element.area.appendChild(groupArea.group());
+        bookmark.element.group.appendChild(groupArea.group());
 
       };
 
     };
 
-    const addEmptySearch = () => {
+    const addSearchEmpty = () => {
 
-      const emptySearch = new EmptySearch();
+      const searchEmpty = new SearchEmpty();
 
-      bookmark.element.area.appendChild(emptySearch.empty());
+      bookmark.element.group.appendChild(searchEmpty.empty());
 
     };
 
-    if (state.get.current().search) {
+    const addBookmarkEmpty = () => {
 
-      // searching
+      const bookmarkEmpty = new BookmarkEmpty();
 
-      if (header.element.search.resultCount().total > 0) {
+      bookmark.element.group.appendChild(bookmarkEmpty.empty());
+
+    };
+
+    if (bookmark.all.length > 0) {
+
+      if (state.get.current().search) {
+
+        // searching
+
+        if (header.element.search.resultCount().total > 0) {
+
+          bookmark.all.forEach((item, i) => {
+
+            const groupIndex = i;
+
+            addGroup(item, groupIndex);
+
+          });
+
+        } else {
+
+          addSearchEmpty();
+
+        };
+
+      } else {
+
+        // not searching
 
         bookmark.all.forEach((item, i) => {
 
@@ -100,23 +129,23 @@ group.item = {
 
         });
 
-      } else {
-
-        addEmptySearch();
-
       };
 
     } else {
 
-      // not searching
+      if (state.get.current().search) {
 
-      bookmark.all.forEach((item, i) => {
+        // searching
 
-        const groupIndex = i;
+        addSearchEmpty();
 
-        addGroup(item, groupIndex);
+      } else {
 
-      });
+        // not searching
+
+        addBookmarkEmpty();
+
+      };
 
     };
 
@@ -125,7 +154,7 @@ group.item = {
 
     group.area.current = [];
 
-    clearChildNode(bookmark.element.area);
+    clearChildNode(bookmark.element.group);
 
   }
 };
@@ -212,6 +241,8 @@ group.add = {
         group.add.mod.close();
 
         groupAndBookmark.render();
+
+        layout.area.assemble();
 
         data.save();
 

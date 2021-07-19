@@ -1,5 +1,4 @@
 import { state } from '../state';
-import { data } from '../data';
 import { bookmark } from '../bookmark';
 
 import { Button } from '../button';

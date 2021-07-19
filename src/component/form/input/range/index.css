@@ -3,12 +3,18 @@
   --form-range-track-background-hover: var(--theme-primary-020);
   --form-range-track-background-focus: var(--theme-primary-020);
   --form-range-track-background-disabled: var(--theme-primary-010);
+}
+
+:root {
   --form-range-thumb-size: 1.5em;
   --form-range-thumb-background: var(--theme-primary-text-010);
   --form-range-thumb-background-disabled: var(--theme-primary-030);
   --form-range-thumb-border: var(--theme-primary-010);
   --form-range-thumb-border-focus: var(--theme-primary-text-010);
   --form-range-thumb-border-disabled: var(--theme-primary-010);
+}
+
+:root {
   --form-range-hue: linear-gradient(to right,
       hsl(0, 100%, 50%),
       hsl(30, 100%, 50%),
@@ -179,4 +185,47 @@ input[type="range"].input-range-hue-spectrum::-moz-range-track {
 input[type="range"]:disabled.input-range-hue-spectrum::-moz-range-track {
   background-image: none;
   background-color: hsl(var(--form-range-track-background-disabled));
+}
+
+.slider-double {
+  flex-grow: 1;
+  position: relative;
+}
+
+.slider-double input[type="range"]:first-child {
+  width: 100%;
+}
+
+.slider-double input[type="range"]:last-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.slider-double input[type="range"]:last-child::-webkit-slider-thumb {
+  pointer-events: all;
+}
+
+.slider-double input[type="range"]:last-child::-moz-range-thumb {
+  pointer-events: all;
+}
+
+.slider-double input[type="range"]:last-child::-webkit-slider-runnable-track,
+.slider-double input[type="range"]:last-child:hover::-webkit-slider-runnable-track,
+.slider-double input[type="range"]:last-child:focus::-webkit-slider-runnable-track,
+.slider-double input[type="range"]:last-child:disabled::-webkit-slider-runnable-track,
+.slider-double input[type="range"]:last-child:disabled:hover::-webkit-slider-runnable-track,
+.slider-double input[type="range"]:last-child:disabled:focus::-webkit-slider-runnable-track {
+  background-color: transparent;
+}
+
+.slider-double input[type="range"]:last-child::-moz-range-track,
+.slider-double input[type="range"]:last-child:hover::-moz-range-track,
+.slider-double input[type="range"]:last-child:focus::-moz-range-track,
+.slider-double input[type="range"]:last-child:disabled::-moz-range-track,
+.slider-double input[type="range"]:last-child:disabled:hover::-moz-range-track,
+.slider-double input[type="range"]:last-child:disabled:focus::-moz-range-track {
+  background-color: transparent;
 }

@@ -38,6 +38,18 @@
   width: 100%;
 }
 
+.form-group-justify-left {
+  justify-content: flex-start;
+}
+
+.form-group-justify-right {
+  justify-content: flex-end;
+}
+
+.form-group-justify-space-between {
+  justify-content: space-between;
+}
+
 .form-group .form-group-text,
 .form-group .button,
 .form-group .form-input-button input[type="checkbox"]+label,

@@ -30,6 +30,7 @@ import { Control_radioGrid } from '../../control/radioGrid';
 import { Control_checkbox } from '../../control/checkbox';
 import { Control_slider } from '../../control/slider';
 import { Control_slimSlider } from '../../control/slimSlider';
+import { Control_sliderDouble } from '../../control/sliderDouble';
 import { Control_colorMixer } from '../../control/colorMixer';
 import { Control_color } from '../../control/color';
 import { Control_text } from '../../control/text';
@@ -368,9 +369,10 @@ themeSetting.colour = (parent) => {
         })
       }
     },
-    contrast: {
-      start: new Control_slider({
-        object: state.get.current(),
+    contrast: new Control_sliderDouble({
+      object: state.get.current(),
+      labelText: 'Contrast range',
+      left: {
         path: 'theme.color.contrast.start',
         id: 'theme-color-contrast-start',
         labelText: 'Contrast start',
@@ -379,16 +381,11 @@ themeSetting.colour = (parent) => {
         min: state.get.minMax().theme.color.contrast.start.min,
         max: state.get.minMax().theme.color.contrast.start.max,
         action: () => {
-          if (state.get.current().theme.color.contrast.start >= state.get.current().theme.color.contrast.end) {
-            state.get.current().theme.color.contrast.end = state.get.current().theme.color.contrast.start + 1;
-          };
-          themeSetting.control.color.contrast.end.update();
           theme.color.render();
           data.save();
         }
-      }),
-      end: new Control_slider({
-        object: state.get.current(),
+      },
+      right: {
         path: 'theme.color.contrast.end',
         id: 'theme-color-contrast-end',
         labelText: 'Contrast end',
@@ -397,15 +394,11 @@ themeSetting.colour = (parent) => {
         min: state.get.minMax().theme.color.contrast.end.min,
         max: state.get.minMax().theme.color.contrast.end.max,
         action: () => {
-          if (state.get.current().theme.color.contrast.end <= state.get.current().theme.color.contrast.start) {
-            state.get.current().theme.color.contrast.start = state.get.current().theme.color.contrast.end - 1;
-          };
-          themeSetting.control.color.contrast.start.update();
           theme.color.render();
           data.save();
         }
-      })
-    },
+      }
+    }),
     shade: {
       helper: new Control_helperText({
         text: [
@@ -424,8 +417,7 @@ themeSetting.colour = (parent) => {
       node('hr'),
       themeSetting.control.color.range.primary.h.wrap(),
       themeSetting.control.color.range.primary.s.wrap(),
-      themeSetting.control.color.contrast.start.wrap(),
-      themeSetting.control.color.contrast.end.wrap()
+      themeSetting.control.color.contrast.wrap()
     ])
   );
 

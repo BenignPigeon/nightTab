@@ -38,6 +38,10 @@
   flex-grow: 1;
   padding: calc(var(--layout-space) * var(--layout-padding));
   width: 100%;
+}
+
+.bookmark-group {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: calc(var(--layout-space) * var(--layout-padding));

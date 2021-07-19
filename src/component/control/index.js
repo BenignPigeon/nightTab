@@ -22,6 +22,7 @@ export {
   Control_radioGrid,
   Control_slider,
   Control_slimSlider,
+  Control_sliderDouble,
   Control_text
   Control_select
 };

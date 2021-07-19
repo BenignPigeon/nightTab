@@ -68,9 +68,17 @@ layoutSetting.disable = () => {
 
 };
 
+layoutSetting.edge = {
+  scaling: {},
+  area: {},
+  padding: {},
+  gutter: {},
+  alignment: {}
+};
+
 layoutSetting.scaling = (parent) => {
 
-  const layoutEdge = new Edge({ primary: layout.element.layout });
+  layoutSetting.edge.scaling.size = new Edge({ primary: layout.element.layout });
 
   layoutSetting.control.scaling.size = new Control_slider({
     object: state.get.current(),
@@ -86,13 +94,13 @@ layoutSetting.scaling = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      layoutEdge.track();
+      layoutSetting.edge.scaling.size.track();
     },
     mouseDownAction: () => {
-      layoutEdge.show();
+      layoutSetting.edge.scaling.size.show();
     },
     mouseUpAction: () => {
-      layoutEdge.hide();
+      layoutSetting.edge.scaling.size.hide();
     }
   });
 
@@ -106,11 +114,11 @@ layoutSetting.scaling = (parent) => {
 
 layoutSetting.area = (parent) => {
 
-  const layoutEdge = new Edge({ primary: layout.element.layout });
+  layoutSetting.edge.area.width = new Edge({ primary: layout.element.layout });
 
-  const layoutHeaderEdge = new Edge({ primary: header.element.area, secondary: [layout.element.layout] });
+  layoutSetting.edge.area.header = new Edge({ primary: header.element.area, secondary: [layout.element.layout] });
 
-  const layoutBookmarkEdge = new Edge({ primary: bookmark.element.area, secondary: [layout.element.layout] });
+  layoutSetting.edge.area.bookmark = new Edge({ primary: bookmark.element.area, secondary: [layout.element.layout] });
 
   layoutSetting.control.area.width = new Control_slider({
     object: state.get.current(),
@@ -126,13 +134,13 @@ layoutSetting.area = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      layoutEdge.track();
+      layoutSetting.edge.area.width.track();
     },
     mouseDownAction: () => {
-      layoutEdge.show();
+      layoutSetting.edge.area.width.show();
     },
     mouseUpAction: () => {
-      layoutEdge.hide();
+      layoutSetting.edge.area.width.hide();
     }
   });
 
@@ -151,13 +159,13 @@ layoutSetting.area = (parent) => {
         data.save();
       },
       sliderAction: () => {
-        layoutHeaderEdge.track();
+        layoutSetting.edge.area.header.track();
       },
       mouseDownAction: () => {
-        layoutHeaderEdge.show();
+        layoutSetting.edge.area.header.show();
       },
       mouseUpAction: () => {
-        layoutHeaderEdge.hide();
+        layoutSetting.edge.area.header.hide();
       }
     }),
     justify: new Control_radioGrid({
@@ -199,13 +207,13 @@ layoutSetting.area = (parent) => {
         data.save();
       },
       sliderAction: () => {
-        layoutBookmarkEdge.track();
+        layoutSetting.edge.area.bookmark.track();
       },
       mouseDownAction: () => {
-        layoutBookmarkEdge.show();
+        layoutSetting.edge.area.bookmark.show();
       },
       mouseUpAction: () => {
-        layoutBookmarkEdge.hide();
+        layoutSetting.edge.area.bookmark.hide();
       }
     }),
     justify: new Control_radioGrid({
@@ -260,7 +268,7 @@ layoutSetting.area = (parent) => {
 
 layoutSetting.padding = (parent) => {
 
-  const layoutEdge = new Edge({ primary: layout.element.layout });
+  layoutSetting.edge.padding = new Edge({ primary: layout.element.layout, secondary: [header.element.header, bookmark.element.group] });
 
   layoutSetting.control.padding = new Control_slider({
     object: state.get.current(),
@@ -276,13 +284,13 @@ layoutSetting.padding = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      layoutEdge.track();
+      layoutSetting.edge.padding.track();
     },
     mouseDownAction: () => {
-      layoutEdge.show();
+      layoutSetting.edge.padding.show();
     },
     mouseUpAction: () => {
-      layoutEdge.hide();
+      layoutSetting.edge.padding.hide();
     }
   });
 
@@ -296,7 +304,7 @@ layoutSetting.padding = (parent) => {
 
 layoutSetting.gutter = (parent) => {
 
-  const layoutEdge = new Edge({ primary: layout.element.layout });
+  layoutSetting.edge.gutter = new Edge({ primary: layout.element.layout, secondary: [header.element.header, bookmark.element.group] });
 
   layoutSetting.control.gutter = new Control_slider({
     object: state.get.current(),
@@ -312,13 +320,13 @@ layoutSetting.gutter = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      layoutEdge.track();
+      layoutSetting.edge.gutter.track();
     },
     mouseDownAction: () => {
-      layoutEdge.show();
+      layoutSetting.edge.gutter.show();
     },
     mouseUpAction: () => {
-      layoutEdge.hide();
+      layoutSetting.edge.gutter.hide();
     }
   });
 

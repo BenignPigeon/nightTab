@@ -94,7 +94,7 @@ themePreset.get = () => {
     style: 'dark',
     shade: { opacity: 90, blur: 0 }
   }, {
-    name: 'Cruiser',
+    name: 'Corsair',
     color: { range: { primary: { h: 217, s: 46 } }, contrast: { start: 18, end: 74 } },
     accent: { rgb: { r: 255, g: 251, b: 0 }, hsl: { h: 59, s: 100, l: 50 } },
     font: { display: { name: 'Alatsi', weight: 400, style: 'normal' }, ui: { name: 'Source Sans Pro', weight: 400, style: 'normal' } },

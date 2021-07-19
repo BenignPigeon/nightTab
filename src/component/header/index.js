@@ -29,7 +29,11 @@ header.element = {
   transitional: false,
   clock: false,
   date: false,
-  search: false
+  search: false,
+  border: {
+    top: node('div|class:header-border-top'),
+    bottom: node('div|class:header-border-bottom')
+  }
 };
 
 header.item = {};
@@ -270,8 +274,6 @@ header.item.render = () => {
 
     };
 
-    header.element.area.appendChild(header.element.header);
-
   });
 
   layout.element.header.appendChild(header.element.area);
@@ -300,6 +302,50 @@ header.item.clear = () => {
 
   clearChildNode(header.element.header);
 
+};
+
+header.area = {
+  render: () => {
+
+    if (state.get.current().header.border.top > 0) {
+
+      header.element.area.appendChild(header.element.border.top);
+
+    } else {
+
+      if (header.element.area.contains(header.element.border.top)) {
+
+        header.element.area.removeChild(header.element.border.top);
+
+      };
+
+    };
+
+    header.element.area.appendChild(header.element.header);
+
+    if (state.get.current().header.border.bottom > 0) {
+
+      header.element.area.appendChild(header.element.border.bottom);
+
+    } else {
+
+      if (header.element.area.contains(header.element.border.bottom)) {
+
+        header.element.area.removeChild(header.element.border.bottom);
+
+      };
+
+    };
+
+  }
+};
+
+header.background = {
+  render: () => {
+
+    if (state.get.current().header.border.top) {};
+
+  }
 };
 
 header.edit = {
@@ -353,13 +399,16 @@ header.init = () => {
     'header.transitional.size',
     'header.clock.size',
     'header.date.size',
-    'header.search.size'
+    'header.search.size',
+    'header.border.top',
+    'header.border.bottom'
   ]);
   applyCSSClass([
     'header.item.justify'
   ]);
   header.edit.render();
   header.item.render();
+  header.area.render();
 };
 
 export { header };

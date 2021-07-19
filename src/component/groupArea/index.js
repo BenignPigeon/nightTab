@@ -142,6 +142,8 @@ const GroupArea = function({
 
             group.item.mod.remove(groupData);
 
+            layout.area.assemble();
+
             groupAndBookmark.render();
 
             data.save();
@@ -190,7 +192,7 @@ const GroupArea = function({
 
   this.style = () => {
 
-    if (groupData.group.name.show) {
+    if (groupData.group.name.show && isValidString(groupData.group.name.text)) {
       this.element.group.classList.add('is-group-header');
     };
 

@@ -7,7 +7,6 @@
   font-style: var(--theme-font-display-style);
   display: inline-flex;
   flex-direction: row;
-  justify-content: center;
   flex-wrap: nowrap;
   line-height: 1.2;
 }
@@ -24,10 +23,21 @@
   color: hsl(var(--theme-accent-rgb-text));
 }
 
-.is-theme-background-type-accent .greeting-text {
-  color: hsl(var(--theme-accent-rgb-text));
-}
-
 .is-theme-background-type-color .greeting-text {
   color: hsl(var(--theme-background-color-rgb-text));
+}
+
+.is-header-item-justify-left .greeting {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.is-header-item-justify-center .greeting {
+  justify-content: center;
+  text-align: center;
+}
+
+.is-header-item-justify-right .greeting {
+  justify-content: flex-end;
+  text-align: right;
 }

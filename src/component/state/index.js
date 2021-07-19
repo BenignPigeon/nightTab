@@ -123,7 +123,11 @@ state.minMax = {
     transitional: { size: { min: 50, max: 1000 } },
     clock: { size: { min: 50, max: 1000 } },
     date: { size: { min: 50, max: 1000 } },
-    search: { size: { min: 50, max: 1000 } }
+    search: { size: { min: 50, max: 1000 } },
+    border: {
+      top: { min: 0, max: 60 },
+      bottom: { min: 0, max: 60 }
+    }
   },
   bookmark: {
     size: { min: 50, max: 1000 }
@@ -139,12 +143,12 @@ state.minMax = {
     gutter: { min: 0, max: 300 }
   },
   toolbar: {
-    size: { min: 50, max: 500 }
+    size: { min: 50, max: 1000 }
   },
   theme: {
     color: {
       range: { primary: { h: { min: 0, max: 359 }, s: { min: 0, max: 100 } } },
-      contrast: { start: { min: 0, max: 99 }, end: { min: 1, max: 100 } }
+      contrast: { start: { min: 0, max: 100 }, end: { min: 0, max: 100 } }
     },
     accent: {
       hsl: { h: { min: 0, max: 359 }, s: { min: 0, max: 100 }, l: { min: 0, max: 100 } },

@@ -7,7 +7,7 @@ import { complexNode } from '../../utility/complexNode';
 
 import './index.css';
 
-export const EmptySearch = function() {
+export const SearchEmpty = function() {
 
   this.element = {
     empty: node('div|class:search-empty'),

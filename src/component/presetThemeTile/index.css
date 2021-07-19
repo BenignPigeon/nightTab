@@ -1,6 +1,5 @@
 :root {
   --theme-preset-preview-size: 6em;
-  --theme-preset-edit-height: 3em;
 }
 
 .theme-preset-tile {
@@ -24,11 +23,6 @@
   z-index: 2;
 }
 
-.is-theme-preset-edit .theme-preset-tile-front {
-  height: calc(var(--theme-preset-preview-size) - var(--theme-preset-edit-height));
-  box-shadow: var(--theme-shadow-bottom-medium);
-}
-
 .theme-preset-tile-back {
   background-color: hsl(var(--button-background));
   border-radius: var(--theme-radius-base);
@@ -44,11 +38,6 @@
   display: block;
   overflow: hidden;
   transition: background-color var(--layout-transition-extra-fast), border-color var(--layout-transition-extra-fast), color var(--layout-transition-extra-fast), height var(--layout-transition-extra-fast), box-shadow var(--layout-transition-extra-fast), border-radius var(--layout-transition-extra-fast);
-}
-
-.is-theme-preset-edit .theme-preset-button {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 .theme-preset-preview {
@@ -118,10 +107,6 @@
   clip-path: circle(30% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(100% - calc(var(--theme-radius-base) / 12)));
 }
 
-.is-theme-preset-edit .theme-preset-accent {
-  clip-path: circle(30% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(calc(100% - var(--theme-preset-edit-height)) - calc(var(--theme-radius-base) / 12)));
-}
-
 .theme-preset-name {
   color: hsl(var(--theme-preset-text));
   font-style: normal;
@@ -159,9 +144,4 @@
 .theme-preset-button:focus .theme-preset-accent,
 .theme-preset-button:hover .theme-preset-accent {
   clip-path: circle(40% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(100% - calc(var(--theme-radius-base) / 12)));
-}
-
-.is-theme-preset-edit .theme-preset-button:focus .theme-preset-accent,
-.is-theme-preset-edit .theme-preset-button:hover .theme-preset-accent {
-  clip-path: circle(40% at calc(100% - calc(var(--theme-radius-base) / 12)) calc(60% - calc(var(--theme-radius-base) / 12)));
 }

@@ -131,15 +131,10 @@ export const Control_slider = function({
   } = {}) => {
 
     let delayedUpdate = null;
+
     const updateControl = () => {
-      this.range.value = get({
-        object: object,
-        path: path,
-      });
-      this.number.value = get({
-        object: object,
-        path: path,
-      });
+      this.range.value = get({ object: object, path: path });
+      this.number.value = get({ object: object, path: path });
     };
 
     if (delay) {
@@ -148,6 +143,7 @@ export const Control_slider = function({
     } else {
       updateControl();
     };
+
   };
 
   this.value = () => {

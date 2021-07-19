@@ -44,10 +44,17 @@ headerSetting.control = {
   transitional: {},
   clock: {},
   date: {},
-  search: {}
+  search: {},
+  border: {}
 };
 
 headerSetting.disable = () => {
+
+  if (state.get.current().header.greeting.show) {
+    headerSetting.control.greeting.size.enable();
+  } else {
+    headerSetting.control.greeting.size.disable();
+  };
 
   if (state.get.current().header.clock.second.show ||
     state.get.current().header.clock.minute.show ||
@@ -87,7 +94,31 @@ headerSetting.disable = () => {
     headerSetting.control.transitional.show.disable();
   };
 
+  if ((
+      state.get.current().header.clock.second.show ||
+      state.get.current().header.clock.minute.show ||
+      state.get.current().header.clock.hour.show
+    ) && (
+      state.get.current().header.date.day.show ||
+      state.get.current().header.date.date.show ||
+      state.get.current().header.date.month.show ||
+      state.get.current().header.date.year.show
+    ) &&
+    state.get.current().header.transitional.show) {
+    headerSetting.control.transitional.size.enable();
+  } else {
+    headerSetting.control.transitional.size.disable();
+  };
 
+};
+
+headerSetting.edge = {
+  area: {},
+  greeting: {},
+  transitional: {},
+  clock: {},
+  date: {},
+  search: {}
 };
 
 headerSetting.update = () => {
@@ -136,6 +167,8 @@ headerSetting.area = (parent) => {
 
 headerSetting.greeting = (parent) => {
 
+  headerSetting.edge.greeting.size = new Edge({ primary: header.element.greeting.greeting(), secondary: [header.element.area] });
+
   headerSetting.control.greeting.show = new Control_checkbox({
     object: state.get.current(),
     path: 'header.greeting.show',
@@ -147,19 +180,52 @@ headerSetting.greeting = (parent) => {
       header.item.render();
       layout.area.assemble();
       headerSetting.disable();
+      headerSetting.disable();
+      headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+      headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+      headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+      headerSetting.edge.date.size.update.primary(header.element.date.date());
+      headerSetting.edge.search.size.update.primary(header.element.search.search());
       data.save();
+    }
+  });
+
+  headerSetting.control.greeting.size = new Control_slider({
+    object: state.get.current(),
+    path: 'header.greeting.size',
+    id: 'header-greeting-size',
+    labelText: 'Transitional size',
+    value: state.get.current().header.greeting.size,
+    defaultValue: state.get.default().header.greeting.size,
+    min: state.get.minMax().header.greeting.size.min,
+    max: state.get.minMax().header.greeting.size.max,
+    action: () => {
+      applyCSSVar('header.greeting.size');
+      data.save();
+    },
+    sliderAction: () => {
+      headerSetting.edge.greeting.size.track();
+    },
+    mouseDownAction: () => {
+      headerSetting.edge.greeting.size.show();
+    },
+    mouseUpAction: () => {
+      headerSetting.edge.greeting.size.hide();
     }
   });
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.greeting.show.wrap()
+      headerSetting.control.greeting.show.wrap(),
+      headerSetting.control.greeting.size.wrap()
     ])
   );
 
 };
 
 headerSetting.transitional = (parent) => {
+
+  headerSetting.edge.transitional.size = new Edge({ primary: header.element.transitional.transitional(), secondary: [header.element.area] });
 
   headerSetting.control.transitional.show = new Control_checkbox({
     object: state.get.current(),
@@ -172,13 +238,44 @@ headerSetting.transitional = (parent) => {
       header.item.render();
       layout.area.assemble();
       headerSetting.disable();
+      headerSetting.disable();
+      headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+      headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+      headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+      headerSetting.edge.date.size.update.primary(header.element.date.date());
+      headerSetting.edge.search.size.update.primary(header.element.search.search());
       data.save();
+    }
+  });
+
+  headerSetting.control.transitional.size = new Control_slider({
+    object: state.get.current(),
+    path: 'header.transitional.size',
+    id: 'header-transitional-size',
+    labelText: 'Transitional size',
+    value: state.get.current().header.transitional.size,
+    defaultValue: state.get.default().header.transitional.size,
+    min: state.get.minMax().header.transitional.size.min,
+    max: state.get.minMax().header.transitional.size.max,
+    action: () => {
+      applyCSSVar('header.transitional.size');
+      data.save();
+    },
+    sliderAction: () => {
+      headerSetting.edge.transitional.size.track();
+    },
+    mouseDownAction: () => {
+      headerSetting.edge.transitional.size.show();
+    },
+    mouseUpAction: () => {
+      headerSetting.edge.transitional.size.hide();
     }
   });
 
   parent.appendChild(
     node('div', [
-      headerSetting.control.transitional.show.wrap()
+      headerSetting.control.transitional.show.wrap(),
+      headerSetting.control.transitional.size.wrap()
     ])
   );
 
@@ -186,7 +283,7 @@ headerSetting.transitional = (parent) => {
 
 headerSetting.clock = (parent) => {
 
-  let headerClockSizeEdge = new Edge({ primary: header.element.clock.clock(), secondary: [layout.element.header] });
+  headerSetting.edge.clock.size = new Edge({ primary: header.element.clock.clock(), secondary: [header.element.area] });
 
   headerSetting.control.clock.hour = {
     show: new Control_checkbox({
@@ -200,7 +297,11 @@ headerSetting.clock = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerClockSizeEdge.update.primary(header.element.clock.clock());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -218,7 +319,11 @@ headerSetting.clock = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerClockSizeEdge.update.primary(header.element.clock.clock());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -236,7 +341,11 @@ headerSetting.clock = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerClockSizeEdge.update.primary(header.element.clock.clock());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -256,13 +365,13 @@ headerSetting.clock = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      headerClockSizeEdge.track();
+      headerSetting.edge.clock.size.track();
     },
     mouseDownAction: () => {
-      headerClockSizeEdge.show();
+      headerSetting.edge.clock.size.show();
     },
     mouseUpAction: () => {
-      headerClockSizeEdge.hide();
+      headerSetting.edge.clock.size.hide();
     }
   });
 
@@ -279,7 +388,7 @@ headerSetting.clock = (parent) => {
 
 headerSetting.date = (parent) => {
 
-  let headerDateSizeEdge = new Edge({ primary: header.element.date.date(), secondary: [layout.element.header] });
+  headerSetting.edge.date.size = new Edge({ primary: header.element.date.date(), secondary: [header.element.area] });
 
   headerSetting.control.date.day = {
     show: new Control_checkbox({
@@ -293,7 +402,11 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerDateSizeEdge.update.primary(header.element.date.date());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -311,7 +424,11 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerDateSizeEdge.update.primary(header.element.date.date());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -329,7 +446,11 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerDateSizeEdge.update.primary(header.element.date.date());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -347,7 +468,11 @@ headerSetting.date = (parent) => {
         header.item.render();
         layout.area.assemble();
         headerSetting.disable();
-        headerDateSizeEdge.update.primary(header.element.date.date());
+        headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+        headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+        headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+        headerSetting.edge.date.size.update.primary(header.element.date.date());
+        headerSetting.edge.search.size.update.primary(header.element.search.search());
         data.save();
       }
     })
@@ -367,13 +492,13 @@ headerSetting.date = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      headerDateSizeEdge.track();
+      headerSetting.edge.date.size.track();
     },
     mouseDownAction: () => {
-      headerDateSizeEdge.show();
+      headerSetting.edge.date.size.show();
     },
     mouseUpAction: () => {
-      headerDateSizeEdge.hide();
+      headerSetting.edge.date.size.hide();
     }
   });
 
@@ -391,7 +516,7 @@ headerSetting.date = (parent) => {
 
 headerSetting.search = (parent) => {
 
-  const headerSearchSizeEdge = new Edge({ primary: header.element.search.search(), secondary: [layout.element.header] });
+  headerSetting.edge.search.size = new Edge({ primary: header.element.search.search(), secondary: [header.element.area] });
 
   headerSetting.control.search.show = new Control_checkbox({
     object: state.get.current(),
@@ -404,7 +529,11 @@ headerSetting.search = (parent) => {
       header.item.render();
       layout.area.assemble();
       headerSetting.disable();
-      headerSearchSizeEdge.update.primary(header.element.search.search());
+      headerSetting.edge.greeting.size.update.primary(header.element.greeting.greeting());
+      headerSetting.edge.transitional.size.update.primary(header.element.transitional.transitional());
+      headerSetting.edge.clock.size.update.primary(header.element.clock.clock());
+      headerSetting.edge.date.size.update.primary(header.element.date.date());
+      headerSetting.edge.search.size.update.primary(header.element.search.search());
       data.save();
     }
   });
@@ -423,13 +552,13 @@ headerSetting.search = (parent) => {
       data.save();
     },
     sliderAction: () => {
-      headerSearchSizeEdge.track();
+      headerSetting.edge.search.size.track();
     },
     mouseDownAction: () => {
-      headerSearchSizeEdge.show();
+      headerSetting.edge.search.size.show();
     },
     mouseUpAction: () => {
-      headerSearchSizeEdge.hide();
+      headerSetting.edge.search.size.hide();
     }
   });
 
@@ -437,6 +566,49 @@ headerSetting.search = (parent) => {
     node('div', [
       headerSetting.control.search.show.wrap(),
       headerSetting.control.search.size.wrap()
+    ])
+  );
+
+};
+
+headerSetting.border = (parent) => {
+
+  headerSetting.control.border.top = new Control_slider({
+    object: state.get.current(),
+    path: 'header.border.top',
+    id: 'header-border-top',
+    labelText: 'Top border',
+    value: state.get.current().header.border.top,
+    defaultValue: state.get.default().header.border.top,
+    min: state.get.minMax().header.border.top.min,
+    max: state.get.minMax().header.border.top.max,
+    action: () => {
+      applyCSSVar('header.border.top');
+      header.area.render();
+      data.save();
+    }
+  });
+
+  headerSetting.control.border.bottom = new Control_slider({
+    object: state.get.current(),
+    path: 'header.border.bottom',
+    id: 'header-border-bottom',
+    labelText: 'Bottom border',
+    value: state.get.current().header.border.bottom,
+    defaultValue: state.get.default().header.border.bottom,
+    min: state.get.minMax().header.border.bottom.min,
+    max: state.get.minMax().header.border.bottom.max,
+    action: () => {
+      applyCSSVar('header.border.bottom');
+      header.area.render();
+      data.save();
+    }
+  });
+
+  parent.appendChild(
+    node('div', [
+      headerSetting.control.border.top.wrap(),
+      headerSetting.control.border.bottom.wrap()
     ])
   );
 

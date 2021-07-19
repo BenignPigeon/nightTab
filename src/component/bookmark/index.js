@@ -27,13 +27,16 @@ import './index.css';
 const bookmark = {};
 
 bookmark.element = {
-  area: node('div|class:bookmark-area')
+  area: node('div|class:bookmark-area'),
+  group: node('div|class:bookmark-group')
 };
 
 bookmark.all = bookmarkPreset.get();
 
 bookmark.area = {
   render: () => {
+
+    bookmark.element.area.appendChild(bookmark.element.group);
 
     layout.element.bookmark.appendChild(bookmark.element.area);
 
@@ -294,12 +297,16 @@ bookmark.add = {
 
     newBookmarkData.type.new = true;
 
-    newBookmarkData.position.destination.item = bookmark.all[0].items.length;
+    newBookmarkData.position.destination.item = (bookmark.all.length > 0) ? bookmark.all[0].items.length : 0;
 
     if (groupIndex || groupIndex === 0) {
       newBookmarkData.position.destination.group = groupIndex;
 
       newBookmarkData.position.destination.item = bookmark.all[groupIndex].items.length;
+    };
+
+    if (!bookmark.all.length > 0) {
+      newBookmarkData.group.destination = 'new';
     };
 
     const bookmarkForm = new BookmarkForm({ bookmarkData: newBookmarkData });
@@ -338,6 +345,8 @@ bookmark.add = {
             group.item.mod.add(newGroupData);
 
             newBookmarkData.position.destination.group = bookmark.all.length - 1;
+
+            layout.area.assemble();
 
             break;
 

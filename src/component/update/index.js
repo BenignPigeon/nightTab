@@ -38,10 +38,32 @@ update.mod['7.0.0'] = function(data) {
     }
   };
 
+  data.state.header.clock.hour = data.state.header.clock.hours;
+  delete data.state.header.clock.hours;
+
+  data.state.header.clock.minute = data.state.header.clock.minutes;
+  delete data.state.header.clock.minutes;
+
+  data.state.header.clock.second = data.state.header.clock.seconds;
+  delete data.state.header.clock.seconds;
+
   delete data.state.header.area.width;
   delete data.state.header.area.justify;
   delete data.state.link.area.width;
   delete data.state.link.area.justify;
+
+  data.state.toolbar = {
+    style: 'transparent',
+    location: 'header',
+    position: 'bottom-right',
+    size: 100,
+    accent: { show: data.state.header.colorAccent.show },
+    add: { show: data.state.header.editAdd.show },
+    edit: { show: data.state.header.editAdd.show }
+  };
+
+  delete data.state.header.colorAccent;
+  delete data.state.header.editAdd;
 
   switch (data.state.layout.alignment) {
     case 'topleft':
@@ -83,6 +105,7 @@ update.mod['7.0.0'] = function(data) {
   };
 
   switch (data.state.layout.order) {
+
     case 'headerlink':
       data.state.layout.order = 'header-bookmark';
       break;
@@ -92,8 +115,6 @@ update.mod['7.0.0'] = function(data) {
       break;
 
   };
-
-  data.state.toolbar = { style: 'transparent', location: 'header', position: 'bottom-right', size: 100, accent: { show: true }, add: { show: true }, edit: { show: true } };
 
   data.state.theme.background = data.state.background;
 
@@ -430,15 +451,6 @@ update.mod['7.0.0'] = function(data) {
     });
 
   });
-
-  data.state.header.clock.hour = data.state.header.clock.hours;
-  delete data.state.header.clock.hours;
-
-  data.state.header.clock.minute = data.state.header.clock.minutes;
-  delete data.state.header.clock.minutes;
-
-  data.state.header.clock.second = data.state.header.clock.seconds;
-  delete data.state.header.clock.seconds;
 
   return data;
 };

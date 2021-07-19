@@ -39,31 +39,37 @@ import { applyCSSState } from '../../../utility/applyCSSState';
 
 const dataSetting = {};
 
+dataSetting.control = {
+  import: {},
+  backup: {},
+  clear: {}
+};
+
 dataSetting.import = (parent) => {
 
   const importFeedback = form.feedback();
 
   data.render.feedback.empty(importFeedback);
 
-  const importButton = new Control_inputButton({
+  dataSetting.control.import.importElement = new Control_inputButton({
     id: 'import-data',
     type: 'file',
     inputHide: true,
     labelText: 'Import data',
     inputButtonStyle: ['line'],
     action: () => {
-      data.import(importButton.input, importFeedback)
+      data.import(dataSetting.control.import.importElement.input, importFeedback)
     }
   });
 
-  const importHelper = new Control_helperText({
+  dataSetting.control.import.importHelper = new Control_helperText({
     text: ['Restore a previously exported ' + appName + ' backup.']
   });
 
   parent.appendChild(
     node('div', [
-      importButton.wrap(),
-      importHelper.wrap(),
+      dataSetting.control.import.importElement.wrap(),
+      dataSetting.control.import.importHelper.wrap(),
       form.wrap({
         children: [
           importFeedback
@@ -76,7 +82,7 @@ dataSetting.import = (parent) => {
 
 dataSetting.backup = (parent) => {
 
-  const exportButton = new Button({
+  dataSetting.control.backup.button = new Button({
     text: 'Export data',
     style: ['line'],
     func: () => {
@@ -84,14 +90,14 @@ dataSetting.backup = (parent) => {
     }
   });
 
-  const exportHelper = new Control_helperText({
+  dataSetting.control.backup.buttonHelper = new Control_helperText({
     text: ['Download a backup of your ' + appName + ' Bookmarks and Settings.', 'This file can later be imported on this or another deivce.']
   });
 
   parent.appendChild(
     node('div', [
-      exportButton.wrap(),
-      exportHelper.wrap()
+      dataSetting.control.backup.button.wrap(),
+      dataSetting.control.backup.buttonHelper.wrap()
     ])
   );
 
@@ -99,7 +105,7 @@ dataSetting.backup = (parent) => {
 
 dataSetting.clear = (parent) => {
 
-  const clearButton = new Button({
+  dataSetting.control.clear.button = new Button({
     text: 'Clear all data',
     style: ['line'],
     func: () => {
@@ -108,14 +114,14 @@ dataSetting.clear = (parent) => {
     }
   });
 
-  const clearHelper = new Control_helperText({
+  dataSetting.control.clear.buttonHelper = new Control_helperText({
     text: ['Wipe all data and restore ' + appName + ' to the default state.']
   });
 
   parent.appendChild(
     node('div', [
-      clearButton.wrap(),
-      clearHelper.wrap()
+      dataSetting.control.clear.button.wrap(),
+      dataSetting.control.clear.buttonHelper.wrap()
     ])
   );
 

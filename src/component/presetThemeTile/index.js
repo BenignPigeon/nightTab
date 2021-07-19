@@ -74,9 +74,7 @@ const PresetThemeTile = function({ presetThemeData = false } = {}) {
 
         themeSetting.control.color.range.primary.s.update();
 
-        themeSetting.control.color.contrast.start.update();
-
-        themeSetting.control.color.contrast.end.update();
+        themeSetting.control.color.contrast.update();
 
         themeSetting.control.accent.color.update();
 

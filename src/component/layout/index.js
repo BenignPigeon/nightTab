@@ -1,5 +1,6 @@
 import { state } from '../state';
 import { data } from '../data';
+import { bookmark } from '../bookmark';
 
 import { node } from '../../utility/node';
 import { get } from '../../utility/get';
@@ -84,7 +85,9 @@ layout.area = {
     } else {
 
       if (layout.element.layout.contains(layout.element.header)) {
+
         layout.element.layout.removeChild(layout.element.header);
+
       };
 
     };
@@ -96,7 +99,9 @@ layout.area = {
     } else {
 
       if (layout.element.layout.contains(layout.element.bookmark)) {
+
         layout.element.layout.removeChild(layout.element.bookmark);
+
       };
 
     };

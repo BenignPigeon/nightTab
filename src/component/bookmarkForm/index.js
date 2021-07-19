@@ -552,7 +552,7 @@ const BookmarkForm = function({
         id: 'position-destination-group',
         labelText: 'Group',
         srOnly: true,
-        option: this.selectOption.group(),
+        option: (bookmark.all.length > 0) ? this.selectOption.group() : [],
         selected: bookmarkData.position.destination.group,
         action: () => {
 
@@ -581,7 +581,7 @@ const BookmarkForm = function({
         path: 'position.destination.item',
         id: 'position-destination-item',
         labelText: 'Position',
-        option: this.selectOption.item(),
+        option: (bookmark.all.length > 0) ? this.selectOption.item() : [],
         selected: bookmarkData.position.destination.item
       })
     }
@@ -967,6 +967,7 @@ const BookmarkForm = function({
   this.preview = new BookmarkPreview({ bookmarkData: bookmarkData });
 
   this.disable = () => {
+
     if (bookmarkData.link.display.visual.show) {
       this.control.bookmark.display.visual.type.enable();
       this.control.bookmark.display.visual.letter.text.enable();
@@ -1102,6 +1103,13 @@ const BookmarkForm = function({
         this.control.group.random.enable();
         break;
     };
+
+    if (!bookmark.all.length > 0) {
+      this.control.group.destination.radioSet[0].radio.disable();
+    } else {
+      this.control.group.destination.radioSet[0].radio.enable();
+    };
+
   };
 
   this.update = () => {

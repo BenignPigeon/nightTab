@@ -18,7 +18,7 @@ const menu = {};
 menu.navData = [
   { name: 'Theme', active: true, overscroll: true, sub: ['Preset', 'Saved', 'Style', 'Colour', 'Accent', 'Font', 'Radius', 'Shadow', 'Shade', 'Background'] },
   { name: 'Layout', active: false, overscroll: true, sub: ['Scaling', 'Area', 'Padding', 'Gutter', 'Alignment'] },
-  { name: 'Header', active: false, overscroll: true, sub: ['Area', 'Greeting', 'Transitional words', 'Clock', 'Date', 'Search', ] },
+  { name: 'Header', active: false, overscroll: true, sub: ['Area', 'Greeting', 'Transitional words', 'Clock', 'Date', 'Search', 'Border'] },
   { name: 'Bookmark', active: false, overscroll: true, sub: ['General', 'Style', 'Orientation'] },
   { name: 'Toolbar', active: false, overscroll: true, sub: ['Size', 'Style', 'Location', 'Position', 'Controls'] },
   { name: 'Data', active: false, overscroll: true, sub: ['Import', 'Backup', 'Clear'] },

@@ -134,14 +134,8 @@ export const Control_slimSlider = function({
     let delayedUpdate = null;
 
     const updateControl = () => {
-      this.range.value = get({
-        object: object,
-        path: path,
-      });
-      this.number.value = get({
-        object: object,
-        path: path,
-      });
+      this.range.value = get({ object: object, path: path });
+      this.number.value = get({ object: object, path: path });
     };
 
     if (delay) {
